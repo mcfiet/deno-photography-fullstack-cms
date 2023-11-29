@@ -1,7 +1,7 @@
 import * as sqlite from "https://deno.land/x/sqlite@v3.8/mod.ts";
 import { createContext } from "./framework/context.js";
 import * as controller from "./notes/controller.js";
-
+import * as serveStaticFiles from "./middleware/serveStaticFiles.js";
 import nunjucks from "npm:nunjucks@3.2.4";
 const db = new sqlite.DB("./data/notes.db");
 //console.table(db.queryEntries("SELECT * FROM notes;"));
@@ -20,8 +20,7 @@ export const handleRequest = async (request) => {
   let ctx = createContext(request, {
     db,
     staticPath: "web",
-    staticBase:
-      "G:/Andere Computer/FIETE-PC/Dokumente/Studium/HS Flensburg/ARBEITEN/SEMESTER 5/WWW-PROGRAMMIERUNG/LABOR-06/mvc-fisc4884/public",
+    staticBase: "E:/Git/www-ha-fisc4884-masc3346/public",
     nunjucks,
   });
 
@@ -52,6 +51,12 @@ export const handleRequest = async (request) => {
       console.log("kontakt");
       ctx = await controller.getKontakt(ctx);
       break;
+  }
+
+  ctx = await serveStaticFiles.serveStaticFile(ctx);
+
+  if (ctx.response.body == "") {
+    ctx = await controller.getError404(ctx);
   }
 
   return new Response(ctx.response.body, {

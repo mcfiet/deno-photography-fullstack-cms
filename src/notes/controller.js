@@ -30,3 +30,10 @@ export const getKontakt = async (ctx) => {
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
 };
+
+export const getError404 = async (ctx) => {
+  ctx.response.body = await ctx.nunjucks.render("error404.html");
+  ctx.response.status = 404;
+  ctx.response.headers.set("content-type", "text/html");
+  return ctx;
+};
