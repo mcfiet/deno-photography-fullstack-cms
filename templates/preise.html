@@ -11,15 +11,30 @@
         </p>
       </div>
       {% for item in products %}
-      <article class="product" id="einzelpreis">
-        <div class="product-text">
-          <h3>{{item.name}}</h3>
-          <p>
-            {{item.text}}
-          </p>
-        </div>
-          <p class="price">{{item.price}},- <span class="price-info">{{item.priceDes}}</span></p>
-      </article>
+      <form action="#" method="POST" class="product" id="product-{{item.id}}">
+        {% if isLoggedIn %}
+        <a href="/delete/{{item.id}}"  class="delete-btn"></a>
+        <input type="hidden" name="id" value="{{item.id}}"></input>
+        <input name="name" value="{{item.name}}"></input>
+        <input name="text" value="{{item.text}}"></input>
+        <input name="price" class="price" value="{{item.price}}">,- <input name="priceDes" value="{{item.priceDes}}" class="price-info"></input></input>
+        {% else %}
+        <article class="product" id="einzelpreis">
+          <div class="product-text">
+            <h3>{{item.name}}</h3>
+            <p>
+              {{item.text}}
+            </p>
+          </div>
+            <p class="price">{{item.price}},- <span class="price-info">{{item.priceDes}}</span></p>
+        </article>
+        {% endif %}
+
+        <button type="submit">Speichern</button>
+      </form>
+      {% endfor %}
+      {% for item in products %}
+
       {% endfor %}
       
 
@@ -33,7 +48,20 @@
         </p>
       </div>
       {% for item in bundles %}
-      <article class="product bundle" id="bundle-01">
+      <form action="#" method="POST" class="product bundle" id="bundle-{{item.id}}">
+        {% if isLoggedIn %}
+        <a href="/delete/{{item.id}}"  class="delete-btn"></a>
+        <input type="hidden" name="id" value="{{item.id}}"></input>
+        <input name="name" value="{{item.name}}"></input>
+        <input name="text" value="{{item.text}}"></input>
+        <input name="price" class="price" value="{{item.price}}">,- <input name="priceDes" value="{{item.priceDes}}" class="price-info"></input></input>
+        <div class="quad-container">
+          {% for item in range(0, item.bundleAmount) %}
+          <div class="quad"><img src="img/mx/2020-08-09_tensfeld_reduziert/199A0010.jpg" alt=""></div>
+          {% endfor %}
+        </div>
+        <input name="bundleAmount" value="{{item.bundleAmount}}" class="text-info">Bilder inklusive</input>
+        {% else %}
         <h3>{{item.name}}</h3>
         <p>{{item.text}}</p>
         <p class="price">{{item.price}},- <span class="price-info">pro Bundle</span></p>
@@ -42,8 +70,11 @@
           <div class="quad"><img src="img/mx/2020-08-09_tensfeld_reduziert/199A0010.jpg" alt=""></div>
           {% endfor %}
         </div>
-        <p class="text-info">{{item.bundleDes}}</p>
-      </article>
+        <p class="text-info">{{item.bundleAmount}} Bilder inklusive</p>
+        {% endif %}
+
+        <button type="submit">Speichern</button>
+      </form>
       {% endfor %}
       
     </section>

@@ -693,6 +693,7 @@
     transition: var(--transition-duration) all ease-in-out;
     height: 100%;
     min-height: 30rem;
+    position: relative;
   }
   
   .teaser-text h2 {
@@ -719,7 +720,7 @@
     padding: 2rem 2rem 2rem 2rem;
   }
   
-  .product .price:not(.bundle .price) {
+  .product p.price:not(.bundle p.price) {
     width: 50%;
     border-top: var(--ff-inner-border-width) solid var(--ff-blue);
     padding: 1rem 0;
@@ -747,7 +748,7 @@
   /*--- BUNDLES ---*/
   /*---         ---*/
   
-  .bundle .price {
+  .bundle p.price {
     width: inherit;
     margin-top: 1rem;
     border-top: none;
@@ -825,6 +826,8 @@
 #bundles:not(:checked) + .bundle-options{
     display: none;
   }
+
+
   
   
   /*---               ---*/
@@ -886,6 +889,17 @@
     /*---          ---*/
     /*--- PRODUCTS ---*/
     /*---          ---*/
+    .delete-btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 1rem;
+        transform: translate(50%, -50%);
+        background-color: red;
+    }
+
     .grid-container {
       grid-template-columns: 1fr 1fr;
       align-items: center;

@@ -29,3 +29,35 @@ export const addProduct = (db, formData) => {
     },
   );
 };
+export const updateProduct = (db, formData) => {
+  db.query(
+    `
+    UPDATE products
+    SET name = $name,
+    text = $text,
+    price = $price,
+    priceDes = $priceDes,
+    bundleAmount = $bundleAmount
+    WHERE id = $id;
+    `,
+    {
+      $id: formData.id,
+      $name: formData.name,
+      $text: formData.text,
+      $price: formData.price,
+      $priceDes: formData.priceDes,
+      $bundleAmount: formData.bundleAmount,
+    },
+  );
+};
+export const deleteProduct = (db, id) => {
+  db.query(
+    `
+    DELETE FROM products
+    WHERE id = $id;
+    `,
+    {
+      $id: id,
+    },
+  );
+};
