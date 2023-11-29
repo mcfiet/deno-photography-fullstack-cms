@@ -275,6 +275,7 @@
     padding: 2rem;
     border: var(--ff-outer-border-width) solid var(--ff-blue);
   }
+
   
   fieldset {
     border: none;
@@ -288,7 +289,7 @@
   label {
     font-family: Patua;
     pointer-events: none;
-    margin-left: 0.5rem;
+    margin: 2rem 0 1rem 0;
     display: block;
   }
   
@@ -361,16 +362,16 @@
     padding: 0.5rem;
     font-size: 1rem;
     font-family: Wix;
-    transition: var(--transition-duration) all ease-in-out;
+    border: var(--ff-inner-border-width) solid var(--ff-blue);
   
-    /*--- BORDER HALF HEIGHT ---*/
+    /* --- BORDER HALF HEIGHT ---
     background: linear-gradient(var(--ff-blue), var(--ff-blue)),
       linear-gradient(var(--ff-blue), var(--ff-blue)),
       linear-gradient(var(--ff-blue), var(--ff-blue));
     background-size: var(--ff-inner-border-width) 0.5rem,
       100% var(--ff-inner-border-width), var(--ff-inner-border-width) 0.5rem;
     background-position: bottom left, bottom center, bottom right;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
   }
   
   input:disabled {
@@ -815,6 +816,16 @@
     border: var(--ff-outer-border-width) solid var(--ff-blue);
     background-color: var(--ff-white);
   }
+
+    
+  /*---     ---*/
+  /*--- ADD ---*/
+  /*---     ---*/
+  
+#bundles:not(:checked) + .bundle-options{
+    display: none;
+  }
+  
   
   /*---               ---*/
   /*--- MEDIA QUERIES ---*/

@@ -3,7 +3,7 @@ import { createContext } from "./framework/context.js";
 import * as controller from "./notes/controller.js";
 import * as serveStaticFiles from "./middleware/serveStaticFiles.js";
 import nunjucks from "npm:nunjucks@3.2.4";
-const db = new sqlite.DB("./data/notes.db");
+const db = new sqlite.DB("./data/data.db");
 //console.table(db.queryEntries("SELECT * FROM notes;"));
 
 nunjucks.configure("templates", {
@@ -25,32 +25,51 @@ export const handleRequest = async (request) => {
   });
 
   let id = getId(ctx);
+  console.log(ctx.url.pathname);
 
-  switch (ctx.url.pathname) {
-    case "/":
-      console.log("index");
-      ctx = await controller.getIndex(ctx);
-      break;
+  if (ctx.request.method == "GET") {
+    switch (ctx.url.pathname) {
+      case "/":
+        //console.log("index");
+        ctx = await controller.getIndex(ctx);
 
-    case "/gallerie":
-      console.log("gallerie");
-      ctx = await controller.getGallerie(ctx);
-      break;
+        break;
 
-    case "/preise":
-      console.log("preise");
-      ctx = await controller.getPreise(ctx);
-      break;
+      case "/gallerie":
+        //console.log("gallerie");
+        ctx = await controller.getGallerie(ctx);
+        break;
 
-    case "/ueber-mich":
-      console.log("ueber-mich");
-      ctx = await controller.getUeberMich(ctx);
-      break;
+      case "/preise":
+        //console.log("preise");
+        ctx = await controller.getPreise(ctx);
+        break;
 
-    case "/kontakt":
-      console.log("kontakt");
-      ctx = await controller.getKontakt(ctx);
-      break;
+      case "/ueber-mich":
+        //console.log("ueber-mich");
+        ctx = await controller.getUeberMich(ctx);
+        break;
+
+      case "/kontakt":
+        //console.log("kontakt");
+        ctx = await controller.getKontakt(ctx);
+        break;
+      case "/admin":
+        //console.log("kontakt");
+        ctx = await controller.getAdmin(ctx);
+        break;
+      case "/addProduct":
+        //console.log("get add product");
+        ctx = await controller.getAddProduct(ctx);
+        break;
+    }
+  } else if (ctx.request.method == "POST") {
+    switch (ctx.url.pathname) {
+      case "/addProduct":
+        //console.log("add product");
+        ctx = await controller.postAddProduct(ctx);
+        break;
+    }
   }
 
   ctx = await serveStaticFiles.serveStaticFile(ctx);

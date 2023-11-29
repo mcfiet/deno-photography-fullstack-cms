@@ -12,7 +12,11 @@ export const getGallerie = async (ctx) => {
   return ctx;
 };
 export const getPreise = async (ctx) => {
-  ctx.response.body = await ctx.nunjucks.render("preise.html");
+  console.log(model.getBundles(ctx.db));
+  ctx.response.body = await ctx.nunjucks.render("preise.html", {
+    products: model.getProducts(ctx.db),
+    bundles: model.getBundles(ctx.db),
+  });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
@@ -26,6 +30,35 @@ export const getUeberMich = async (ctx) => {
 
 export const getKontakt = async (ctx) => {
   ctx.response.body = await ctx.nunjucks.render("kontakt.html");
+  ctx.response.status = 200;
+  ctx.response.headers.set("content-type", "text/html");
+  return ctx;
+};
+
+export const getAdmin = async (ctx) => {
+  ctx.response.body = await ctx.nunjucks.render("admin.html");
+  ctx.response.status = 200;
+  ctx.response.headers.set("content-type", "text/html");
+  return ctx;
+};
+
+export const getAddProduct = async (ctx) => {
+  ctx.response.body = await ctx.nunjucks.render("productForm.html");
+  ctx.response.status = 200;
+  ctx.response.headers.set("content-type", "text/html");
+  return ctx;
+};
+export const postAddProduct = async (ctx) => {
+  const requestFormData = await ctx.request.formData();
+  const formData = {
+    name: requestFormData.get("name"),
+    text: requestFormData.get("text"),
+    price: requestFormData.get("price"),
+    priceDes: requestFormData.get("priceDes"),
+    bundleAmount: requestFormData.get("bundleAmount"),
+  };
+  model.addProduct(ctx.db, formData);
+  ctx.response.body = await ctx.nunjucks.render("productForm.html");
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
