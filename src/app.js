@@ -71,7 +71,7 @@ export const handleRequest = async (request) => {
     switch (ctx.url.pathname) {
       case "/addProduct":
         //console.log("add product");
-        ctx = await controller.postAddProduct(ctx);
+        ctx = await controller.addProduct(ctx);
         break;
       // deno-lint-ignore no-case-declarations
       case "/preise":

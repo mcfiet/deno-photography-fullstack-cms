@@ -77,6 +77,26 @@
       </form>
       {% endfor %}
       
+      {% if isLoggedIn %}
+      <form action="/addProduct" method="POST" class="product bundle" >
+        
+        <input type="hidden" name="id">
+        <input type="text" placeholder="Name" name="name" >
+        <textarea name="text" placeholder="Produktbeschreibung"></textarea>
+        <input type="number" name="price" class="price" placeholder="Preis">
+        <input name="priceDes" placeholder="Preis Beschreibung">
+        
+        <input type="checkbox" name="bundles" id="bundles">
+        
+        <div class="bundle-options">
+          <input type="number" id="bundleAmount" name="bundleAmount"  placeholder="Bundle-Größe (Anzahl der Bilder)" rows="8" cols="20">
+        </div>
+        
+        <button type="submit">Hinzufügen</button>
+
+      </form>
+      {% endif %}
+      
     </section>
 
 {% endblock %}

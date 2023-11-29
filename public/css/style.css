@@ -318,25 +318,7 @@
     background-color: var(--ff-blue);
   }
   
-  input:not(
-      [type="radio"],
-      [type="checkbox"],
-      [type="submit"],
-      [type="submit"],
-      [type="reset"],
-      [type="button"]
-    )
-    + label {
-    opacity: 1;
-    transform: translateY(-1.7rem);
-    transform-origin: 0 0;
-    transition: all var(--transition-duration) ease-in-out;
-  }
   
-  input:not(:placeholder-shown) + label {
-    transform: translateY(-3.5rem);
-    color: var(--ff-light);
-  }
   
   input[type="radio"] + label,
   input[type="checkbox"] + label {
@@ -383,9 +365,6 @@
     color: var(--ff-light);
   }
   
-  input::placeholder {
-    color: transparent;
-  }
   
   input:not(
       [type="radio"],

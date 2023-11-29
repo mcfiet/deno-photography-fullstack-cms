@@ -77,7 +77,7 @@ export const getAddProduct = async (ctx) => {
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
 };
-export const postAddProduct = async (ctx) => {
+export const addProduct = async (ctx) => {
   const requestFormData = await ctx.request.formData();
   const formData = {
     name: requestFormData.get("name"),
@@ -87,9 +87,9 @@ export const postAddProduct = async (ctx) => {
     bundleAmount: requestFormData.get("bundleAmount"),
   };
   model.addProduct(ctx.db, formData);
-  ctx.response.body = await ctx.nunjucks.render("productForm.html");
-  ctx.response.status = 200;
-  ctx.response.headers.set("content-type", "text/html");
+  ctx.response.body = null;
+  ctx.response.status = 303;
+  ctx.response.headers.set("location", "/preise");
   return ctx;
 };
 
