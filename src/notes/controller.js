@@ -11,7 +11,9 @@ export const getIndex = async (ctx) => {
   return ctx;
 };
 export const getGallerie = async (ctx) => {
-  ctx.response.body = await ctx.nunjucks.render("gallerie.html");
+  ctx.response.body = await ctx.nunjucks.render("gallerie.html", {
+    isLoggedIn: isLoggedIn,
+  });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
@@ -56,14 +58,18 @@ export const deleteProduct = async (ctx, id) => {
 };
 
 export const getUeberMich = async (ctx) => {
-  ctx.response.body = await ctx.nunjucks.render("ueber-mich.html");
+  ctx.response.body = await ctx.nunjucks.render("ueber-mich.html", {
+    isLoggedIn: isLoggedIn,
+  });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
 };
 
 export const getKontakt = async (ctx) => {
-  ctx.response.body = await ctx.nunjucks.render("kontakt.html");
+  ctx.response.body = await ctx.nunjucks.render("kontakt.html", {
+    isLoggedIn: isLoggedIn,
+  });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
