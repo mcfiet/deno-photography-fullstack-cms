@@ -21,6 +21,7 @@ export const handleRequest = async (request) => {
     db,
     staticPath: "web",
     staticBase: "E:/Git/www-ha-fisc4884-masc3346/public",
+    //staticBase: "C:/Users/Mettis/OneDrive - Hochschule Flensburg/WWW-Programmierung/HAUSARBEIT/www-ha-fisc4884-masc3346/public"
     nunjucks,
   });
 
