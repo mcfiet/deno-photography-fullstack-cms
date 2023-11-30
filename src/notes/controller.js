@@ -1,6 +1,11 @@
 import * as model from "./model.js";
+
+let isLoggedIn = false;
+
 export const getIndex = async (ctx) => {
-  ctx.response.body = await ctx.nunjucks.render("index.html");
+  ctx.response.body = await ctx.nunjucks.render("index.html", {
+    isLoggedIn: isLoggedIn,
+  });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
@@ -15,7 +20,7 @@ export const getPreise = async (ctx) => {
   ctx.response.body = await ctx.nunjucks.render("preise.html", {
     products: model.getProducts(ctx.db),
     bundles: model.getBundles(ctx.db),
-    isLoggedIn: true,
+    isLoggedIn: isLoggedIn,
   });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
@@ -36,7 +41,7 @@ export const postPreise = async (ctx) => {
   ctx.response.body = await ctx.nunjucks.render("preise.html", {
     products: model.getProducts(ctx.db),
     bundles: model.getBundles(ctx.db),
-    isLoggedIn: true,
+    isLoggedIn: isLoggedIn,
   });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
@@ -75,6 +80,36 @@ export const getAddProduct = async (ctx) => {
   ctx.response.body = await ctx.nunjucks.render("productForm.html");
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
+  return ctx;
+};
+
+export const getLogin = async (ctx) => {
+  ctx.response.body = await ctx.nunjucks.render("login.html");
+  ctx.response.status = 200;
+  ctx.response.headers.set("content-type", "text/html");
+  return ctx;
+};
+
+export const getLogout = async (ctx) => {
+  isLoggedIn = false;
+  ctx.response.body = null;
+  ctx.response.status = 303;
+  ctx.response.headers.set("location", "/");
+  return ctx;
+};
+export const postLogin = async (ctx) => {
+  const requestFormData = await ctx.request.formData();
+  const formData = {
+    username: requestFormData.get("username"),
+    password: requestFormData.get("password"),
+  };
+  if (formData.username == "test" && formData.password) {
+    isLoggedIn = true;
+  }
+
+  ctx.response.body = null;
+  ctx.response.status = 303;
+  ctx.response.headers.set("location", "/");
   return ctx;
 };
 export const addProduct = async (ctx) => {

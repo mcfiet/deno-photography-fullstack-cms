@@ -25,7 +25,6 @@ export const handleRequest = async (request) => {
   });
 
   let id = getId(ctx, "delete");
-  console.log(id);
 
   if (ctx.request.method == "GET") {
     switch (ctx.url.pathname) {
@@ -66,19 +65,23 @@ export const handleRequest = async (request) => {
         //console.log("get add product");
         ctx = await controller.deleteProduct(ctx, id);
         break;
+      case "/login":
+        ctx = await controller.getLogin(ctx);
+        break;
+      case "/logout":
+        ctx = await controller.getLogout(ctx);
+        break;
     }
   } else if (ctx.request.method == "POST") {
     switch (ctx.url.pathname) {
       case "/addProduct":
-        //console.log("add product");
         ctx = await controller.addProduct(ctx);
         break;
-      // deno-lint-ignore no-case-declarations
       case "/preise":
-        // //console.log("add product");
-        // let data = await ctx.request.formData();
-        // console.log(data.get("id"));
         ctx = await controller.postPreise(ctx);
+        break;
+      case "/login":
+        ctx = await controller.postLogin(ctx);
         break;
     }
   }

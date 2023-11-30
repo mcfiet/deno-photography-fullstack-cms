@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+        <h1 class="visually-hidden">Login</h1>
+
+        <section>
+
+                <form action="/login" method="POST" class="header-teaser-element">
+                    <fieldset>
+                        <div>
+                            <label for="name">Benutzername</label>
+                            <input name="username" id="username" type="text" placeholder=" ">
+                        </div>
+                        <div>
+                            <label for="email">Passwort</label>
+                            <input name="password" id="password" type="password" placeholder=" ">
+                        </div>
+                    </fieldset>
+                    <button type="submit">Anfrage senden</button>
+                </form>
+
+
+
+        </section>
+{% endblock %}

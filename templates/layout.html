@@ -39,6 +39,15 @@
           <li class="big-link-parent">
             <a href="/kontakt" class="big-link">Kontakt</a>
           </li>
+          {% if isLoggedIn %}
+          <li class="big-link-parent">
+            <a href="/logout" class="big-link">Logout</a>
+          </li>
+          {% else %}
+          <li class="big-link-parent">
+            <a href="/login" class="big-link">Login</a>
+          </li>
+          {% endif %}
         </ul>
         <div class="sm-container">
           <a href="https://www.instagram.com/mx.fotofiete/">

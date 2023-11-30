@@ -3,7 +3,6 @@ import * as mediaTypes from "https://deno.land/std@0.151.0/media_types/mod.ts";
 
 export const serveStaticFile = async (ctx) => {
   const base = ctx.staticBase;
-  console.log(base);
   let file;
   // https://nodejs.org/en/knowledge/file-system/security/introduction/#preventing-directory-traversal
   const fullPath = path.join(base, ctx.url.pathname);

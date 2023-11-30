@@ -738,6 +738,11 @@
     color: var(--ff-akzent_orange);
     text-align: inherit;
   }
+
+  form.product input, 
+  form.product textarea {
+    margin-top: 1rem;
+  }
   
   .quad-container {
     display: grid;
@@ -802,7 +807,22 @@
   /*--- ADD ---*/
   /*---     ---*/
   
-#bundles:not(:checked) + .bundle-options{
+  .bundle-options-container label {
+    display: inline;
+  }
+
+  .bundle.add {
+    border-color: var(--ff-akzent_orange);
+    color: var(--ff-akzent_orange);
+  }
+  .bundle.add input,
+  .bundle.add textarea,
+  .bundle.add button {
+    border-color: var(--ff-akzent_orange);
+    color: var(--ff-akzent_orange);
+  }
+
+  #bundles:not(:checked) + .bundle-options{
     display: none;
   }
 

@@ -11,13 +11,15 @@
         </p>
       </div>
       {% for item in products %}
-      <form action="#" method="POST" class="product" id="product-{{item.id}}">
         {% if isLoggedIn %}
-        <a href="/delete/{{item.id}}"  class="delete-btn"></a>
-        <input type="hidden" name="id" value="{{item.id}}"></input>
-        <input name="name" value="{{item.name}}"></input>
-        <input name="text" value="{{item.text}}"></input>
-        <input name="price" class="price" value="{{item.price}}">,- <input name="priceDes" value="{{item.priceDes}}" class="price-info"></input></input>
+        <form action="#" method="POST" class="product" id="product-{{item.id}}">
+          <a href="/delete/{{item.id}}"  class="delete-btn"></a>
+          <input type="hidden" name="id" value="{{item.id}}"></input>
+          <input name="name" value="{{item.name}}"></input>
+          <input name="text" value="{{item.text}}"></input>
+          <input name="price" class="price" value="{{item.price}}">,- <input name="priceDes" value="{{item.priceDes}}" class="price-info"></input></input>
+          <button type="submit">Speichern</button>
+        </form>
         {% else %}
         <article class="product" id="einzelpreis">
           <div class="product-text">
@@ -30,8 +32,8 @@
         </article>
         {% endif %}
 
-        <button type="submit">Speichern</button>
-      </form>
+       
+      
       {% endfor %}
       {% for item in products %}
 
@@ -48,8 +50,9 @@
         </p>
       </div>
       {% for item in bundles %}
+      {% if isLoggedIn %}
       <form action="#" method="POST" class="product bundle" id="bundle-{{item.id}}">
-        {% if isLoggedIn %}
+        
         <a href="/delete/{{item.id}}"  class="delete-btn"></a>
         <input type="hidden" name="id" value="{{item.id}}"></input>
         <input name="name" value="{{item.name}}"></input>
@@ -61,7 +64,14 @@
           {% endfor %}
         </div>
         <input name="bundleAmount" value="{{item.bundleAmount}}" class="text-info">Bilder inklusive</input>
+        
+
+        <button type="submit">Speichern</button>
+      </form>
         {% else %}
+        
+        <article class="product bundle" id="bundle-{{item.id}}">
+
         <h3>{{item.name}}</h3>
         <p>{{item.text}}</p>
         <p class="price">{{item.price}},- <span class="price-info">pro Bundle</span></p>
@@ -72,26 +82,28 @@
         </div>
         <p class="text-info">{{item.bundleAmount}} Bilder inklusive</p>
         {% endif %}
-
-        <button type="submit">Speichern</button>
-      </form>
+      </article>
       {% endfor %}
       
       {% if isLoggedIn %}
-      <form action="/addProduct" method="POST" class="product bundle" >
-        
+      <form action="/addProduct" method="POST" class="product bundle add " >
+
         <input type="hidden" name="id">
         <input type="text" placeholder="Name" name="name" >
         <textarea name="text" placeholder="Produktbeschreibung"></textarea>
         <input type="number" name="price" class="price" placeholder="Preis">
         <input name="priceDes" placeholder="Preis Beschreibung">
         
-        <input type="checkbox" name="bundles" id="bundles">
         
-        <div class="bundle-options">
-          <input type="number" id="bundleAmount" name="bundleAmount"  placeholder="Bundle-Größe (Anzahl der Bilder)" rows="8" cols="20">
+        <div class="bundle-options-container">
+          <label for="bundles">Bundles</label>
+          <input type="checkbox" name="bundles" id="bundles"></input>
+        
+          <div class="bundle-options">
+            <input type="number" id="bundleAmount" name="bundleAmount"  placeholder="Bundle-Größe (Anzahl der Bilder)" rows="8" cols="20">
+          </div>
         </div>
-        
+      </fieldset>
         <button type="submit">Hinzufügen</button>
 
       </form>
