@@ -103,13 +103,20 @@ export const postLogin = async (ctx) => {
     username: requestFormData.get("username"),
     password: requestFormData.get("password"),
   };
-  if (formData.username == "test" && formData.password) {
+  if (formData.username == "test" && formData.password == "test") {
     isLoggedIn = true;
   }
 
-  ctx.response.body = null;
-  ctx.response.status = 303;
-  ctx.response.headers.set("location", "/");
+  if (isLoggedIn) {
+    ctx.response.body = null;
+    ctx.response.status = 303;
+    ctx.response.headers.set("location", "/");
+  } else {
+    ctx.response.body = null;
+    ctx.response.status = 303;
+    ctx.response.headers.set("location", "/login");
+  }
+
   return ctx;
 };
 export const addProduct = async (ctx) => {
