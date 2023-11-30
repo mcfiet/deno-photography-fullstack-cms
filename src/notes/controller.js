@@ -121,6 +121,7 @@ export const postLogin = async (ctx) => {
 };
 export const addProduct = async (ctx) => {
   const requestFormData = await ctx.request.formData();
+
   const formData = {
     name: requestFormData.get("name"),
     text: requestFormData.get("text"),
@@ -128,6 +129,12 @@ export const addProduct = async (ctx) => {
     priceDes: requestFormData.get("priceDes"),
     bundleAmount: requestFormData.get("bundleAmount"),
   };
+
+  if (formData.bundleAmount == "") {
+    formData.bundleAmount = null;
+  }
+
+  console.log(formData);
   model.addProduct(ctx.db, formData);
   ctx.response.body = null;
   ctx.response.status = 303;
