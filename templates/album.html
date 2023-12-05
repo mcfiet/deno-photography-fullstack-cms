@@ -1,0 +1,24 @@
+ {% extends "layout.html" %}
+
+{% block content %}
+
+<h2>{{albumName}}</h2>
+        <div class="album-container">
+    {% for albumImage in albumImages %}
+        <div style="position: relative;">
+                <a href="/{{albumImage.albums_images_link}}/delete"  class="delete-btn"></a>
+                <img class="album-img" src="/{{albumImage.albums_images_link}}" alt="">
+        </div>
+    {% endfor %}
+    <form class="album-img" action="/gallerie/{{albumId}}" method="post" enctype="multipart/form-data">
+    <fieldset>
+<label for="form_file" class=""> Bild hinzufügen </label>
+<input type="file" id="form_file" name="upload">
+<button type="submit">Bild hochladen</button>
+</fieldset>
+<!-- ... -->
+</form>
+            </div>
+            
+{% endblock %}
+      

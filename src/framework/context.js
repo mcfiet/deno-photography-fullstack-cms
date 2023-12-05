@@ -10,4 +10,5 @@ export const createContext = (request, options) => ({
   staticBase: options.staticBase,
   nunjucks: options.nunjucks,
   isLoggedIn: false,
+  cookies: null,
 });
