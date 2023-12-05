@@ -24,6 +24,19 @@ WHERE fk_albums_id = $albumId
   );
 };
 
+export const getAlbumNameById = (db, albumId) => {
+  const value = db.queryEntries(
+    `
+  SELECT album_title FROM albums
+WHERE album_id = $albumId
+  `,
+    {
+      $albumId: albumId,
+    },
+  );
+  return value[0].album_title;
+};
+
 export const saveAlbumImageById = (db, albumId, filename) => {
   return db.queryEntries(
     `
@@ -46,6 +59,27 @@ VALUES ($album_title, $albums_category);
     {
       $album_title: formData.title,
       $albums_category: formData.category,
+    },
+  );
+};
+
+export const deleteAlbum = (db, albumId) => {
+  db.query(
+    `
+  DELETE FROM albums_images
+WHERE fk_albums_id = $albumId;
+  `,
+    {
+      $albumId: albumId,
+    },
+  );
+  db.query(
+    `
+    DELETE FROM albums
+WHERE album_id = $albumId;
+  `,
+    {
+      $albumId: albumId,
     },
   );
 };

@@ -1,4 +1,5 @@
 import * as model from "./model.js";
+import * as formDataController from "../framework/formData.js";
 
 let isLoggedIn = true;
 
@@ -14,16 +15,8 @@ export const get = async (ctx) => {
 };
 
 export const update = async (ctx) => {
-  const requestFormData = await ctx.request.formData();
-
-  const formData = {
-    id: requestFormData.get("id"),
-    name: requestFormData.get("name"),
-    text: requestFormData.get("text"),
-    price: requestFormData.get("price"),
-    priceDes: requestFormData.get("priceDes"),
-    bundleAmount: requestFormData.get("bundleAmount"),
-  };
+  const formData = await formDataController.getEntries(ctx);
+  console.log(formData);
   model.updateProduct(ctx.db, formData);
   ctx.response.body = await ctx.nunjucks.render("preise.html", {
     products: model.getProducts(ctx.db),
@@ -44,15 +37,7 @@ export const remove = async (ctx, id) => {
 };
 
 export const add = async (ctx) => {
-  const requestFormData = await ctx.request.formData();
-
-  const formData = {
-    name: requestFormData.get("name"),
-    text: requestFormData.get("text"),
-    price: requestFormData.get("price"),
-    priceDes: requestFormData.get("priceDes"),
-    bundleAmount: requestFormData.get("bundleAmount"),
-  };
+  const formData = await formDataController.getEntries(ctx);
 
   if (formData.bundleAmount == "") {
     formData.bundleAmount = null;

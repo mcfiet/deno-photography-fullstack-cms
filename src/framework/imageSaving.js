@@ -27,7 +27,7 @@ async function getHighestNumberFromDir(albumId) {
   return highestNumber;
 }
 
-async function checkDir(albumId) {
+export async function checkDir(albumId) {
   for await (const dirEntry of Deno.readDir("public/upload")) {
     if (!dirEntry.isFile && dirEntry.name == albumId) {
       return true;

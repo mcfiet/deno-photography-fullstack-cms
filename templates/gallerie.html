@@ -12,9 +12,11 @@
          {% if album.category_name == category.category_name %}
         
          <figure class="album big-link-parent img-container">
+          <a href="/gallerie/delete/{{album.album_id}}"  class="delete-btn"></a>
+
           <img class="album-img" src="img/mx/2020-08-09_tensfeld_reduziert/199A8546.jpg" alt="2020-08-09 Tensfeld">
           <figcaption>
-            <a href="gallerie/{{album.album_id}}" class="album-text big-link">
+            <a href="/gallerie/{{album.album_id}}" class="album-text big-link">
               {{album.album_title}}
             </a>
           </figcaption>
@@ -30,7 +32,7 @@
             <input type="text" id="title" name="title" value="">
             <label for="category" class=""> Kategorie </label>
             <select id="category" name="category" size="1">
-              <option value="Pferde">{{category.category_name}}</option>
+              <option value="{{category.category_name}}">{{category.category_name}}</option>
             </select>
             <button type="submit">Album anlegen</button>
           </fieldset>

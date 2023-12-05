@@ -1,15 +1,13 @@
 import * as imageValidation from "../framework/imageValidation.js";
 import * as imageSaving from "../framework/imageSaving.js";
+import * as albumDelete from "../framework/albumDelete.js";
+import * as formDataController from "../framework/formData.js";
 import * as model from "../notes/model.js";
 
 let isLoggedIn = true;
 
 export const login = async (ctx) => {
-  const requestFormData = await ctx.request.formData();
-  const formData = {
-    username: requestFormData.get("username"),
-    password: requestFormData.get("password"),
-  };
+  const formData = await formDataController.getEntries(ctx);
   if (formData.username == "test" && formData.password == "test") {
     isLoggedIn = true;
   }
@@ -61,20 +59,27 @@ export const addImage = async (ctx, albumId) => {
 };
 
 export const addAlbum = async (ctx) => {
-  const formDataRequest = await ctx.request.formData();
-  let category = 1;
-  if (formDataRequest.get("category") == "Motocross") {
-    category = 2;
-  }
+  const formData = await formDataController.getEntries(ctx);
 
-  const formData = {
-    title: formDataRequest.get("title"),
-    category,
-  };
+  if (formData.category == "Motocross") {
+    formData.category = 2;
+  } else if (formData.category == "Pferde") {
+    formData.category = 1;
+  }
 
   console.log(formData);
 
   model.addAlbum(ctx.db, formData);
+
+  ctx.response.body = null;
+  ctx.response.status = 303;
+  ctx.response.headers.set("location", `/gallerie`);
+  return ctx;
+};
+
+export const deleteAlbum = (ctx, albumId) => {
+  model.deleteAlbum(ctx.db, albumId);
+  albumDelete.deleteAlbum(albumId);
 
   ctx.response.body = null;
   ctx.response.status = 303;

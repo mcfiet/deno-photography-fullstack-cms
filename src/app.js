@@ -22,12 +22,17 @@ export const handleRequest = async (request) => {
   let ctx = createContext(request, {
     db,
     staticPath: "web",
-    staticBase: "E:/Git/www-ha-fisc4884-masc3346/public",
-    //staticBase: "C:/Users/Mettis/OneDrive - Hochschule Flensburg/WWW-Programmierung/HAUSARBEIT/www-ha-fisc4884-masc3346/public"
+    //staticBase: "E:/Git/www-ha-fisc4884-masc3346/public",
+    staticBase:
+      "C:/Users/Fiete-Laptop/Documents/Git/www-ha-fisc4884-masc3346/public",
+    //staticBase: "C:/Users/Mettis/OneDrive - Hochschule Flensburg/WWW-Programmierung/HAUSARBEIT/www-ha-fisc4884-masc3346/public",
     nunjucks,
   });
 
   let albumId = getId(ctx, "gallerie");
+  let albumIdDelete = getId(ctx, "gallerie/delete");
+  let imageDelete = getImageDelete(ctx);
+  //console.log(imageDelete);
 
   let id = getId(ctx, "delete");
 
@@ -67,6 +72,14 @@ export const handleRequest = async (request) => {
         ctx = await controllerGet.getAdmin(ctx);
         break;
 
+      case `/${imageDelete}/delete`:
+        ctx = await controllerPost.deleteImage(ctx, imageDelete);
+        break;
+
+      case `/gallerie/delete/${albumIdDelete}`:
+        ctx = await controllerPost.deleteAlbum(ctx, albumIdDelete);
+        break;
+
       case `/delete/${id}`:
         ctx = await controllerPreis.remove(ctx, id);
         break;
@@ -96,6 +109,7 @@ export const handleRequest = async (request) => {
       case `/gallerie`:
         ctx = await controllerPost.addAlbum(ctx);
         break;
+
       case "/admin":
         ctx = await controllerPost.admin(ctx);
         break;
@@ -119,5 +133,13 @@ function getId(ctx, action) {
   const match = pattern.exec(ctx.url);
   if (match) {
     return match.pathname.groups.id;
+  }
+}
+
+function getImageDelete(ctx) {
+  const pattern = new URLPattern(ctx.url.origin + `/:filename/delete`);
+  const match = pattern.exec(ctx.url);
+  if (match) {
+    return match.pathname.groups.filename;
   }
 }

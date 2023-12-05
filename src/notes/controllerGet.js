@@ -26,6 +26,7 @@ export const getGallerieDetailseite = async (ctx, albumId) => {
   ctx.response.body = await ctx.nunjucks.render("gallerie_detailseite.html", {
     isLoggedIn: isLoggedIn,
     albumImages: model.getAlbumImagesById(ctx.db, albumId),
+    albumName: model.getAlbumNameById(ctx.db, albumId),
     albumId: albumId,
   });
   ctx.response.status = 200;
