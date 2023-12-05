@@ -385,11 +385,6 @@
     background-repeat: no-repeat;
   }
   
-  input:not(input[type="radio"]):focus + label,
-  form fieldset div input:not(:placeholder-shown) + form fieldset div label {
-    transform: translateY(-3.5rem);
-    color: var(--ff-light);
-  }
   
   input[type="radio"] + label {
     margin-left: 1rem;
@@ -416,6 +411,8 @@
     border-radius: 0;
     color: var(--ff-blue);
     background-color: var(--ff-white);
+    display: block;
+    margin-bottom: 2rem;
   }
   
   select {
@@ -802,6 +799,22 @@
     background-color: var(--ff-white);
   }
 
+  /*---             ---*/
+  /*--- ADMIN-PANEL ---*/
+  /*---             ---*/
+
+  .admin-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2rem;
+    background-color: var(--ff-akzent_pink);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+  }
     
   /*---     ---*/
   /*--- ADD ---*/

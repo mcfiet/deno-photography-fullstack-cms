@@ -2,128 +2,43 @@
 
 {% block content %}
     <h1 class="visually-hidden">Detailseite Fotos</h1>
-    <section id="mx">
-      <h2>Motocross</h2>
+    {% for category in album_categories %}
+    <section id="{{category.category_name}}">
+      <h2>{{category.category_name}}</h2>
       <div class="album-container">
-        <figure class="album big-link-parent img-container">
+
+         {% for album in albums %}
+
+         {% if album.category_name == category.category_name %}
+        
+         <figure class="album big-link-parent img-container">
           <img class="album-img" src="img/mx/2020-08-09_tensfeld_reduziert/199A8546.jpg" alt="2020-08-09 Tensfeld">
           <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">
-              Tensfeld 09.08.2020
+            <a href="gallerie/{{album.album_id}}" class="album-text big-link">
+              {{album.album_title}}
             </a>
           </figcaption>
         </figure>
+        {% endif %}
 
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/mx/2020-09-03_tensfeld_reduziert/199A9394.jpg" alt="2020-09-03 Tensfeld">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Tensfeld 03.09.2020</a>
-          </figcaption>
-        </figure>
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/mx/2023-01-28_tensfeld_reduziert/199A7678.jpg" alt="2021-02-30 Tensfeld">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Tensfeld 30.02.2021</a>
-          </figcaption>
-        </figure>
-
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/mx/2023-05-10_gnutz_reduziert/199A9954.jpg" alt="2021-05-20 Gnutz">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Gnutz 20.05.2021</a>
-          </figcaption>
-        </figure>
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/mx/2020-08-09_tensfeld_reduziert/199A8546.jpg" alt="2022-07-10 Tensfeld">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">
-              Tensfeld 10.07.2022
-            </a>
-          </figcaption>
-        </figure>
-
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/mx/2020-09-03_tensfeld_reduziert/199A0618.jpg" alt="2022-09-30 Tensfeld">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Tensfeld 30.09.2022</a>
-          </figcaption>
-        </figure>
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/mx/2023-01-28_tensfeld_reduziert/199A5764.jpg" alt="2023-01-28 Tensfeld">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Tensfeld 28.01.2023</a>
-          </figcaption>
-        </figure>
-
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/mx/2023-05-10_gnutz_reduziert/199A9839.jpg" alt="2023-05-10 Gnutz">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Gnutz 10.05.2023</a>
-          </figcaption>
-        </figure>
+          {% endfor %}
+        <form class="" action="/gallerie" method="post">
+          <fieldset>
+            <!-- <label for="form_file" class=""> Bild hinzufügen </label> -->
+            <!-- <input type="file" id="form_file" name="upload" value=""> -->
+            <label for="title" class=""> Titel </label>
+            <input type="text" id="title" name="title" value="">
+            <label for="category" class=""> Kategorie </label>
+            <select id="category" name="category" size="1">
+              <option value="Pferde">{{category.category_name}}</option>
+            </select>
+            <button type="submit">Album anlegen</button>
+          </fieldset>
+        </form>
       </div>
+
+
     </section>
+{% endfor %}
 
-    <section id="horse">
-      <h2>Pferde</h2>
-      <div class="album-container">
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/horse/2019-10-12_baevershof_reduziert/199A3538.jpg" alt="2019-10-12 baevershof">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">
-              baevershof 12.10.2019
-            </a>
-          </figcaption>
-        </figure>
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/horse/2019-10-12_baevershof_reduziert/199A3304.jpg" alt="2019-09-11 baevershof">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">
-              baevershof 11.09.2019
-            </a>
-          </figcaption>
-        </figure>
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/horse/2021-07-25_romo_reduziert/199A1083.jpg" alt="2020-05-21 Röm">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Röm 21.05.2020</a>
-          </figcaption>
-        </figure>
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/horse/2021-11-14_lehrgang_reduziert/fotofiete-3820.jpg"
-            alt="2020-09-16 Lehrgang">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Lehrgang 16.09.2020</a>
-          </figcaption>
-        </figure>
-
-
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/horse/2021-07-25_romo_reduziert/199A0876.jpg" alt="2021-04-12 Röm">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Röm 12.04.2021</a>
-          </figcaption>
-        </figure>
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/horse/2021-11-14_lehrgang_reduziert/fotofiete-3760.jpg"
-            alt="2021-06-20 Lehrgang">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Lehrgang 20.06.2021</a>
-          </figcaption>
-        </figure>
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/horse/2021-07-25_romo_reduziert/199A1219.jpg" alt="2021-07-25 Röm">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Röm 25.07.2021</a>
-          </figcaption>
-        </figure>
-        <figure class="album big-link-parent img-container">
-          <img class="album-img" src="img/horse/2021-11-14_lehrgang_reduziert/fotofiete-2925.jpg"
-            alt="2021-11-14 Lehrgang">
-          <figcaption>
-            <a href="gallerie_fotos.html" class="album-text big-link">Lehrgang 14.11.2021</a>
-          </figcaption>
-        </figure>
-      </div>
-    </section>
     {% endblock %}

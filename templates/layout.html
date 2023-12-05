@@ -5,17 +5,20 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="/css/style.css">
   <title>Startseite</title>
 </head>
 
 <body>
+  {% if isLoggedIn %}
+  <div class="admin-panel">Admin Panel</div>
+  {% endif %}
   <a href="#main-content
   " class="sr-only focusable">
     Direkt zum Inhalt</a>
   <header class="site-header">
     <!-- LOGO -->
-    <a href="/"><img src="img/fotofiete.svg" alt="fotofiete Logo" class="logo"></a>
+    <a href="/"><img src="/img/fotofiete.svg" alt="fotofiete Logo" class="logo"></a>
     <button>
       <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -83,7 +86,7 @@
   <footer>
     <div class="logo-container">
       <a href="index.html">
-        <img src="img/fotofiete.svg" alt="fotofiete Logo" class="logo">
+        <img src="/img/fotofiete.svg" alt="fotofiete Logo" class="logo">
       </a>
     </div>
     <div class="column column-01">
@@ -100,19 +103,19 @@
       <nav>
         <ul>
           <li>
-            <a href="dokumentation/index.html">Dokumentation</a>
+            <a href="/dokumentation/index.html">Dokumentation</a>
           </li>
           <li>
-            <a href="kollophon.html">Kollophon</a>
+            <a href="/kollophon.html">Kollophon</a>
           </li>
           <li>
-            <a href="html-pur/index.html">HTML pur</a>
+            <a href="/html-pur/index.html">HTML pur</a>
           </li>
           <li>
-            <a href="impressum.html">Impressum</a>
+            <a href="/impressum.html">Impressum</a>
           </li>
           <li>
-            <a href="datenschutz.html">Datenschutz</a>
+            <a href="/datenschutz.html">Datenschutz</a>
           </li>
         </ul>
       </nav>

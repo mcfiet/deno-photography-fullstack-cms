@@ -13,22 +13,22 @@
       {% for item in products %}
         {% if isLoggedIn %}
         <form action="#" method="POST" class="product" id="product-{{item.id}}">
-          <a href="/delete/{{item.id}}"  class="delete-btn"></a>
-          <input type="hidden" name="id" value="{{item.id}}"></input>
-          <input name="name" value="{{item.name}}"></input>
-          <input name="text" value="{{item.text}}"></input>
-          <input name="price" class="price" value="{{item.price}}">,- <input name="priceDes" value="{{item.priceDes}}" class="price-info"></input></input>
+          <a href="/delete/{{item.product_id}}"  class="delete-btn"></a>
+          <input type="hidden" name="id" value="{{item.product_id}}"></input>
+          <input name="name" value="{{item.product_name}}"></input>
+          <input name="text" value="{{item.product_text}}"></input>
+          <input name="price" class="price" value="{{item.product_price}}">,- <input name="priceDes" value="{{item.product_priceDes}}" class="price-info"></input></input>
           <button type="submit">Speichern</button>
         </form>
         {% else %}
         <article class="product" id="einzelpreis">
           <div class="product-text">
-            <h3>{{item.name}}</h3>
+            <h3>{{item.product_name}}</h3>
             <p>
-              {{item.text}}
+              {{item.product_text}}
             </p>
           </div>
-            <p class="price">{{item.price}},- <span class="price-info">{{item.priceDes}}</span></p>
+            <p class="price">{{item.product_price}},- <span class="price-info">{{item.product_priceDes}}</span></p>
         </article>
         {% endif %}
 
@@ -53,34 +53,34 @@
       {% if isLoggedIn %}
       <form action="#" method="POST" class="product bundle" id="bundle-{{item.id}}">
         
-        <a href="/delete/{{item.id}}"  class="delete-btn"></a>
-        <input type="hidden" name="id" value="{{item.id}}"></input>
-        <input name="name" value="{{item.name}}"></input>
-        <input name="text" value="{{item.text}}"></input>
-        <input name="price" class="price" value="{{item.price}}">,- <input name="priceDes" value="{{item.priceDes}}" class="price-info"></input></input>
+        <a href="/delete/{{item.product_id}}"  class="delete-btn"></a>
+        <input type="hidden" name="id" value="{{item.product_id}}"></input>
+        <input name="name" value="{{item.product_name}}"></input>
+        <input name="text" value="{{item.product_text}}"></input>
+        <input name="price" class="price" value="{{item.product_price}}">,- <input name="priceDes" value="{{item.product_priceDes}}" class="price-info"></input></input>
         <div class="quad-container">
           {% for item in range(0, item.bundleAmount) %}
           <div class="quad"><img src="img/mx/2020-08-09_tensfeld_reduziert/199A0010.jpg" alt=""></div>
           {% endfor %}
         </div>
-        <input name="bundleAmount" value="{{item.bundleAmount}}" class="text-info">Bilder inklusive</input>
+        <input name="bundleAmount" value="{{item.product_bundleAmount}}" class="text-info">Bilder inklusive</input>
         
 
         <button type="submit">Speichern</button>
       </form>
         {% else %}
         
-        <article class="product bundle" id="bundle-{{item.id}}">
+        <article class="product bundle" id="bundle-{{item.product_id}}">
 
-        <h3>{{item.name}}</h3>
-        <p>{{item.text}}</p>
-        <p class="price">{{item.price}},- <span class="price-info">pro Bundle</span></p>
+        <h3>{{item.product_name}}</h3>
+        <p>{{item.product_text}}</p>
+        <p class="price">{{item.product_price}},- <span class="price-info">pro Bundle</span></p>
         <div class="quad-container">
-          {% for item in range(0, item.bundleAmount) %}
+          {% for item in range(0, item.product_bundleAmount) %}
           <div class="quad"><img src="img/mx/2020-08-09_tensfeld_reduziert/199A0010.jpg" alt=""></div>
           {% endfor %}
         </div>
-        <p class="text-info">{{item.bundleAmount}} Bilder inklusive</p>
+        <p class="text-info">{{item.product_bundleAmount}} Bilder inklusive</p>
         {% endif %}
       </article>
       {% endfor %}
