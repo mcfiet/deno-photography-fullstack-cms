@@ -26,20 +26,15 @@ export const handleRequest = async (request) => {
   let ctx = createContext(request, {
     db,
     staticPath: "web",
-    //staticBase: "E:/Git/www-ha-fisc4884-masc3346/public",
-    staticBase:
-      "C:/Users/Fiete-Laptop/Documents/Git/www-ha-fisc4884-masc3346/public",
-    //staticBase: "C:/Users/Mettis/OneDrive - Hochschule Flensburg/WWW-Programmierung/HAUSARBEIT/www-ha-fisc4884-masc3346/public",
+    staticBase: `${Deno.cwd()}/public`,
     nunjucks,
   });
 
-  ctx.cookies = new CookieMap(ctx.request);
-  // { KEY:VALUE, KEY_2, VALUE_2
+  console.log(ctx.staticBase);
 
   let albumId = getId(ctx, "gallerie");
   let albumIdDelete = getId(ctx, "gallerie/delete");
   let imageDelete = getImageDelete(ctx);
-  //console.log(imageDelete);
 
   let id = getId(ctx, "delete");
 
@@ -128,9 +123,6 @@ export const handleRequest = async (request) => {
   if (ctx.response.body == "") {
     ctx = await controller.get(ctx, "error404", 404);
   }
-
-  // Cookies in Header einbinden (app.js)
-  ctx.response.headers = mergeHeaders(ctx.response.headers, ctx.cookies);
 
   return new Response(ctx.response.body, {
     status: ctx.response.status,
