@@ -911,6 +911,16 @@
         transform: translate(50%, -50%);
         background-color: red;
         z-index: 102;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .delete-btn span {
+      color: var(--ff-akzent_pink);
+      font-size: 1rem;
     }
 
     .grid-container {

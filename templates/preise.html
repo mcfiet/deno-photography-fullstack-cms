@@ -13,7 +13,9 @@
       {% for item in products %}
         {% if isLoggedIn %}
         <form action="#" method="POST" class="product" id="product-{{item.id}}">
-          <a href="/delete/{{item.product_id}}"  class="delete-btn"></a>
+          <a href="/delete/{{item.product_id}}"  class="delete-btn">
+            <span class="material-symbols-outlined">close</span>
+          </a>
           <input type="hidden" name="id" value="{{item.product_id}}"></input>
           <input name="name" value="{{item.product_name}}"></input>
           <input name="text" value="{{item.product_text}}"></input>
@@ -31,10 +33,22 @@
             <p class="price">{{item.product_price}},- <span class="price-info">{{item.product_priceDes}}</span></p>
         </article>
         {% endif %}
-
-       
-      
       {% endfor %}
+
+           {% if isLoggedIn %}
+      <form action="/addProduct" method="POST" class="product bundle" >
+
+        <input type="hidden" name="id">
+        <input type="text" placeholder="Name" name="name" >
+        <textarea name="text" placeholder="Produktbeschreibung"></textarea>
+        <input type="number" name="price" class="price" placeholder="Preis">
+        <input name="priceDes" placeholder="Preis Beschreibung">
+      </fieldset>
+        <button type="submit">Hinzufügen</button>
+
+      </form>
+      {% endif %}
+
       {% for item in products %}
 
       {% endfor %}
@@ -53,7 +67,10 @@
       {% if isLoggedIn %}
       <form action="#" method="POST" class="product bundle" id="bundle-{{item.id}}">
         
-        <a href="/delete/{{item.product_id}}"  class="delete-btn"></a>
+        <a href="/delete/{{item.product_id}}"  class="delete-btn">
+                      <span class="material-symbols-outlined">close</span>
+        </a>
+
         <input type="hidden" name="id" value="{{item.product_id}}"></input>
         <input name="name" value="{{item.product_name}}"></input>
         <input name="text" value="{{item.product_text}}"></input>
@@ -86,23 +103,15 @@
       {% endfor %}
       
       {% if isLoggedIn %}
-      <form action="/addProduct" method="POST" class="product bundle add " >
+      <form action="/addProduct" method="POST" class="product bundle " >
 
         <input type="hidden" name="id">
         <input type="text" placeholder="Name" name="name" >
         <textarea name="text" placeholder="Produktbeschreibung"></textarea>
         <input type="number" name="price" class="price" placeholder="Preis">
         <input name="priceDes" placeholder="Preis Beschreibung">
-        
-        
-        <div class="bundle-options-container">
-          <label for="bundles">Bundles</label>
-          <input type="checkbox" name="bundles" id="bundles"></input>
-        
-          <div class="bundle-options">
-            <input type="number" id="bundleAmount" name="bundleAmount"  placeholder="Bundle-Größe (Anzahl der Bilder)" rows="8" cols="20">
-          </div>
-        </div>
+        <input type="number" id="bundleAmount" name="bundleAmount"  placeholder="Bundle-Größe (Anzahl der Bilder)" rows="8" cols="20">
+          
       </fieldset>
         <button type="submit">Hinzufügen</button>
 

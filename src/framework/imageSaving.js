@@ -6,8 +6,7 @@ async function generateFilename(file, albumId) {
   //const files = Deno.readDir(Deno.cwd() + "./public");
   let filenamePath = path.join(
     `upload/${albumId}`,
-    "image-" + (await getHighestNumberFromDir(albumId) + 1) +
-      "." + mediaTypes.extension(file.type),
+    crypto.randomUUID() + "." + mediaTypes.extension(file.type)
   );
 
   return filenamePath;
@@ -38,7 +37,7 @@ export async function checkDir(albumId) {
 
 export async function createDir(albumId) {
   console.log(await checkDir(albumId));
-  if (!await checkDir(albumId)) {
+  if (!(await checkDir(albumId))) {
     await Deno.mkdir(`public/upload/${albumId}`);
   } else {
     console.log("Ordner für Album existiert schon");
@@ -50,14 +49,17 @@ export async function saveImage(db, upload, albumId) {
   //console.log("Filename: ", filename);
 
   console.log(filename);
-  const destFile = await Deno.open(
-    path.join(Deno.cwd(), "public", filename),
-    {
-      create: true,
-      write: true,
-      truncate: true,
-    },
-  );
+  const destFile = await Deno.open(path.join(Deno.cwd(), "public", filename), {
+    create: true,
+    write: true,
+    truncate: true,
+  });
   await upload.stream().pipeTo(destFile.writable);
   model.saveAlbumImageById(db, albumId, filename);
+}
+
+export async function deleteImage(db, image) {
+  console.log(image);
+  await Deno.remove(`public/${image.albums_images_link}`);
+  model.deleteImageById(db, image.image_id);
 }

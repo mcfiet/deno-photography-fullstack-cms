@@ -1,0 +1,12 @@
+ {% extends "layout.html" %}
+
+{% block content %}
+
+        <form class="" action="/delete-img/{{imageId}}" method="post">
+            <img src="/{{imageLink}}" alt="">
+            <fieldset>
+                <button type="submit">Album löschen</button>
+            </fieldset>
+        </form>
+
+{% endblock %}

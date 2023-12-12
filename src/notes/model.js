@@ -12,6 +12,48 @@ export const getAlbumCategories = (db) => {
   `);
 };
 
+export const getImageById = (db, imageId) => {
+  const img = db.queryEntries(
+    `
+  SELECT * FROM albums_images
+  WHERE image_id = $imageId
+  `,
+    {
+      $imageId: imageId,
+    }
+  );
+
+  return img[0];
+};
+
+export const deleteImageById = (db, imageId) => {
+  const img = db.queryEntries(
+    `
+  DELETE FROM albums_images
+  WHERE image_id = $imageId
+  `,
+    {
+      $imageId: imageId,
+    }
+  );
+
+  return img[0];
+};
+
+export const getAlbumIdByImageId = (db, imageId) => {
+  const img = db.queryEntries(
+    `
+  SELECT fk_albums_id FROM albums_images
+  WHERE image_id = $imageId
+  `,
+    {
+      $imageId: imageId,
+    }
+  );
+
+  return img[0].fk_albums_id;
+};
+
 export const getAlbumImagesById = (db, albumId) => {
   return db.queryEntries(
     `
@@ -20,7 +62,7 @@ WHERE fk_albums_id = $albumId
   `,
     {
       $albumId: albumId,
-    },
+    }
   );
 };
 
@@ -32,7 +74,7 @@ WHERE album_id = $albumId
   `,
     {
       $albumId: albumId,
-    },
+    }
   );
   return value[0].album_title;
 };
@@ -46,7 +88,7 @@ VALUES ($albumId, $filename);
     {
       $albumId: albumId,
       $filename: filename,
-    },
+    }
   );
 };
 
@@ -59,7 +101,7 @@ VALUES ($album_title, $albums_category);
     {
       $album_title: formData.title,
       $albums_category: formData.category,
-    },
+    }
   );
 };
 
@@ -71,7 +113,7 @@ WHERE fk_albums_id = $albumId;
   `,
     {
       $albumId: albumId,
-    },
+    }
   );
   db.query(
     `
@@ -80,7 +122,7 @@ WHERE album_id = $albumId;
   `,
     {
       $albumId: albumId,
-    },
+    }
   );
 };
 
@@ -108,7 +150,7 @@ export const addProduct = (db, formData) => {
       $price: formData.price,
       $priceDes: formData.priceDes,
       $bundleAmount: formData.bundleAmount,
-    },
+    }
   );
 };
 export const updateProduct = (db, formData) => {
@@ -129,7 +171,7 @@ export const updateProduct = (db, formData) => {
       $price: formData.price,
       $priceDes: formData.priceDes,
       $bundleAmount: formData.bundleAmount,
-    },
+    }
   );
 };
 export const deleteProduct = (db, id) => {
@@ -140,6 +182,6 @@ export const deleteProduct = (db, id) => {
     `,
     {
       $id: id,
-    },
+    }
   );
 };

@@ -12,7 +12,9 @@
          {% if album.category_name == category.category_name %}
         
          <figure class="album big-link-parent img-container">
-          <a href="/gallerie/delete/{{album.album_id}}"  class="delete-btn"></a>
+          <a href="/gallerie/delete/{{album.album_id}}"  class="delete-btn">
+            <span class="material-symbols-outlined">close</span>
+          </a>
 
           <img class="album-img" src="img/mx/2020-08-09_tensfeld_reduziert/199A8546.jpg" alt="2020-08-09 Tensfeld">
           <figcaption>

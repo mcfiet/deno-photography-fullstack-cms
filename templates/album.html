@@ -6,7 +6,7 @@
         <div class="album-container">
     {% for albumImage in albumImages %}
         <div style="position: relative;">
-                <a href="/{{albumImage.albums_images_link}}/delete"  class="delete-btn"></a>
+                <a href="/delete-img/{{albumImage.image_id}}"  class="delete-btn"></a>
                 <img class="album-img" src="/{{albumImage.albums_images_link}}" alt="">
         </div>
     {% endfor %}

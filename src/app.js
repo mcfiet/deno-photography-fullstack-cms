@@ -30,7 +30,7 @@ export const handleRequest = async (request) => {
     nunjucks,
   });
 
-  console.log(ctx.staticBase);
+  let idImage = getId(ctx, "delete-img");
 
   let albumId = getId(ctx, "gallerie");
   let albumIdDelete = getId(ctx, "gallerie/delete");
@@ -74,8 +74,8 @@ export const handleRequest = async (request) => {
         ctx = await controller.get(ctx, "admin", 200);
         break;
 
-      case `/${imageDelete}/delete`:
-        ctx = await controllerPost.deleteImage(ctx, imageDelete);
+      case `/delete-img/${idImage}`:
+        ctx = await ctrl_Album.getDeleteImage(ctx, idImage);
         break;
 
       case `/gallerie/delete/${albumIdDelete}`:
@@ -99,21 +99,29 @@ export const handleRequest = async (request) => {
       case "/addProduct":
         ctx = await ctrl_Preise.add(ctx);
         break;
+
       case "/preise":
         ctx = await ctrl_Preise.update(ctx);
         break;
+
       case "/login":
         ctx = await ctrl_Login.login(ctx);
         break;
+
       case `/gallerie/${albumId}`:
         ctx = await ctrl_Album.addImage(ctx, albumId);
         break;
+
       case `/gallerie`:
         ctx = await ctrl_Gallerie.add(ctx);
         break;
 
       case "/admin":
         ctx = await controllerPost.admin(ctx);
+        break;
+
+      case `/delete-img/${idImage}`:
+        ctx = await ctrl_Album.deleteImage(ctx, idImage);
         break;
     }
   }
