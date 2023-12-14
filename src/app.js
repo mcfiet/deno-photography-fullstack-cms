@@ -7,7 +7,14 @@ import * as ctrl_Login from "./notes/ctrl_Login.js";
 import * as controller from "./notes/controller.js";
 import * as serveStaticFiles from "./middleware/serveStaticFiles.js";
 import nunjucks from "npm:nunjucks@3.2.4";
+import { createSessionStore, createId } from "./middleware/session.js";
+import * as cookies from "./middleware/cookies.js";
+import { cookieMapHeadersInitSymbol } from "https://deno.land/std@0.208.0/http/unstable_cookie_map.ts";
+import { encode as base64Encode } from "https://deno.land/std/encoding/base64.ts";
 import { CookieMap, mergeHeaders } from "https://deno.land/std/http/mod.ts";
+
+const SESSION_KEY = "my_app.session";
+const MAX_AGE = 60 * 60 * 1000; // one hour
 
 const db = new sqlite.DB("./data/data.db");
 //console.table(db.queryEntries("SELECT * FROM notes;"));
@@ -16,6 +23,8 @@ nunjucks.configure("templates", {
   autoescape: true,
   noCache: true,
 });
+
+const sessionStore = createSessionStore();
 
 /**
  * Handle one HTTP request.
@@ -28,7 +37,19 @@ export const handleRequest = async (request) => {
     staticPath: "web",
     staticBase: `${Deno.cwd()}/public`,
     nunjucks,
+    sessionStore,
   });
+
+  // Get cookie
+  ctx.cookies = new CookieMap(ctx.request);
+
+  // Get Session
+  ctx.sessionId = ctx.cookies.get(SESSION_KEY);
+
+  ctx.session = ctx.sessionStore.get(ctx.sessionId) ?? {
+    user: {},
+    state: { isLoggedIn: null },
+  };
 
   let idImage = getId(ctx, "delete-img");
 
@@ -132,6 +153,22 @@ export const handleRequest = async (request) => {
     ctx = await controller.get(ctx, "error404", 404);
   }
 
+  if (Object.values(ctx.session).some((el) => el !== undefined)) {
+    ctx.sessionId = ctx.sessionId ?? createId();
+    ctx.sessionStore.set(ctx.sessionId, ctx.session, MAX_AGE);
+    const maxAge = new Date(Date.now() + MAX_AGE);
+    ctx.cookies.set(SESSION_KEY, ctx.sessionId, {
+      expires: maxAge,
+      httpOnly: true,
+      overwrite: true,
+    });
+  } else {
+    ctx.sessionStore.destroy(ctx.sessionId);
+    ctx.cookies.delete(SESSION_KEY);
+  }
+
+  // Cookies in Header einbinden (app.js)
+  ctx.response.headers = mergeHeaders(ctx.response.headers, ctx.cookies);
   return new Response(ctx.response.body, {
     status: ctx.response.status,
     headers: ctx.response.headers,

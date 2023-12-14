@@ -1,3 +1,5 @@
+import { CookieMap } from "https://deno.land/std@0.208.0/http/unstable_cookie_map.ts";
+
 export const createContext = (request, options) => ({
   request,
   url: new URL(request.url),
@@ -8,7 +10,7 @@ export const createContext = (request, options) => ({
   },
   db: options.db,
   staticBase: options.staticBase,
+  sessionStore: options.sessionStore,
   nunjucks: options.nunjucks,
-  isLoggedIn: false,
-  cookies: null,
+  cookies: new CookieMap(request),
 });

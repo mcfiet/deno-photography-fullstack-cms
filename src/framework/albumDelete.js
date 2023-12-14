@@ -1,4 +1,4 @@
-import * as imageSaving from "./imageSaving.js";
+import * as imageSaving from "./imageHandler.js";
 
 export async function deleteAlbum(albumId) {
   if (await imageSaving.checkDir(albumId)) {

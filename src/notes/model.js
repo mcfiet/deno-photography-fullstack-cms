@@ -185,3 +185,20 @@ export const deleteProduct = (db, id) => {
     }
   );
 };
+
+export const getUserById = (db, id) => {
+  const user = db.queryEntries(
+    `
+  SELECT * FROM users
+  WHERE user_id = $id
+    `,
+    {
+      $id: id,
+    }
+  );
+  return user[0];
+};
+
+export const getUsers = (db) => {
+  return db.queryEntries(`SELECT * FROM users`);
+};

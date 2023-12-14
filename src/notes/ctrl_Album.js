@@ -2,13 +2,11 @@ import * as model from "./model.js";
 import * as formDataController from "../framework/formData.js";
 import * as albumDelete from "../framework/albumDelete.js";
 import * as imageValidation from "../framework/imageValidation.js";
-import * as imageSaving from "../framework/imageSaving.js";
-
-let isLoggedIn = true;
+import * as imageHandler from "../framework/imageHandler.js";
 
 export const get = async (ctx, albumId) => {
   ctx.response.body = await ctx.nunjucks.render("album.html", {
-    isLoggedIn: isLoggedIn,
+    isLoggedIn: ctx.session.state.isLoggedIn,
     albumImages: model.getAlbumImagesById(ctx.db, albumId),
     albumName: model.getAlbumNameById(ctx.db, albumId),
     albumId: albumId,
@@ -23,8 +21,8 @@ export const addImage = async (ctx, albumId) => {
   const upload = formData.get("upload");
 
   if (imageValidation.validateImage(upload) == "Validiert") {
-    await imageSaving.createDir(albumId);
-    await imageSaving.saveImage(ctx.db, upload, albumId);
+    await imageHandler.createDir(albumId);
+    await imageHandler.saveImage(ctx.db, upload, albumId);
   } else {
     console.log(imageValidation.validateImage(upload));
   }
@@ -48,7 +46,7 @@ export const getDeleteImage = async (ctx, imageId) => {
 export const deleteImage = async (ctx, imageId) => {
   const albumId = model.getAlbumIdByImageId(ctx.db, imageId);
 
-  imageSaving.deleteImage(ctx.db, model.getImageById(ctx.db, imageId));
+  imageHandler.deleteImage(ctx.db, model.getImageById(ctx.db, imageId));
 
   ctx.response.body = null;
   ctx.response.status = 303;

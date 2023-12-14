@@ -1,16 +1,29 @@
 import * as formDataController from "../framework/formData.js";
 import * as model from "../notes/model.js";
-// { KEY:VALUE, KEY_2, VALUE_2 }
+import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 
-let isLoggedIn = true;
+// { KEY:VALUE, KEY_2, VALUE_2 }
 
 export const login = async (ctx) => {
   const formData = await formDataController.getEntries(ctx);
-  if (formData.username == "test" && formData.password == "test") {
-    isLoggedIn = true;
+  //const pwHash = "$2a$10$i7.fFIzrTlyGtsaTI1WLEeU9vG8UHnqAWjiW.htmPeMoKnYQVvYgG";
+  //await bcrypt.compare("test", pwHash);
+  //const user = model.getUserById(ctx.db, 1);
+  const users = model.getUsers(ctx.db);
+  console.log(users);
+
+  for (const user of users) {
+    if (
+      formData.username == user.username &&
+      (await bcrypt.compare(formData.password, user.password))
+    ) {
+      ctx.session.user = user;
+      ctx.session.state.isLoggedIn = true;
+    }
   }
 
-  if (isLoggedIn) {
+  console.log("Session User: ", ctx.session.user);
+  if (ctx.session.state.isLoggedIn) {
     ctx.response.body = null;
     ctx.response.status = 303;
     ctx.response.headers.set("location", "/");
@@ -31,7 +44,7 @@ export const get = async (ctx) => {
 };
 
 export const logout = async (ctx) => {
-  isLoggedIn = false;
+  ctx.session = {};
   ctx.response.body = null;
   ctx.response.status = 303;
   ctx.response.headers.set("location", "/");

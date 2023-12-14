@@ -2,11 +2,9 @@ import * as model from "./model.js";
 import * as formDataController from "../framework/formData.js";
 import * as albumDelete from "../framework/albumDelete.js";
 
-let isLoggedIn = true;
-
 export const get = async (ctx) => {
   ctx.response.body = await ctx.nunjucks.render("gallerie.html", {
-    isLoggedIn: isLoggedIn,
+    isLoggedIn: ctx.session.state.isLoggedIn,
     albums: model.getAlbums(ctx.db),
     album_categories: model.getAlbumCategories(ctx.db),
   });

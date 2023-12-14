@@ -1,13 +1,11 @@
 import * as model from "./model.js";
 import * as formDataController from "../framework/formData.js";
 
-let isLoggedIn = true;
-
 export const get = async (ctx) => {
   ctx.response.body = await ctx.nunjucks.render("preise.html", {
     products: model.getProducts(ctx.db),
     bundles: model.getBundles(ctx.db),
-    isLoggedIn: isLoggedIn,
+    isLoggedIn: ctx.session.state.isLoggedIn,
   });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
@@ -21,7 +19,7 @@ export const update = async (ctx) => {
   ctx.response.body = await ctx.nunjucks.render("preise.html", {
     products: model.getProducts(ctx.db),
     bundles: model.getBundles(ctx.db),
-    isLoggedIn: isLoggedIn,
+    isLoggedIn: ctx.session.state.isLoggedIn,
   });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
