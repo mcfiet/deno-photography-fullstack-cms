@@ -1,24 +1,50 @@
- {% extends "layout.html" %}
-
-{% block content %}
-
-<h2>{{albumName}}</h2>
-        <div class="album-container">
-    {% for albumImage in albumImages %}
-        <div style="position: relative;">
-                <a href="/delete-img/{{albumImage.image_id}}"  class="delete-btn"></a>
-                <img class="album-img" src="/{{albumImage.albums_images_link}}" alt="">
-        </div>
-    {% endfor %}
-    <form class="album-img" action="/gallerie/{{albumId}}" method="post" enctype="multipart/form-data">
-    <fieldset>
-<label for="form_file" class=""> Bild hinzufügen </label>
-<input type="file" id="form_file" name="upload">
-<button type="submit">Bild hochladen</button>
-</fieldset>
-<!-- ... -->
+{% extends "layout.html" %} {% block content %} {% if isLoggedIn %}
+<form
+  class=""
+  action="/album/update/{{album.album_id}}"
+  method="post"
+  style="margin-bottom: 2rem"
+>
+  <label for="albumName" class="">Album Name</label>
+  <input
+    type="text"
+    id="albumName"
+    name="albumName"
+    value="{{album.album_title}}"
+  />
+  <button type="submit">Titel ändern</button>
 </form>
-            </div>
-            
+
+{% else %}
+<h2>{{album.album_title}}</h2>
+{% endif %}
+
+<div class="album-container">
+  {% for albumImage in albumImages %}
+  <div style="position: relative">
+    <a href="/image/delete/{{albumImage.image_id}}" class="delete-btn"></a>
+    <img class="album-img" src="/{{albumImage.albums_images_link}}" alt="" />
+  </div>
+  {% endfor %}
+  <form
+    class="album-img"
+    action="/image/add"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <fieldset>
+      <input
+        type="hidden"
+        name="album_id"
+        id="album_id"
+        value="{{album.album_id}}"
+      />
+      <label for="form_file" class=""> Bild hinzufügen </label>
+      <input type="file" id="form_file" name="upload" />
+      <button type="submit">Bild hochladen</button>
+    </fieldset>
+    <!-- ... -->
+  </form>
+</div>
+
 {% endblock %}
-      

@@ -1,48 +1,50 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block content %}
+<h1 class="visually-hidden">Detailseite Fotos</h1>
+{% for category in album_categories %}
+<section id="{{category.category_name}}">
+  <h2>{{category.category_name}}</h2>
+  <div class="album-container">
+    {% for album in albums %} {% if album.category_name ==
+    category.category_name %}
 
-{% block content %}
-    <h1 class="visually-hidden">Detailseite Fotos</h1>
-    {% for category in album_categories %}
-    <section id="{{category.category_name}}">
-      <h2>{{category.category_name}}</h2>
-      <div class="album-container">
+    <figure class="album big-link-parent img-container">
+      {% if isLoggedIn %}
 
-         {% for album in albums %}
+      <a href="/album/delete/{{album.album_id}}" class="delete-btn">
+        <span class="material-symbols-outlined">close</span>
+      </a>
 
-         {% if album.category_name == category.category_name %}
-        
-         <figure class="album big-link-parent img-container">
-          <a href="/gallerie/delete/{{album.album_id}}"  class="delete-btn">
-            <span class="material-symbols-outlined">close</span>
-          </a>
+      {% endif %}
 
-          <img class="album-img" src="img/mx/2020-08-09_tensfeld_reduziert/199A8546.jpg" alt="2020-08-09 Tensfeld">
-          <figcaption>
-            <a href="/gallerie/{{album.album_id}}" class="album-text big-link">
-              {{album.album_title}}
-            </a>
-          </figcaption>
-        </figure>
-        {% endif %}
+      <img
+        class="album-img"
+        src="img/mx/2020-08-09_tensfeld_reduziert/199A8546.jpg"
+        alt="2020-08-09 Tensfeld"
+      />
+      <figcaption>
+        <a href="/fotos/{{album.album_id}}" class="album-text big-link">
+          {{album.album_title}}
+        </a>
+      </figcaption>
+    </figure>
+    {% endif %} {% endfor %} {% if isLoggedIn %}
 
-          {% endfor %}
-        <form class="" action="/gallerie" method="post">
-          <fieldset>
-            <!-- <label for="form_file" class=""> Bild hinzufügen </label> -->
-            <!-- <input type="file" id="form_file" name="upload" value=""> -->
-            <label for="title" class=""> Titel </label>
-            <input type="text" id="title" name="title" value="">
-            <label for="category" class=""> Kategorie </label>
-            <select id="category" name="category" size="1">
-              <option value="{{category.category_name}}">{{category.category_name}}</option>
-            </select>
-            <button type="submit">Album anlegen</button>
-          </fieldset>
-        </form>
-      </div>
-
-
-    </section>
-{% endfor %}
-
-    {% endblock %}
+    <form class="" action="/album/add" method="post">
+      <fieldset>
+        <!-- <label for="form_file" class=""> Bild hinzufügen </label> -->
+        <!-- <input type="file" id="form_file" name="upload" value=""> -->
+        <label for="title" class=""> Titel </label>
+        <input type="text" id="title" name="title" value="" />
+        <label for="category" class=""> Kategorie </label>
+        <select id="category" name="category" size="1">
+          <option value="{{category.category_name}}">
+            {{category.category_name}}
+          </option>
+        </select>
+        <button type="submit">Album anlegen</button>
+      </fieldset>
+    </form>
+  </div>
+  {% endif %}
+</section>
+{% endfor %} {% endblock %}

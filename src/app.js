@@ -53,8 +53,8 @@ export const handleRequest = async (request) => {
 
   let idImage = getId(ctx, "delete-img");
 
-  let albumId = getId(ctx, "gallerie");
-  let albumIdDelete = getId(ctx, "gallerie/delete");
+  let albumId = getId(ctx, "fotos");
+  let albumIdDelete = getId(ctx, "fotos/delete");
   let imageDelete = getImageDelete(ctx);
 
   let id = getId(ctx, "delete");
@@ -66,16 +66,16 @@ export const handleRequest = async (request) => {
         ctx = await controller.get(ctx, "index", 200);
         break;
 
-      case "/gallerie":
-        //console.log("gallerie");
+      case "/fotos":
+        //console.log("fotos");
         ctx = await ctrl_Gallerie.get(ctx);
         break;
 
-      case `/gallerie/${albumId}`:
+      case `/fotos/${getId(ctx, "fotos")}`:
         ctx = await ctrl_Album.get(ctx, albumId);
         break;
 
-      case "/preise":
+      case "/products":
         //console.log("preise");
         ctx = await ctrl_Preise.get(ctx);
         break;
@@ -95,16 +95,16 @@ export const handleRequest = async (request) => {
         ctx = await controller.get(ctx, "admin", 200);
         break;
 
-      case `/delete-img/${idImage}`:
-        ctx = await ctrl_Album.getDeleteImage(ctx, idImage);
+      case `/image/delete/${getId(ctx, "image/delete")}`:
+        ctx = await ctrl_Album.getDeleteImage(ctx, getId(ctx, "image/delete"));
         break;
 
-      case `/gallerie/delete/${albumIdDelete}`:
-        ctx = await ctrl_Gallerie.remove(ctx, albumIdDelete);
+      case `/album/delete/${getId(ctx, "album/delete")}`:
+        ctx = await ctrl_Gallerie.getDelete(ctx, getId(ctx, "album/delete"));
         break;
 
-      case `/delete/${id}`:
-        ctx = await ctrl_Preise.remove(ctx, id);
+      case `/product/delete/${getId(ctx, "product/delete")}`:
+        ctx = await ctrl_Preise.getDelete(ctx, getId(ctx, "product/delete"));
         break;
 
       case "/login":
@@ -117,32 +117,52 @@ export const handleRequest = async (request) => {
     }
   } else if (ctx.request.method == "POST") {
     switch (ctx.url.pathname) {
-      case "/addProduct":
+      case "/product/add":
         ctx = await ctrl_Preise.add(ctx);
         break;
 
-      case "/preise":
-        ctx = await ctrl_Preise.update(ctx);
+      case `/product/delete/${getId(ctx, "product/delete")}`:
+        ctx = await ctrl_Preise.remove(ctx, getId(ctx, "product/delete"));
+        break;
+
+      case `/product/update/${getId(ctx, "product/update")}`:
+        ctx = await ctrl_Preise.update(ctx, getId(ctx, "product/update"));
         break;
 
       case "/login":
         ctx = await ctrl_Login.login(ctx);
         break;
 
-      case `/gallerie/${albumId}`:
+      case `/image/add`:
         ctx = await ctrl_Album.addImage(ctx, albumId);
         break;
 
-      case `/gallerie`:
+      case `/image/delete/${getId(ctx, "image/delete")}`:
+        ctx = await ctrl_Album.deleteImage(ctx, getId(ctx, "image/delete"));
+        break;
+
+      case `/image/addToCart/${getId(ctx, "image/addToCart")}`:
+        ctx = await ctrl_Album.addImage(ctx, albumId);
+        break;
+
+      case `/image/removeFromCart/${getId(ctx, "image/removeFromCart")}`:
+        ctx = await ctrl_Album.addImage(ctx, albumId);
+        break;
+
+      case `/album/add`:
         ctx = await ctrl_Gallerie.add(ctx);
+        break;
+
+      case `/album/delete/${getId(ctx, "album/delete")}`:
+        ctx = await ctrl_Gallerie.remove(ctx, getId(ctx, "album/delete"));
+        break;
+
+      case `/album/update/${getId(ctx, "album/update")}`:
+        ctx = await ctrl_Album.update(ctx, getId(ctx, "album/update"));
         break;
 
       case "/admin":
         ctx = await controllerPost.admin(ctx);
-        break;
-
-      case `/delete-img/${idImage}`:
-        ctx = await ctrl_Album.deleteImage(ctx, idImage);
         break;
     }
   }

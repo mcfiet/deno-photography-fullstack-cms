@@ -45,6 +45,7 @@ export const get = async (ctx) => {
 
 export const logout = async (ctx) => {
   ctx.session = {};
+  console.log("SessionXXX", ctx.session);
   ctx.response.body = null;
   ctx.response.status = 303;
   ctx.response.headers.set("location", "/");

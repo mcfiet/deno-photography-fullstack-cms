@@ -22,3 +22,5 @@ user1 = {
   addProduct: true,
 };
 ```
+
+start.sh

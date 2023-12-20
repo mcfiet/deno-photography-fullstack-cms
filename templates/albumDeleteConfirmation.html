@@ -1,0 +1,25 @@
+{% extends "layout.html" %} {% block content %} {% if isLoggedIn %}
+<h2>Wirklich löschen?</h2>
+<section class="grid-container products two">
+  <div class="">
+    <figure class="album big-link-parent img-container">
+      <img
+        class="album-img"
+        src="/img/mx/2020-08-09_tensfeld_reduziert/199A8546.jpg"
+        alt="2020-08-09 Tensfeld"
+      />
+      <figcaption>{{item.album_title}}</figcaption>
+    </figure>
+
+    <form
+      class=""
+      action="/album/delete/{{id}}"
+      method="post"
+      style="margin-bottom: 2rem"
+    >
+      <button type="submit">Löschen</button>
+      <a class="button" href="/fotos">Zurück</a>
+    </form>
+  </div>
+</section>
+{% endif %} {% endblock %}

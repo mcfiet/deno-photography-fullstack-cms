@@ -28,7 +28,23 @@ export const add = async (ctx) => {
 
   ctx.response.body = null;
   ctx.response.status = 303;
-  ctx.response.headers.set("location", `/gallerie`);
+  ctx.response.headers.set("location", `/fotos`);
+  return ctx;
+};
+
+export const getDelete = async (ctx, id) => {
+  const album = model.getAlbumById(ctx.db, id);
+
+  ctx.response.body = await ctx.nunjucks.render(
+    `albumDeleteConfirmation.html`,
+    {
+      isLoggedIn: ctx.session.state.isLoggedIn,
+      item: album,
+      id: id,
+    }
+  );
+  ctx.response.status = 200;
+  ctx.response.headers.set("content-type", "text/html");
   return ctx;
 };
 
@@ -38,6 +54,6 @@ export const remove = (ctx, albumId) => {
 
   ctx.response.body = null;
   ctx.response.status = 303;
-  ctx.response.headers.set("location", `/gallerie`);
+  ctx.response.headers.set("location", `/fotos`);
   return ctx;
 };

@@ -293,6 +293,7 @@
     display: block;
   }
   
+  a.button,
   button,
   input[type="submit"],
   input[type="reset"],
@@ -307,8 +308,11 @@
     font-weight: 900;
     color: var(--ff-blue);
     transition: var(--transition-duration) all ease-in-out;
+    text-decoration: none;
+    font-size: 0.9rem;
   }
   
+  a.button:hover,
   button:hover,
   input[type="submit"]:hover,
   input[type="reset"]:hover,
@@ -675,6 +679,10 @@
   .teaser-text h2 {
     margin-top: 0;
   }
+  .product-teaser-text  {
+    margin-top: 7rem;
+    margin-bottom: 0rem;
+  }
   
   .product-text {
     flex-grow: 1;
@@ -990,6 +998,11 @@
     /*---          ---*/
     .grid-container {
       grid-template-columns: 1fr 1fr 1fr 1fr;
+      align-items: center;
+      justify-content: center;
+    }
+    .grid-container.products {
+      grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
       justify-content: center;
     }
