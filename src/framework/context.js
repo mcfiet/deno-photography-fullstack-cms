@@ -5,7 +5,7 @@ export const createContext = (request, options) => ({
   url: new URL(request.url),
   response: {
     body: "",
-    status: undefined,
+    status: null,
     headers: new Headers(),
   },
   db: options.db,

@@ -3,10 +3,7 @@
 
 <div class="product-teaser-text teaser-text">
   <h2>Einzelpreise</h2>
-  <p>
-    Du weißt genau, welches Bild du haben möchtest? Dann nutze doch einfach die
-    Einzelbild-Option.
-  </p>
+  <p>Du weißt genau, welches Bild du haben möchtest? Dann nutze doch einfach die Einzelbild-Option.</p>
 </div>
 <section class="grid-container products two">
   {% for item in products %} {% if isLoggedIn %}
@@ -16,18 +13,14 @@
     class="product"
     id="product-{{item.product_id}}"
   >
-    <a href="/product/delete/{{item.product_id}}" class="delete-btn">
+    <a href="/product/remove/{{item.product_id}}" class="delete-btn">
       <span class="material-symbols-outlined">close</span>
     </a>
     <!--<input type="hidden" name="id" value="{{item.product_id}}">-->
     <input name="name" value="{{item.product_name}}" />
     <textarea name="text">{{item.product_text}}</textarea>
     <input name="price" class="price" value="{{item.product_price}}" />,-
-    <input
-      name="priceDes"
-      value="{{item.product_priceDes}}"
-      class="price-info"
-    />
+    <input name="priceDes" value="{{item.product_priceDes}}" class="price-info" />
     <button type="submit">Speichern</button>
   </form>
   {% else %}
@@ -57,10 +50,7 @@
 
 <div class="product-teaser-text teaser-text">
   <h2>Bundles</h2>
-  <p>
-    Du möchtest mehrere Fotos und dabei noch sparen? Dann sind die Bundles genau
-    das Richtige für dich.
-  </p>
+  <p>Du möchtest mehrere Fotos und dabei noch sparen? Dann sind die Bundles genau das Richtige für dich.</p>
 </div>
 <section class="grid-container products">
   {% for item in bundles %} {% if isLoggedIn %}
@@ -70,7 +60,7 @@
     class="product bundle"
     id="bundle-{{item.id}}"
   >
-    <a href="/product/delete/{{item.product_id}}" class="delete-btn">
+    <a href="/product/remove/{{item.product_id}}" class="delete-btn">
       <span class="material-symbols-outlined">close</span>
     </a>
 
@@ -78,11 +68,7 @@
     <input name="name" value="{{item.product_name}}" />
     <textarea name="text">{{item.product_text}}</textarea>
     <input name="price" class="price" value="{{item.product_price}}" />,-
-    <input
-      name="priceDes"
-      value="{{item.product_priceDes}}"
-      class="price-info"
-    />
+    <input name="priceDes" value="{{item.product_priceDes}}" class="price-info" />
     <div class="quad-container">
       {% for item in range(0, item.bundleAmount) %}
       <div class="quad">
@@ -90,11 +76,7 @@
       </div>
       {% endfor %}
     </div>
-    <input
-      name="bundleAmount"
-      value="{{item.product_bundleAmount}}"
-      class="text-info"
-    />Bilder inklusive
+    <input name="bundleAmount" value="{{item.product_bundleAmount}}" class="text-info" />Bilder inklusive
 
     <button type="submit">Speichern</button>
   </form>
@@ -103,9 +85,7 @@
   <article class="product bundle" id="bundle-{{item.product_id}}">
     <h3>{{item.product_name}}</h3>
     <p>{{item.product_text}}</p>
-    <p class="price">
-      {{item.product_price}},- <span class="price-info">pro Bundle</span>
-    </p>
+    <p class="price">{{item.product_price}},- <span class="price-info">pro Bundle</span></p>
     <div class="quad-container">
       {% for item in range(0, item.product_bundleAmount) %}
       <div class="quad">

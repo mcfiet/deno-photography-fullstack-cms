@@ -1,6 +1,6 @@
 import { createContext } from "./framework/context.js";
-import * as ctrl_Preise from "./notes/ctrl_Preise.js";
-import * as ctrl_Gallerie from "./notes/ctrl_Gallerie.js";
+import * as ctrl_Preise from "./notes/ctrl_Products.js";
+import * as ctrl_Gallerie from "./notes/ctrl_Fotos.js";
 import * as ctrl_Album from "./notes/ctrl_Album.js";
 import * as ctrl_Login from "./notes/ctrl_Login.js";
 import * as controller from "./notes/controller.js";

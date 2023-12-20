@@ -12,37 +12,38 @@ export const get = async (ctx) => {
   return ctx;
 };
 
-export const getDelete = async (ctx, id) => {
-  const product = model.getProductById(ctx.db, id);
+export const removeConfirmation = async (ctx) => {
+  const product = model.getProductById(ctx.db, ctx.params);
 
-  ctx.response.body = await ctx.nunjucks.render(
-    `productDeleteConfirmation.html`,
-    {
-      isLoggedIn: ctx.session.state.isLoggedIn,
-      item: product,
-      id: id,
-    }
-  );
+  ctx.response.body = await ctx.nunjucks.render(`productDeleteConfirmation.html`, {
+    isLoggedIn: ctx.session.state.isLoggedIn,
+    item: product,
+    id: ctx.params,
+  });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
 };
 
-export const update = async (ctx, id) => {
+export const update = async (ctx) => {
   const formData = await formDataController.getEntries(ctx);
-  console.log(formData);
-  model.updateProduct(ctx.db, formData, id);
-  ctx.response.body = null;
-  ctx.response.status = 303;
-  ctx.response.headers.set("location", "/products");
+
+  model.updateProduct(ctx.db, formData, ctx.params);
+
+  ctx.redirect = new Response("", {
+    status: 303,
+    headers: { Location: `/products` },
+  });
   return ctx;
 };
 
-export const remove = async (ctx, id) => {
-  model.deleteProduct(ctx.db, id);
-  ctx.response.body = null;
-  ctx.response.status = 303;
-  ctx.response.headers.set("location", "/products");
+export const remove = async (ctx) => {
+  model.deleteProduct(ctx.db, ctx.params);
+
+  ctx.redirect = new Response("", {
+    status: 303,
+    headers: { Location: `/products` },
+  });
   return ctx;
 };
 
@@ -53,8 +54,10 @@ export const add = async (ctx) => {
     formData.bundleAmount = null;
   }
   model.addProduct(ctx.db, formData);
-  ctx.response.body = null;
-  ctx.response.status = 303;
-  ctx.response.headers.set("location", "/products");
+
+  ctx.redirect = new Response("", {
+    status: 303,
+    headers: { Location: `/products` },
+  });
   return ctx;
 };

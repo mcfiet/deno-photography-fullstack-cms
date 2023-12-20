@@ -11,12 +11,7 @@
       <figcaption>{{item.album_title}}</figcaption>
     </figure>
 
-    <form
-      class=""
-      action="/album/delete/{{id}}"
-      method="post"
-      style="margin-bottom: 2rem"
-    >
+    <form class="" action="/album/remove/{{id}}" method="post" style="margin-bottom: 2rem">
       <button type="submit">Löschen</button>
       <a class="button" href="/fotos">Zurück</a>
     </form>

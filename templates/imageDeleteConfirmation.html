@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block content %}
 <h2>Wirklich löschen?</h2>
 <div class="album-container">
-  <form class="" action="/image/delete/{{imageId}}" method="post">
+  <form class="" action="/image/remove/{{imageId}}" method="post">
     <img src="/{{imageLink}}" alt="" />
     <fieldset>
       <button type="submit">Bild löschen</button>

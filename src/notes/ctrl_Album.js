@@ -1,69 +1,70 @@
 import * as model from "./model.js";
 import * as formDataController from "../framework/formData.js";
 import * as albumDelete from "../framework/albumDelete.js";
-import * as imageValidation from "../framework/imageValidation.js";
-import * as imageHandler from "../framework/imageHandler.js";
 
-export const get = async (ctx, albumId) => {
-  console.log(model.getAlbumById(ctx.db, albumId));
+export const get = async (ctx) => {
+  console.log(model.getAlbumById(ctx.db, ctx.params));
   ctx.response.body = await ctx.nunjucks.render("album.html", {
     isLoggedIn: ctx.session.state.isLoggedIn,
-    albumImages: model.getAlbumImagesById(ctx.db, albumId),
-    album: model.getAlbumById(ctx.db, albumId),
-    albumId: albumId,
+    albumImages: model.getAlbumImagesById(ctx.db, ctx.params),
+    album: model.getAlbumById(ctx.db, ctx.params),
   });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
 };
 
-export const update = async (ctx, id) => {
+export const update = async (ctx) => {
   const formData = await formDataController.getEntries(ctx);
   console.log(formData);
-  model.updateAlbum(ctx.db, formData, id);
-  ctx.response.body = null;
-  ctx.response.status = 303;
-  ctx.response.headers.set("location", `/fotos/${id}`);
+  model.updateAlbum(ctx.db, formData, ctx.params);
+  ctx.redirect = new Response("", {
+    status: 303,
+    headers: { Location: `/fotos/${ctx.params}` },
+  });
   return ctx;
 };
 
-export const addImage = async (ctx) => {
-  const formData = await ctx.request.formData();
-  const upload = formData.get("upload");
-  const albumId = formData.get("album_id");
-  if (imageValidation.validateImage(upload) == "Validiert") {
-    await imageHandler.createDir(albumId);
-    await imageHandler.saveImage(ctx.db, upload, albumId);
-  } else {
-    console.log(imageValidation.validateImage(upload));
+export const add = async (ctx) => {
+  const formData = await formDataController.getEntries(ctx);
+
+  if (formData.category == "Motocross") {
+    formData.category = 2;
+  } else if (formData.category == "Pferde") {
+    formData.category = 1;
   }
 
-  ctx.response.body = null;
-  ctx.response.status = 303;
-  ctx.response.headers.set("location", `/fotos/${albumId}`);
+  console.log(formData);
+
+  model.addAlbum(ctx.db, formData);
+
+  ctx.redirect = new Response("", {
+    status: 303,
+    headers: { Location: "/fotos" },
+  });
   return ctx;
 };
 
-export const getDeleteImage = async (ctx, imageId) => {
-  ctx.response.body = await ctx.nunjucks.render(
-    "imageDeleteConfirmation.html",
-    {
-      imageId,
-      imageLink: model.getImageById(ctx.db, imageId).albums_images_link,
-    }
-  );
+export const removeConfirmation = async (ctx) => {
+  const album = model.getAlbumById(ctx.db, ctx.params);
+
+  ctx.response.body = await ctx.nunjucks.render(`albumDeleteConfirmation.html`, {
+    isLoggedIn: ctx.session.state.isLoggedIn,
+    item: album,
+    id: ctx.params,
+  });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
 };
 
-export const deleteImage = async (ctx, imageId) => {
-  const albumId = model.getAlbumIdByImageId(ctx.db, imageId);
+export const remove = (ctx) => {
+  model.deleteAlbum(ctx.db, ctx.params);
+  albumDelete.deleteAlbum(ctx.params);
 
-  imageHandler.deleteImage(ctx.db, model.getImageById(ctx.db, imageId));
-
-  ctx.response.body = null;
-  ctx.response.status = 303;
-  ctx.response.headers.set("location", `/fotos/${albumId}`);
+  ctx.redirect = new Response("", {
+    status: 303,
+    headers: { Location: "/fotos" },
+  });
   return ctx;
 };
