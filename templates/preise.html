@@ -1,123 +1,141 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block content %}
+<h1 class="visually-hidden">Detailseite Produkte</h1>
 
-{% block content %}
-    <h1 class="visually-hidden">Detailseite Produkte</h1>
+<div class="product-teaser-text teaser-text">
+  <h2>Einzelpreise</h2>
+  <p>
+    Du weißt genau, welches Bild du haben möchtest? Dann nutze doch einfach die
+    Einzelbild-Option.
+  </p>
+</div>
+<section class="grid-container products two">
+  {% for item in products %} {% if isLoggedIn %}
+  <form
+    action="/product/update/{{item.product_id}}"
+    method="POST"
+    class="product"
+    id="product-{{item.product_id}}"
+  >
+    <a href="/product/delete/{{item.product_id}}" class="delete-btn">
+      <span class="material-symbols-outlined">close</span>
+    </a>
+    <!--<input type="hidden" name="id" value="{{item.product_id}}">-->
+    <input name="name" value="{{item.product_name}}" />
+    <textarea name="text">{{item.product_text}}</textarea>
+    <input name="price" class="price" value="{{item.product_price}}" />,-
+    <input
+      name="priceDes"
+      value="{{item.product_priceDes}}"
+      class="price-info"
+    />
+    <button type="submit">Speichern</button>
+  </form>
+  {% else %}
+  <article class="product" id="einzelpreis">
+    <div class="product-text">
+      <h3>{{item.product_name}}</h3>
+      <p>{{item.product_text}}</p>
+    </div>
+    <p class="price">
+      {{item.product_price}},-
+      <span class="price-info">{{item.product_priceDes}}</span>
+    </p>
+  </article>
+  {% endif %} {% endfor %} {% if isLoggedIn %}
+  <form action="/product/add" method="POST" class="product bundle">
+    <fieldset>
+      <input type="hidden" name="id" />
+      <input type="text" placeholder="Name" name="name" />
+      <textarea name="text" placeholder="Produktbeschreibung"></textarea>
+      <input type="number" name="price" class="price" placeholder="Preis" />
+      <input name="priceDes" placeholder="Preis Beschreibung" />
+    </fieldset>
+    <button type="submit">Hinzufügen</button>
+  </form>
+  {% endif %} {% for item in products %} {% endfor %}
+</section>
 
-    <section class="grid-container products two">
-      <div class="teaser-text">
-        <h2>Einzelpreise</h2>
-        <p>
-          Du weißt genau, welches Bild du haben möchtest? Dann nutze doch einfach die Einzelbild-Option.
-        </p>
+<div class="product-teaser-text teaser-text">
+  <h2>Bundles</h2>
+  <p>
+    Du möchtest mehrere Fotos und dabei noch sparen? Dann sind die Bundles genau
+    das Richtige für dich.
+  </p>
+</div>
+<section class="grid-container products">
+  {% for item in bundles %} {% if isLoggedIn %}
+  <form
+    action="/product/update/{{item.product_id}}"
+    method="POST"
+    class="product bundle"
+    id="bundle-{{item.id}}"
+  >
+    <a href="/product/delete/{{item.product_id}}" class="delete-btn">
+      <span class="material-symbols-outlined">close</span>
+    </a>
+
+    <input type="hidden" name="id" value="{{item.product_id}}" />
+    <input name="name" value="{{item.product_name}}" />
+    <textarea name="text">{{item.product_text}}</textarea>
+    <input name="price" class="price" value="{{item.product_price}}" />,-
+    <input
+      name="priceDes"
+      value="{{item.product_priceDes}}"
+      class="price-info"
+    />
+    <div class="quad-container">
+      {% for item in range(0, item.bundleAmount) %}
+      <div class="quad">
+        <img src="img/mx/2020-08-09_tensfeld_reduziert/199A0010.jpg" alt="" />
       </div>
-      {% for item in products %}
-        {% if isLoggedIn %}
-        <form action="#" method="POST" class="product" id="product-{{item.id}}">
-          <a href="/delete/{{item.product_id}}"  class="delete-btn">
-            <span class="material-symbols-outlined">close</span>
-          </a>
-          <input type="hidden" name="id" value="{{item.product_id}}"></input>
-          <input name="name" value="{{item.product_name}}"></input>
-          <input name="text" value="{{item.product_text}}"></input>
-          <input name="price" class="price" value="{{item.product_price}}">,- <input name="priceDes" value="{{item.product_priceDes}}" class="price-info"></input></input>
-          <button type="submit">Speichern</button>
-        </form>
-        {% else %}
-        <article class="product" id="einzelpreis">
-          <div class="product-text">
-            <h3>{{item.product_name}}</h3>
-            <p>
-              {{item.product_text}}
-            </p>
-          </div>
-            <p class="price">{{item.product_price}},- <span class="price-info">{{item.product_priceDes}}</span></p>
-        </article>
-        {% endif %}
       {% endfor %}
+    </div>
+    <input
+      name="bundleAmount"
+      value="{{item.product_bundleAmount}}"
+      class="text-info"
+    />Bilder inklusive
 
-           {% if isLoggedIn %}
-      <form action="/addProduct" method="POST" class="product bundle" >
+    <button type="submit">Speichern</button>
+  </form>
+  {% else %}
 
-        <input type="hidden" name="id">
-        <input type="text" placeholder="Name" name="name" >
-        <textarea name="text" placeholder="Produktbeschreibung"></textarea>
-        <input type="number" name="price" class="price" placeholder="Preis">
-        <input name="priceDes" placeholder="Preis Beschreibung">
-      </fieldset>
-        <button type="submit">Hinzufügen</button>
-
-      </form>
-      {% endif %}
-
-      {% for item in products %}
-
-      {% endfor %}
-      
-
-    </section>
-
-    <section class="grid-container products">
-      <div class="teaser-text">
-        <h2>Bundles</h2>
-        <p>
-          Du möchtest mehrere Fotos und dabei noch sparen? Dann sind die Bundles genau das Richtige für dich.
-        </p>
+  <article class="product bundle" id="bundle-{{item.product_id}}">
+    <h3>{{item.product_name}}</h3>
+    <p>{{item.product_text}}</p>
+    <p class="price">
+      {{item.product_price}},- <span class="price-info">pro Bundle</span>
+    </p>
+    <div class="quad-container">
+      {% for item in range(0, item.product_bundleAmount) %}
+      <div class="quad">
+        <img src="img/mx/2020-08-09_tensfeld_reduziert/199A0010.jpg" alt="" />
       </div>
-      {% for item in bundles %}
-      {% if isLoggedIn %}
-      <form action="#" method="POST" class="product bundle" id="bundle-{{item.id}}">
-        
-        <a href="/delete/{{item.product_id}}"  class="delete-btn">
-                      <span class="material-symbols-outlined">close</span>
-        </a>
-
-        <input type="hidden" name="id" value="{{item.product_id}}"></input>
-        <input name="name" value="{{item.product_name}}"></input>
-        <input name="text" value="{{item.product_text}}"></input>
-        <input name="price" class="price" value="{{item.product_price}}">,- <input name="priceDes" value="{{item.product_priceDes}}" class="price-info"></input></input>
-        <div class="quad-container">
-          {% for item in range(0, item.bundleAmount) %}
-          <div class="quad"><img src="img/mx/2020-08-09_tensfeld_reduziert/199A0010.jpg" alt=""></div>
-          {% endfor %}
-        </div>
-        <input name="bundleAmount" value="{{item.product_bundleAmount}}" class="text-info">Bilder inklusive</input>
-        
-
-        <button type="submit">Speichern</button>
-      </form>
-        {% else %}
-        
-        <article class="product bundle" id="bundle-{{item.product_id}}">
-
-        <h3>{{item.product_name}}</h3>
-        <p>{{item.product_text}}</p>
-        <p class="price">{{item.product_price}},- <span class="price-info">pro Bundle</span></p>
-        <div class="quad-container">
-          {% for item in range(0, item.product_bundleAmount) %}
-          <div class="quad"><img src="img/mx/2020-08-09_tensfeld_reduziert/199A0010.jpg" alt=""></div>
-          {% endfor %}
-        </div>
-        <p class="text-info">{{item.product_bundleAmount}} Bilder inklusive</p>
-        {% endif %}
-      </article>
       {% endfor %}
-      
-      {% if isLoggedIn %}
-      <form action="/addProduct" method="POST" class="product bundle " >
-
-        <input type="hidden" name="id">
-        <input type="text" placeholder="Name" name="name" >
-        <textarea name="text" placeholder="Produktbeschreibung"></textarea>
-        <input type="number" name="price" class="price" placeholder="Preis">
-        <input name="priceDes" placeholder="Preis Beschreibung">
-        <input type="number" id="bundleAmount" name="bundleAmount"  placeholder="Bundle-Größe (Anzahl der Bilder)" rows="8" cols="20">
-          
-      </fieldset>
-        <button type="submit">Hinzufügen</button>
-
-      </form>
-      {% endif %}
-      
-    </section>
+    </div>
+    <p class="text-info">{{item.product_bundleAmount}} Bilder inklusive</p>
+    {% endif %}
+  </article>
+  {% endfor %} {% if isLoggedIn %}
+  <form action="/product/add" method="POST" class="product bundle">
+    <fieldset>
+      <input type="hidden" name="id" />
+      <input type="text" placeholder="Name" name="name" />
+      <textarea name="text" placeholder="Produktbeschreibung"></textarea>
+      <input type="number" name="price" class="price" placeholder="Preis" />
+      <input name="priceDes" placeholder="Preis Beschreibung" />
+      <input
+        type="number"
+        id="bundleAmount"
+        name="bundleAmount"
+        placeholder="Bundle-Größe (Anzahl der Bilder)"
+        rows="8"
+        cols="20"
+      />
+    </fieldset>
+    <button type="submit">Hinzufügen</button>
+  </form>
+  {% endif %}
+</section>
 
 {% endblock %}

@@ -1,5 +1,5 @@
 export const get = async (ctx, site, status) => {
-  console.log("Session User: ", ctx.session.user);
+  //console.log("Session User: ", ctx.session.user);
 
   ctx.response.body = await ctx.nunjucks.render(`${site}.html`, {
     isLoggedIn: ctx.session.state.isLoggedIn,

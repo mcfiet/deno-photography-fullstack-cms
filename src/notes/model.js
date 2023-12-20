@@ -6,6 +6,33 @@ JOIN categories
   `);
 };
 
+export const getAlbumById = (db, id) => {
+  const album = db.queryEntries(
+    `
+  SELECT * FROM albums
+WHERE album_id = $albumId
+  `,
+    {
+      $albumId: id,
+    }
+  );
+  return album[0];
+};
+
+export const updateAlbum = (db, formData, id) => {
+  db.query(
+    `
+    UPDATE albums
+    SET album_title = $albumName
+    WHERE album_id = $id;
+    `,
+    {
+      $id: id,
+      $albumName: formData.albumName,
+    }
+  );
+};
+
 export const getAlbumCategories = (db) => {
   return db.queryEntries(`
   SELECT category_name FROM categories
@@ -133,6 +160,19 @@ export const getProducts = (db) => {
   `);
 };
 
+export const getProductById = (db, id) => {
+  const product = db.queryEntries(
+    `
+  SELECT * FROM products 
+  WHERE product_id = $id;
+  `,
+    {
+      $id: id,
+    }
+  );
+  return product[0];
+};
+
 export const getBundles = (db) => {
   return db.queryEntries(`
   SELECT * FROM products 
@@ -153,7 +193,7 @@ export const addProduct = (db, formData) => {
     }
   );
 };
-export const updateProduct = (db, formData) => {
+export const updateProduct = (db, formData, id) => {
   db.query(
     `
     UPDATE products
@@ -165,7 +205,7 @@ export const updateProduct = (db, formData) => {
     WHERE product_id = $id;
     `,
     {
-      $id: formData.id,
+      $id: id,
       $name: formData.name,
       $text: formData.text,
       $price: formData.price,

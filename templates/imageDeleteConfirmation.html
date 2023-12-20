@@ -1,0 +1,12 @@
+{% extends "layout.html" %} {% block content %}
+<h2>Wirklich löschen?</h2>
+<div class="album-container">
+  <form class="" action="/image/delete/{{imageId}}" method="post">
+    <img src="/{{imageLink}}" alt="" />
+    <fieldset>
+      <button type="submit">Bild löschen</button>
+      <a class="button" href="/fotos">Zurück</a>
+    </fieldset>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layout.html" %} {% block content %} {% if isLoggedIn %}
+<h2>Wirklich löschen?</h2>
+<section class="grid-container products two">
+  <div class="">
+    <article class="product" id="einzelpreis">
+      <div class="product-text">
+        <h3>{{item.product_name}}</h3>
+        <p>{{item.product_text}}</p>
+      </div>
+      <p class="price">
+        {{item.product_price}},-
+        <span class="price-info">{{item.product_priceDes}}</span>
+      </p>
+    </article>
+
+    <form
+      class=""
+      action="/product/delete/{{id}}"
+      method="post"
+      style="margin-bottom: 2rem"
+    >
+      <button type="submit">Löschen</button>
+      <a class="button" href="/products">Zurück</a>
+    </form>
+  </div>
+</section>
+{% endif %} {% endblock %}
