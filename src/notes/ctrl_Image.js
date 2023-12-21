@@ -1,6 +1,7 @@
 import * as model from "./model.js";
 import * as imageValidation from "../framework/imageValidation.js";
 import * as imageHandler from "../framework/imageHandler.js";
+import { CHAR_0 } from "https://deno.land/std@0.152.0/path/_constants.ts";
 
 export const add = async (ctx) => {
   const formData = await ctx.request.formData();
@@ -21,16 +22,19 @@ export const add = async (ctx) => {
 };
 
 export const removeConfirmation = async (ctx) => {
-  ctx.response.body = await ctx.nunjucks.render("imageDeleteConfirmation.html", {
-    imageId: ctx.params,
-    imageLink: model.getImageById(ctx.db, ctx.params).albums_images_link,
-  });
+  ctx.response.body = await ctx.nunjucks.render(
+    "imageDeleteConfirmation.html",
+    {
+      imageId: ctx.params,
+      imageLink: model.getImageById(ctx.db, ctx.params).albums_images_link,
+    }
+  );
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
   return ctx;
 };
 
-export const remove = async (ctx) => {
+export const remove = (ctx) => {
   const albumId = model.getAlbumIdByImageId(ctx.db, ctx.params);
 
   imageHandler.deleteImage(ctx.db, model.getImageById(ctx.db, ctx.params));
@@ -41,3 +45,131 @@ export const remove = async (ctx) => {
   });
   return ctx;
 };
+
+export const addToCart = (ctx) => {
+  if (!ctx.session.cart) {
+    ctx.session.cart = { images: [] };
+    ctx.session.cart.bundlesUsed = [];
+  }
+
+  const imageId = parseInt(ctx.params);
+
+  if (!isImageAlreadyInCart(ctx.session.cart, imageId)) {
+    ctx.session.cart.images.push(model.getImageById(ctx.db, imageId));
+    updateCart(ctx);
+  } else {
+    //TODO Flash-Message: "Bild ist bereits im Warenkorb"
+    console.log("Bild ist bereits im Warenkorb");
+  }
+
+  //console.log(ctx.session.cart);
+
+  ctx.redirect = new Response("", {
+    status: 303,
+    headers: { Location: "/fotos" },
+  });
+  return ctx;
+};
+
+export const removeFromCart = (ctx) => {
+  const imageId = parseInt(ctx.params);
+  ctx.session.cart.images = removeObjectById(ctx.session.cart.images, imageId);
+  updateCart(ctx);
+  ctx.redirect = new Response("", {
+    status: 303,
+    headers: { Location: "/cart" },
+  });
+  return ctx;
+};
+
+export function updateCart(ctx) {
+  const bundles = model.getBundleAmounts(ctx.db);
+  const productPrice = model.getProductByName(
+    ctx.db,
+    "Einzelbild"
+  ).product_price;
+
+  ctx.session.cart.totalPrice = 0;
+  ctx.session.cart.singleImages = ctx.session.cart.images.length;
+  ctx.session.cart.bundlesUsed = [];
+  ctx.session.cart = checkBundles(ctx.session.cart, bundles, ctx.db);
+
+  ctx.session.cart.totalPrice = ctx.session.cart.images.length * productPrice;
+
+  let sumUsedBundlePrices = 0;
+  ctx.session.cart.bundlesUsed.forEach((element) => {
+    sumUsedBundlePrices += element.product_price;
+  });
+  ctx.session.cart.totalPriceWithBundles =
+    sumUsedBundlePrices + ctx.session.cart.singleImages * productPrice;
+}
+
+export function isImageAlreadyInCart(cart, imageId) {
+  let bool = false;
+  if (cart.images.length > 0) {
+    cart.images.forEach((element) => {
+      if (element.image_id === imageId) {
+        bool = true;
+      }
+    });
+  }
+
+  return bool;
+}
+
+// REKURSION OPTION 1: MIT FOR-SCHLEIFE
+
+// Funktion zum Löschen eines Objekts anhand der ID
+function removeObjectById(array, idToRemove) {
+  return array.filter((obj) => obj.image_id !== idToRemove);
+}
+
+export function checkBundles(cart, sortetBundlesAsc, db) {
+  for (let i = 0; i < sortetBundlesAsc.length; i++) {
+    if (
+      cart.singleImages >= sortetBundlesAsc[sortetBundlesAsc.length - 1 - i]
+    ) {
+      console.log(cart.bundlesUsed);
+      cart.bundlesUsed.push(
+        model.getBundleByBundleAmount(
+          db,
+          sortetBundlesAsc[sortetBundlesAsc.length - 1 - i]
+        )
+      );
+      cart.singleImages = checkBundles(
+        {
+          singleImages:
+            cart.singleImages -
+            sortetBundlesAsc[sortetBundlesAsc.length - 1 - i],
+          bundlesUsed: cart.bundlesUsed,
+        },
+        sortetBundlesAsc,
+        db
+      ).singleImages;
+    }
+  }
+  return cart;
+}
+// REKURSION OPTION 2: OHNE FOR-SCHLEIFE
+
+// export function checkBundles(cartLength, sortedBundlesDesc, i = 0) {
+//   if (cartLength < sortedBundlesDesc[i]) {
+//     i++;
+//   }
+//   if (i >= sortedBundlesDesc.length - 1) {
+//     return cartLength;
+//   }
+
+//   if (cartLength - sortedBundlesDesc[i] < 0) {
+//     i++;
+//   }
+
+//   if (cartLength > 0) {
+//     cartLength = checkBundles(
+//       cartLength - sortedBundlesDesc[i],
+//       sortedBundlesDesc,
+//       i
+//     );
+//   }
+//   return cartLength;
+// }

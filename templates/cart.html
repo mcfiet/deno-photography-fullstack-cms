@@ -1,0 +1,46 @@
+{% extends "layout.html" %} {% block content %}
+
+<h2>Warenkorb</h2>
+
+{% if cart %}
+
+<ul class="cart-list">
+  {% for image in cart.images %}
+  <li>
+    <div class="cart-element">
+      <a href="/image/removeFromCart/{{image.image_id}}" class="delete-btn">
+        <span class="material-symbols-outlined">delete</span>
+      </a>
+      <figure>
+        <img class="album-img" src="/{{image.albums_images_link}}" alt="" />
+      </figure>
+      <div class="description">
+        <h3>{{product.product_name}}</h3>
+        <p>{{product.product_text}}</p>
+      </div>
+      <p class="price">{{product.product_price}}€</p>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+
+<div class="order-container">
+  <h4>Verwendete Bundles:</h4>
+
+  <ul>
+    {% for bundle in cart.bundlesUsed %}
+    <li>{{bundle.product_name}}</li>
+    {% endfor %}
+  </ul>
+  <h4>Gesamtpreis:</h4>
+  <p class="total-price">
+    {% if cart.bundlesUsed.length > 0 %}
+    <span class="price price-old">{{cart.totalPrice}}€</span>
+    {% endif %}
+    <span class="price">{{cart.totalPriceWithBundles}}€</span>
+  </p>
+
+  <a href="/order" class="button order">Bestellen</a>
+</div>
+
+{% else %} Der Warenkorb ist leer {% endif %} {% endblock %}

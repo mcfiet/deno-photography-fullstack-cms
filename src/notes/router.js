@@ -4,6 +4,7 @@ import * as controllerFotos from "./ctrl_Fotos.js";
 import * as controllerAlbum from "./ctrl_Album.js";
 import * as controllerImage from "./ctrl_Image.js";
 import * as controllerLogin from "./ctrl_Login.js";
+import * as controllerCart from "./ctrl_Cart.js";
 
 const isMatching = (pattern, method, ctx) => {
   return pattern.test(ctx.url) && ctx.request.method === method;
@@ -56,6 +57,9 @@ router.get("/logout", [], controllerLogin.logout);
 router.get("/image/delete/:id", [], controllerImage.removeConfirmation);
 router.post("/image/delete/:id", [], controllerImage.remove);
 router.post("/image/add", [], controllerImage.add);
+router.get("/image/addToCart/:id", [], controllerImage.addToCart);
+router.get("/image/removeFromCart/:id", [], controllerImage.removeFromCart);
+router.get("/cart", [], controllerCart.get);
 
 const runRouter = (routes) => async (ctx) => {
   if (ctx.response.status) {

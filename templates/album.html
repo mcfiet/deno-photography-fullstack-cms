@@ -1,7 +1,17 @@
 {% extends "layout.html" %} {% block content %} {% if isLoggedIn %}
-<form class="" action="/album/update/{{album.album_id}}" method="post" style="margin-bottom: 2rem">
+<form
+  class=""
+  action="/album/update/{{album.album_id}}"
+  method="post"
+  style="margin-bottom: 2rem"
+>
   <label for="albumName" class="">Album Name</label>
-  <input type="text" id="albumName" name="albumName" value="{{album.album_title}}" />
+  <input
+    type="text"
+    id="albumName"
+    name="albumName"
+    value="{{album.album_title}}"
+  />
   <button type="submit">Titel ändern</button>
 </form>
 
@@ -13,12 +23,44 @@
   {% for albumImage in albumImages %}
   <div style="position: relative">
     <a href="/image/remove/{{albumImage.image_id}}" class="delete-btn"></a>
-    <img class="album-img" src="/{{albumImage.albums_images_link}}" alt="" />
+    <figure>
+      <img class="album-img" src="/{{albumImage.albums_images_link}}" alt="" />
+      {% if albumImage.isInCart %}
+
+      <figcaption class="cart isInCart">
+        <a
+          href="/image/removeFromCart/{{albumImage.image_id}}"
+          class="album-text"
+        >
+          <span class="material-symbols-outlined"> remove_shopping_cart </span
+          >Aus Warenkorb entfernen
+        </a>
+      </figcaption>
+      {% else %}
+      <figcaption class="cart">
+        <a href="/image/addToCart/{{albumImage.image_id}}" class="album-text">
+          <span class="material-symbols-outlined"> add_shopping_cart </span>Zum
+          Warenkorb hinzufügen
+        </a>
+      </figcaption>
+
+      {% endif %}
+    </figure>
   </div>
   {% endfor %}
-  <form class="album-img" action="/image/add" method="post" enctype="multipart/form-data">
+  <form
+    class="album-img"
+    action="/image/add"
+    method="post"
+    enctype="multipart/form-data"
+  >
     <fieldset>
-      <input type="hidden" name="album_id" id="album_id" value="{{album.album_id}}" />
+      <input
+        type="hidden"
+        name="album_id"
+        id="album_id"
+        value="{{album.album_id}}"
+      />
       <label for="form_file" class=""> Bild hinzufügen </label>
       <input type="file" id="form_file" name="upload" />
       <button type="submit">Bild hochladen</button>
