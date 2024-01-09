@@ -1,7 +1,8 @@
 {% extends "layout.html" %} {% block content %}
 
-<h1>admin</h1>
-<div class="grid-container">
+<h1 class="visually-hidden">admin</h1>
+<h2>Admin Panel</h2>
+<section>
   <div class="messages">
     <table>
       <tr>
@@ -14,18 +15,18 @@
       <tr>
         <td class="sender-email">{{ message.sender_email }}</td>
         <td class="sender-name">{{ message.sender_name }}</td>
-        <td class="sender-name">{{ message.message_subject }}</td>
+        <td class="message-subject">{{ message.message_subject }}</td>
         <td class="message-text">{{message.message_text }}</td>
         <td>
           <a
             href="mailto:{{ message.sender_email }}?subject=Ihre Anfrage: {{ message.message_subject }}"
-            >Nachricht beantworten</a
+            ><span class="material-symbols-outlined"> mail </span>Nachricht
+            beantworten</a
           >
         </td>
       </tr>
       {% endfor %}
     </table>
   </div>
-</div>
-
+</section>
 {% endblock %}

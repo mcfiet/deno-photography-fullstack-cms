@@ -250,9 +250,6 @@ table {
 
 table th {
   text-align: left;
-}
-
-table tr:nth-child(2n+1) {
   background-color: var(--ff-light);
 }
 
@@ -260,7 +257,20 @@ table td,
 table  th {
   padding: 0.5rem;
   text-align: left;
+  border: 1px solid var(--ff-light)
 }
+
+table .message-subject {
+  min-width: 20ch;
+}
+
+table a {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  gap: 0.5rem;
+}
+
 
 /*---        ---*/
 /*--- FIGURE ---*/
