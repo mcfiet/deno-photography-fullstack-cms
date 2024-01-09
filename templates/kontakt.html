@@ -1,48 +1,50 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block content %}
+<h1 class="visually-hidden">Kontakt</h1>
 
-{% block content %}
-        <h1 class="visually-hidden">Kontakt</h1>
-
-        <section>
-            <h2>Kontaktiere mich</h2>
-            <div class="grid-container header-teaser">
-
-                <form action="https://mi.hs-flensburg.de/echo.php" class="header-teaser-element">
-                    <fieldset>
-                        <div>
-                            <label for="name">Name</label>
-                            <input id="name" type="text" placeholder=" ">
-                        </div>
-                        <div>
-                            <label for="email">E-Mail</label>
-                            <input id="email" type="text" placeholder=" ">
-                        </div>
-                        <div>
-                            <label for="nachricht">Nachricht</label>
-                            <textarea id="nachricht" rows="5" cols="80"></textarea>
-                        </div>
-                    </fieldset>
-                    <button type="submit">Anfrage senden</button>
-                </form>
-                <img src="img/mx/2023-05-10_gnutz_reduziert/199A9954.jpg" alt="Kontakt Bild"
-                    class="header-teaser-element grid-img">
-            </div>
-
-
-        </section>
-        <section>
-            <h2>Kontaktdaten</h2>
-            <article class="kontaktdaten">
-                <h3>Per Telefon</h3>
-                <p><strong>(Montag bis Freitag, 8-18 Uhr)</strong></p>
-                <p><a href="tel:015151752893">0151-51 75 28 93</a></p>
-                <h3>Vor Ort</h3>
-                <p><strong>(Montag bis Freitag, 8-18 Uhr)</strong></p>
-                <p>
-                    Birkenweg 1a <br>
-                    24107 Quarnbek <br>
-                    Deutschland
-                </p>
-            </article>
-        </section>
+<section>
+  <h2>Kontaktiere mich</h2>
+  <div class="grid-container header-teaser">
+    <form action="/addMessage" method="POST" class="header-teaser-element">
+      <fieldset>
+        <div>
+          <label for="name">Name</label>
+          <input name="name" id="name" type="text" placeholder=" " />
+        </div>
+        <div>
+          <label for="email">E-Mail</label>
+          <input name="email" id="email" type="text" placeholder=" " />
+        </div>
+        <div>
+          <label for="subject">Betreff</label>
+          <input name="subject" id="subject" type="text" placeholder=" " />
+        </div>
+        <div>
+          <label for="nachricht">Nachricht</label>
+          <textarea name="message" id="message" rows="5" cols="80"></textarea>
+        </div>
+      </fieldset>
+      <button type="submit">Anfrage senden</button>
+    </form>
+    <img
+      src="img/mx/2023-05-10_gnutz_reduziert/199A9954.jpg"
+      alt="Kontakt Bild"
+      class="header-teaser-element grid-img"
+    />
+  </div>
+</section>
+<section>
+  <h2>Kontaktdaten</h2>
+  <article class="kontaktdaten">
+    <h3>Per Telefon</h3>
+    <p><strong>(Montag bis Freitag, 8-18 Uhr)</strong></p>
+    <p><a href="tel:015151752893">0151-51 75 28 93</a></p>
+    <h3>Vor Ort</h3>
+    <p><strong>(Montag bis Freitag, 8-18 Uhr)</strong></p>
+    <p>
+      Birkenweg 1a <br />
+      24107 Quarnbek <br />
+      Deutschland
+    </p>
+  </article>
+</section>
 {% endblock %}

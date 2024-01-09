@@ -10,7 +10,10 @@ export const login = async (ctx) => {
   const users = model.getUsers(ctx.db);
 
   for (const user of users) {
-    if (formData.username == user.username && (await bcrypt.compare(formData.password, user.password))) {
+    if (
+      formData.username == user.username &&
+      (await bcrypt.compare(formData.password, user.password))
+    ) {
       ctx.session.user = user;
       ctx.session.state.isLoggedIn = true;
     }
@@ -19,7 +22,7 @@ export const login = async (ctx) => {
   if (ctx.session.state.isLoggedIn) {
     ctx.redirect = new Response("", {
       status: 303,
-      headers: { Location: `/` },
+      headers: { Location: `/admin` },
     });
   } else {
     ctx.redirect = new Response("", {

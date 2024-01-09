@@ -27,24 +27,6 @@ export const ueberMich = async (ctx) => {
   return ctx;
 };
 
-export const admin = async (ctx) => {
-  ctx.response.body = await ctx.nunjucks.render(`admin.html`, {
-    isLoggedIn: ctx.session.state.isLoggedIn,
-  });
-  ctx.response.status = 200;
-  ctx.response.headers.set("content-type", "text/html");
-  return ctx;
-};
-
-export const kontakt = async (ctx) => {
-  ctx.response.body = await ctx.nunjucks.render(`kontakt.html`, {
-    isLoggedIn: ctx.session.state.isLoggedIn,
-  });
-  ctx.response.status = 200;
-  ctx.response.headers.set("content-type", "text/html");
-  return ctx;
-};
-
 export const error404 = async (ctx) => {
   ctx.response.body = await ctx.nunjucks.render(`error404.html`, {
     isLoggedIn: ctx.session.state.isLoggedIn,

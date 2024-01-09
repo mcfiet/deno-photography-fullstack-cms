@@ -4,36 +4,13 @@ import * as controllerFotos from "./ctrl_Fotos.js";
 import * as controllerAlbum from "./ctrl_Album.js";
 import * as controllerImage from "./ctrl_Image.js";
 import * as controllerLogin from "./ctrl_Login.js";
+import * as controllerAdmin from "./ctrl_Admin.js";
 import * as controllerCart from "./ctrl_Cart.js";
+import * as controllerKontakt from "./ctrl_Kontakt.js";
 
 const isMatching = (pattern, method, ctx) => {
   return pattern.test(ctx.url) && ctx.request.method === method;
 };
-
-// const homePattern = new URLPattern({ pathname: "/" });
-
-// const fotosPattern = new URLPattern({ pathname: "/fotos" });
-
-// const albumPattern = new URLPattern({ pathname: "/fotos/:id" });
-// const albumRemovePattern = new URLPattern({ pathname: "/album/remove/:id" });
-// const albumAddPattern = new URLPattern({ pathname: "/album/add" });
-// const albumUpdatePattern = new URLPattern({ pathname: "/album/update/:id" });
-
-// const productsPattern = new URLPattern({ pathname: "/products" });
-// const productRemovePattern = new URLPattern({ pathname: "/product/remove/:id" });
-// const productAddPattern = new URLPattern({ pathname: "/product/add" });
-// const productUpdatePattern = new URLPattern({ pathname: "/product/update/:id" });
-
-// const ueberMichPattern = new URLPattern({ pathname: "/ueber-mich" });
-// const kontaktPattern = new URLPattern({ pathname: "/kontakt" });
-// const adminPattern = new URLPattern({ pathname: "/admin" });
-// const loginPattern = new URLPattern({ pathname: "/login" });
-// const logoutPattern = new URLPattern({ pathname: "/logout" });
-
-// const imageRemovePattern = new URLPattern({ pathname: "/image/delete/:id" });
-// const imageAddPattern = new URLPattern({ pathname: "/image/add" });
-// const imageAddToCartPattern = new URLPattern({ pathname: "/image/addToCart" });
-// const imageRemoveFromCartPattern = new URLPattern({ pathname: "/image/removeFromCart" });
 
 export const router = createRouter();
 router.get("/", [], controller.index);
@@ -49,8 +26,9 @@ router.post("/product/remove/:id", [], controllerProducts.remove);
 router.post("/product/add", [], controllerProducts.add);
 router.post("/product/update/:id", [], controllerProducts.update);
 router.get("/ueber-mich", [], controller.ueberMich);
-router.get("/admin", [], controller.admin);
-router.get("/kontakt", [], controller.kontakt);
+router.get("/admin", [], controllerAdmin.index);
+router.post("/addMessage", [], controllerKontakt.addMessage);
+router.get("/kontakt", [], controllerKontakt.index);
 router.get("/login", [], controllerLogin.get);
 router.post("/login", [], controllerLogin.login);
 router.get("/logout", [], controllerLogin.logout);

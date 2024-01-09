@@ -241,6 +241,28 @@ section {
 }
 
 /*---        ---*/
+/*--- TABLE ---*/
+/*---        ---*/
+table {
+  border-color: rgb(62, 68, 70);
+  border-spacing: 0;
+}
+
+table th {
+  text-align: left;
+}
+
+table tr:nth-child(2n+1) {
+  background-color: var(--ff-light);
+}
+
+table td,
+table  th {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+/*---        ---*/
 /*--- FIGURE ---*/
 /*---        ---*/
 

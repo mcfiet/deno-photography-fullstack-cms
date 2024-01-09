@@ -1,7 +1,31 @@
-{% extends "layout.html" %}
-
-{% block content %}
+{% extends "layout.html" %} {% block content %}
 
 <h1>admin</h1>
+<div class="grid-container">
+  <div class="messages">
+    <table>
+      <tr>
+        <th>Absender Email</th>
+        <th>Absender Name</th>
+        <th>Betreff</th>
+        <th>Nachricht</th>
+      </tr>
+      {% for message in messages %}
+      <tr>
+        <td class="sender-email">{{ message.sender_email }}</td>
+        <td class="sender-name">{{ message.sender_name }}</td>
+        <td class="sender-name">{{ message.message_subject }}</td>
+        <td class="message-text">{{message.message_text }}</td>
+        <td>
+          <a
+            href="mailto:{{ message.sender_email }}?subject=Ihre Anfrage: {{ message.message_subject }}"
+            >Nachricht beantworten</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
 
 {% endblock %}
