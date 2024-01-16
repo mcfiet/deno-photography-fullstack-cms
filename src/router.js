@@ -56,7 +56,7 @@ export const addPermissions = (ctx) => {
     ctx.state.CanRemoveImage = check(ctx.state.user, "remove image");
     ctx.state.CanAddImage = check(ctx.state.user, "add image");
 
-    ctx.state.CanRemoveProduct = check(ctx.state.user, "remove product");
+    //ctx.state.CanRemoveProduct = check(ctx.state.user, "remove product");
     ctx.state.CanAddProduct = check(ctx.state.user, "add product");
     ctx.state.CanUpdateProduct = check(ctx.state.user, "update product");
 

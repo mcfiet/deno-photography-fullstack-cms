@@ -20,6 +20,7 @@ nunjucks.configure("templates", { autoescape: true });
 const middleware = [
   getCookies,
   getSession,
+  // TODO getUser,
   router.routes(),
   serveStaticFile,
   setSession,
