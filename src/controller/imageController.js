@@ -1,4 +1,6 @@
-import * as model from "./model.js";
+import * as albumHandler from "../framework/albumHandler.js";
+import * as getProductsJs from "../model/productModel.js";
+import * as getAlbumsJs from "../model/albumModel.js";
 import * as imageValidation from "../framework/imageValidation.js";
 import * as imageHandler from "../framework/imageHandler.js";
 import { CHAR_0 } from "https://deno.land/std@0.152.0/path/_constants.ts";
@@ -8,10 +10,10 @@ export const add = async (ctx) => {
   const upload = formData.get("upload");
   const albumId = formData.get("album_id");
   if (imageValidation.validateImage(upload) == "Validiert") {
-    await imageHandler.createDir(albumId);
+    await albumHandler.createDir(albumId);
     await imageHandler.saveImage(ctx.db, upload, albumId);
   } else {
-    console.log(imageValidation.validateImage(upload));
+    //console.log(imageValidation.validateImage(upload));
   }
 
   ctx.redirect = new Response("", {
@@ -26,7 +28,8 @@ export const removeConfirmation = async (ctx) => {
     "imageDeleteConfirmation.html",
     {
       imageId: ctx.params,
-      imageLink: model.getImageById(ctx.db, ctx.params).albums_images_link,
+      imageLink: getAlbumsJs.getImageById(ctx.db, ctx.params)
+        .albums_images_link,
     }
   );
   ctx.response.status = 200;
@@ -35,9 +38,12 @@ export const removeConfirmation = async (ctx) => {
 };
 
 export const remove = (ctx) => {
-  const albumId = model.getAlbumIdByImageId(ctx.db, ctx.params);
+  const albumId = getAlbumsJs.getAlbumIdByImageId(ctx.db, ctx.params);
 
-  imageHandler.deleteImage(ctx.db, model.getImageById(ctx.db, ctx.params));
+  imageHandler.deleteImage(
+    ctx.db,
+    getAlbumsJs.getImageById(ctx.db, ctx.params)
+  );
 
   ctx.redirect = new Response("", {
     status: 303,
@@ -55,7 +61,7 @@ export const addToCart = (ctx) => {
   const imageId = parseInt(ctx.params);
 
   if (!isImageAlreadyInCart(ctx.session.cart, imageId)) {
-    ctx.session.cart.images.push(model.getImageById(ctx.db, imageId));
+    ctx.session.cart.images.push(getAlbumsJs.getImageById(ctx.db, imageId));
     updateCart(ctx);
   } else {
     //TODO Flash-Message: "Bild ist bereits im Warenkorb"
@@ -83,8 +89,8 @@ export const removeFromCart = (ctx) => {
 };
 
 export function updateCart(ctx) {
-  const bundles = model.getBundleAmounts(ctx.db);
-  const productPrice = model.getProductByName(
+  const bundles = getProductsJs.getBundleAmounts(ctx.db);
+  const productPrice = getProductsJs.getProductByName(
     ctx.db,
     "Einzelbild"
   ).product_price;
@@ -129,9 +135,9 @@ export function checkBundles(cart, sortetBundlesAsc, db) {
     if (
       cart.singleImages >= sortetBundlesAsc[sortetBundlesAsc.length - 1 - i]
     ) {
-      console.log(cart.bundlesUsed);
+      //console.log(cart.bundlesUsed);
       cart.bundlesUsed.push(
-        model.getBundleByBundleAmount(
+        getProductsJs.getBundleByBundleAmount(
           db,
           sortetBundlesAsc[sortetBundlesAsc.length - 1 - i]
         )

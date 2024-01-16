@@ -13,4 +13,5 @@ export const createContext = (request, options) => ({
   sessionStore: options.sessionStore,
   nunjucks: options.nunjucks,
   cookies: new CookieMap(request),
+  state: {},
 });

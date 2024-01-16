@@ -10,7 +10,12 @@ export const get = async (ctx, site, status) => {
 };
 
 export const index = async (ctx) => {
+  let cartAmount;
+  if (ctx.session.cart) {
+    cartAmount = ctx.session.cart.images.length;
+  }
   ctx.response.body = await ctx.nunjucks.render(`index.html`, {
+    cartAmount,
     isLoggedIn: ctx.session.state.isLoggedIn,
   });
   ctx.response.status = 200;
@@ -19,7 +24,12 @@ export const index = async (ctx) => {
 };
 
 export const ueberMich = async (ctx) => {
+  let cartAmount;
+  if (ctx.session.cart) {
+    cartAmount = ctx.session.cart.images.length;
+  }
   ctx.response.body = await ctx.nunjucks.render(`ueber-mich.html`, {
+    cartAmount,
     isLoggedIn: ctx.session.state.isLoggedIn,
   });
   ctx.response.status = 200;

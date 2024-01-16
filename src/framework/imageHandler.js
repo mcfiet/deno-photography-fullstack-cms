@@ -1,6 +1,7 @@
 import * as mediaTypes from "https://deno.land/std/media_types/mod.ts";
 import * as path from "https://deno.land/std@0.152.0/path/posix.ts";
-import * as model from "../notes/model.js";
+import * as model from "../model/messageModel.js";
+import * as getAlbumsJs from "../model/albumModel.js";
 
 async function generateFilename(file, albumId) {
   //const files = Deno.readDir(Deno.cwd() + "./public");
@@ -26,40 +27,22 @@ async function getHighestNumberFromDir(albumId) {
   return highestNumber;
 }
 
-export async function checkDir(albumId) {
-  for await (const dirEntry of Deno.readDir("public/upload")) {
-    if (!dirEntry.isFile && dirEntry.name == albumId) {
-      return true;
-    }
-  }
-  return false;
-}
-
-export async function createDir(albumId) {
-  console.log(await checkDir(albumId));
-  if (!(await checkDir(albumId))) {
-    await Deno.mkdir(`public/upload/${albumId}`);
-  } else {
-    console.log("Ordner für Album existiert schon");
-  }
-}
-
 export async function saveImage(db, upload, albumId) {
   const filename = await generateFilename(upload, albumId);
   //console.log("Filename: ", filename);
 
-  console.log(filename);
+  //console.log(filename);
   const destFile = await Deno.open(path.join(Deno.cwd(), "public", filename), {
     create: true,
     write: true,
     truncate: true,
   });
   await upload.stream().pipeTo(destFile.writable);
-  model.saveAlbumImageById(db, albumId, filename);
+  getAlbumsJs.saveAlbumImageById(db, albumId, filename);
 }
 
 export async function deleteImage(db, image) {
-  console.log(image);
+  //console.log(image);
   await Deno.remove(`public/${image.albums_images_link}`);
-  model.deleteImageById(db, image.image_id);
+  getAlbumsJs.deleteImageById(db, image.image_id);
 }

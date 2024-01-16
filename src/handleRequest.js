@@ -1,9 +1,9 @@
 import { createContext } from "./framework/context.js";
-import * as ctrl_Preise from "./notes/ctrl_Products.js";
-import * as ctrl_Gallerie from "./notes/ctrl_Fotos.js";
-import * as ctrl_Album from "./notes/ctrl_Album.js";
-import * as ctrl_Login from "./notes/ctrl_Login.js";
-import * as controller from "./notes/controller.js";
+import * as ctrl_Preise from "./controller/productsController.js";
+import * as ctrl_Gallerie from "./controller/fotosController.js";
+import * as ctrl_Album from "./controller/albumController.js";
+import * as ctrl_Login from "./controller/loginController.js";
+import * as controller from "./controller/controller.js";
 import * as serveStaticFiles from "./middleware/serveStaticFiles.js";
 import { createId } from "./middleware/session.js";
 import { CookieMap, mergeHeaders } from "https://deno.land/std/http/mod.ts";

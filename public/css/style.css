@@ -766,6 +766,55 @@ footer .sm-icon:hover {
   margin-top: 1rem;
 }
 
+.cart-link {
+  position: relative;
+}
+
+.cart-link .cart-amount {
+  position: absolute;
+  bottom: -0.7rem;
+  left: -0.7rem;
+  padding: 0.3rem;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  border-radius: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.7rem;
+}
+
+/*---       ---*/
+/*--- FLASH ---*/
+/*---       ---*/
+
+.flash {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--ff-akzent_pink);
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+
+.admin-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2rem;
+  background-color: var(--ff-akzent_pink);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+
 /*---          ---*/
 /*--- PRODUCTS ---*/
 /*---          ---*/
@@ -926,22 +975,6 @@ footer .logo-container {
   background-color: var(--ff-white);
 }
 
-/*---             ---*/
-/*--- ADMIN-PANEL ---*/
-/*---             ---*/
-
-.admin-panel {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2rem;
-  background-color: var(--ff-akzent_pink);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-}
 
 /*---     ---*/
 /*--- ADD ---*/

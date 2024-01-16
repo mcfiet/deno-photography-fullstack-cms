@@ -1,8 +1,9 @@
 {% extends "layout.html" %} {% block content %}
 
-<h1 class="visually-hidden">admin</h1>
-<h2>Admin Panel</h2>
+<h1 class="visually-hidden">Admin Panel</h1>
+
 <section>
+  <h2>Nachrichten</h2>
   <div class="messages">
     <table>
       <tr>
@@ -28,5 +29,39 @@
       {% endfor %}
     </table>
   </div>
+</section>
+
+<section>
+  <h2>User</h2>
+  <div class="messages">
+    <table>
+      <tr>
+        <th>Username</th>
+        <th>Rollen</th>
+      </tr>
+      {% for user in users %}
+      <tr>
+        <td class="username">{{ user.username }}</td>
+        <td class="role">
+          {% for role in user.roles %} {{ role.role_name }}, {% endfor %}
+        </td>
+        {% if state.CanUpdateUser %}
+        <td>
+          <a href="user/edit/{{user.user_id}}">
+            <span class="material-symbols-outlined"> manage_accounts </span>
+            User bearbeiten
+          </a>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  {% if state.CanAddUser %}
+  <a href="user/add">
+    <span class="material-symbols-outlined"> person_add </span>
+    User hinzufügen
+  </a>
+  {% endif %}
 </section>
 {% endblock %}

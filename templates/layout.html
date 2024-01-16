@@ -70,7 +70,10 @@
             </li>
             {% endif %}
             <li class="big-link-parent">
-              <a href="/cart" class="big-link">
+              <a href="/cart" class="big-link cart-link">
+                {% if cartAmount > 0 %}
+                <span class="cart-amount">{{cartAmount}}</span>
+                {% endif %}
                 <span class="material-symbols-outlined"> shopping_cart </span>
               </a>
             </li>
@@ -122,6 +125,9 @@
         </nav>
       </div>
     </header>
+    {% if flash %}
+    <div class="flash">{{ flash }}</div>
+    {% endif %}
     <main id="main-content">{% block content %}{% endblock %}</main>
     <footer>
       <div class="logo-container">

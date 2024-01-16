@@ -1,9 +1,13 @@
-import * as model from "./model.js";
+import * as albumModel from "../model/albumModel.js";
 import * as formDataController from "../framework/formData.js";
-import * as albumDelete from "../framework/albumDelete.js";
+import * as albumDelete from "../framework/albumHandler.js";
 
 export const get = async (ctx) => {
-  let albumImages = model.getAlbumImagesById(ctx.db, ctx.params);
+  let cartAmount;
+  if (ctx.session.cart) {
+    cartAmount = ctx.session.cart.images.length;
+  }
+  let albumImages = albumModel.getAlbumImagesById(ctx.db, ctx.params);
 
   if (ctx.session.cart) {
     albumImages.forEach((image) => {
@@ -16,12 +20,14 @@ export const get = async (ctx) => {
     });
   }
 
-  console.log(albumImages);
+  //console.log(albumImages);
 
   ctx.response.body = await ctx.nunjucks.render("album.html", {
+    cartAmount,
     isLoggedIn: ctx.session.state.isLoggedIn,
     albumImages,
-    album: model.getAlbumById(ctx.db, ctx.params),
+    album: albumModel.getAlbumById(ctx.db, ctx.params),
+    state: ctx.state,
   });
   ctx.response.status = 200;
   ctx.response.headers.set("content-type", "text/html");
@@ -30,7 +36,7 @@ export const get = async (ctx) => {
 
 export const update = async (ctx) => {
   const formData = await formDataController.getEntries(ctx);
-  model.updateAlbum(ctx.db, formData, ctx.params);
+  albumModel.updateAlbum(ctx.db, formData, ctx.params);
   ctx.redirect = new Response("", {
     status: 303,
     headers: { Location: `/fotos/${ctx.params}` },
@@ -47,7 +53,7 @@ export const add = async (ctx) => {
     formData.category = 1;
   }
 
-  model.addAlbum(ctx.db, formData);
+  albumModel.addAlbum(ctx.db, formData);
 
   ctx.redirect = new Response("", {
     status: 303,
@@ -57,7 +63,8 @@ export const add = async (ctx) => {
 };
 
 export const removeConfirmation = async (ctx) => {
-  const album = model.getAlbumById(ctx.db, ctx.params);
+  //console.log(ctx.params);
+  const album = albumModel.getAlbumById(ctx.db, ctx.params);
 
   ctx.response.body = await ctx.nunjucks.render(
     `albumDeleteConfirmation.html`,
@@ -73,7 +80,7 @@ export const removeConfirmation = async (ctx) => {
 };
 
 export const remove = (ctx) => {
-  model.deleteAlbum(ctx.db, ctx.params);
+  albumModel.deleteAlbum(ctx.db, ctx.params);
   albumDelete.deleteAlbum(ctx.params);
 
   ctx.redirect = new Response("", {

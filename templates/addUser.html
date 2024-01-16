@@ -1,0 +1,22 @@
+{% extends "layout.html" %} {% block content %} {% if isLoggedIn %}
+<h2>{{user.username}} bearbeiten</h2>
+<section>
+  <form class="" action="/user/add" method="post" style="margin-bottom: 2rem">
+    <fieldset>
+      <label for="username" class=""> Username </label>
+      <input type="text" id="username" name="username" />
+      <label for="password" class=""> Passwort </label>
+      <input type="password" id="password" name="password" />
+
+      <select name="user_role" id="user_role">
+        {% for role in roles %}
+        <option value="{{role.role_id}}">{{role.role_name}}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">User hinzufügen</button>
+    </fieldset>
+
+    <a class="button" href="/admin">Zurück</a>
+  </form>
+</section>
+{% endif %} {% endblock %}

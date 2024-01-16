@@ -1,8 +1,8 @@
 import * as sqlite from "https://deno.land/x/sqlite@v3.8/mod.ts";
 import { createContext } from "./framework/context.js";
 import { createApp } from "./framework/app.js";
-import * as controller from "./notes/controller.js";
-import { router } from "./notes/router.js";
+import * as controller from "./controller/controller.js";
+import { router } from "./router.js";
 import { serveStaticFile } from "./middleware/serveStaticFiles.js";
 import nunjucks from "npm:nunjucks@3.2.4";
 import {
@@ -68,7 +68,6 @@ export const handleRequest = async (request) => {
   if (!ctx.response.body && ctx.response.status == 404) {
     ctx = await controller.error404(ctx);
   }
-
   return new Response(ctx.response.body, {
     status: ctx.response.status,
     headers: ctx.response.headers,
