@@ -1,0 +1,44 @@
+{% extends "layout.html" %} {% block content %} {% if CanUpdateRole %}
+<h2>{{role_name}} bearbeiten</h2>
+<section>
+  <form
+    class=""
+    action="/role/edit/{{role_id}}"
+    method="post"
+    style="margin-bottom: 2rem"
+  >
+    <fieldset>
+      <label for="username" class=""> Username </label>
+      <input
+        type="text"
+        id="role-name"
+        name="role_name"
+        value="{{role_name}}"
+      />
+      {% for permission in permissions %}
+      <div class="checkbox">
+        <input type="checkbox" id="{{permission.permission_id}}"
+        name="permission" value="{{permission.permission_id}}" {% for
+        permissionToRole in permissionsToRole %} {% if
+        permission.permission_name == permissionToRole.permission_name %}
+        checked {% endif %} {% endfor %}/>
+        <label for="permission">{{permission.permission_name}}</label>
+      </div>
+      {% else %}
+      <div class="checkbox">
+        <input
+          type="checkbox"
+          id="{{permission.permission_id}}"
+          name="permission"
+          value="{{permission.permission_id}}"
+        />
+        <label for="permission">{{permission.permission_name}}</label>
+      </div>
+      {% endfor %}
+    </fieldset>
+    <button type="submit">Speichern</button>
+
+    <a class="button" href="/admin">Zurück</a>
+  </form>
+</section>
+{% endif %} {% endblock %}

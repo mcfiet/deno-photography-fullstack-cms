@@ -1,5 +1,5 @@
-{% extends "layout.html" %} {% block content %} {% if isLoggedIn %}
-<h2>{{user.username}} bearbeiten</h2>
+{% extends "layout.html" %} {% block content %} {% if CanAddUser %}
+<h2>Benutzer hinzufügen</h2>
 <section>
   <form class="" action="/user/add" method="post" style="margin-bottom: 2rem">
     <fieldset>
@@ -7,12 +7,19 @@
       <input type="text" id="username" name="username" />
       <label for="password" class=""> Passwort </label>
       <input type="password" id="password" name="password" />
+      <legend>Wähle die Rollen für den Benutzer</legend>
 
-      <select name="user_role" id="user_role">
-        {% for role in roles %}
-        <option value="{{role.role_id}}">{{role.role_name}}</option>
-        {% endfor %}
-      </select>
+      {% for role in roles %}
+      <div class="checkbox">
+        <input
+          type="checkbox"
+          id="{{role.role_id}}"
+          name="role"
+          value="{{role.role_id}}"
+        />
+        <label for="role">{{role.role_name}}</label>
+      </div>
+      {% endfor %}
       <button type="submit">User hinzufügen</button>
     </fieldset>
 

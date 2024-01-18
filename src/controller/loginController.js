@@ -1,5 +1,5 @@
 import * as formDataController from "../framework/formData.js";
-import * as model from "../model/messageModel.js";
+import * as messages from "../framework/messages.js";
 import * as getUserByIdJs from "../model/userModel.js";
 import * as csfr from "../framework/csrf.js";
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
@@ -14,24 +14,28 @@ export const login = async (ctx) => {
   }
   const users = getUserByIdJs.getUsers(ctx.db);
 
+  let authenticated = false;
   for (const user of users) {
     if (
       formData.username == user.username &&
       (await bcrypt.compare(formData.password, user.password))
     ) {
-      ctx.session.user = user;
-      ctx.session.state.isLoggedIn = true;
+      ctx.session.user = {
+        user_id: user.user_id,
+        username: user.username,
+      };
+      authenticated = true;
     }
   }
 
-  if (ctx.session.state.isLoggedIn) {
-    ctx.session.flash = "Eingeloggt";
+  if (authenticated) {
+    ctx.session.flash = messages.LOGGEDIN_SUCCESS;
     ctx.redirect = new Response("", {
       status: 303,
       headers: { Location: `/admin` },
     });
   } else {
-    ctx.session.flash = "Benutzername und Passwort stimmen nicht überein";
+    ctx.session.flash = messages.LOGGEDIN_FAILURE;
     ctx.redirect = new Response("", {
       status: 303,
       headers: { Location: `/login` },
@@ -43,12 +47,13 @@ export const login = async (ctx) => {
 
 export const get = async (ctx) => {
   ctx.session.csrf = csfr.generateToken();
-  ctx.response.body = await ctx.nunjucks.render("login.html", {
-    csrf: ctx.session.csrf,
-  });
-  ctx.response.status = 200;
-  ctx.response.headers.set("content-type", "text/html");
-  return ctx;
+  return ctx.setResponse(
+    await ctx.render(`login.html`, {
+      csrf: ctx.session.csrf,
+    }),
+    200,
+    "text/html"
+  );
 };
 
 export const logout = async (ctx) => {

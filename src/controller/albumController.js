@@ -1,13 +1,9 @@
-import * as model from "../model/messageModel.js";
 import * as getAlbumsJs from "../model/albumModel.js";
 import * as formDataController from "../framework/formData.js";
-import * as albumDelete from "../framework/albumHandler.js";
+import * as albumHandler from "../framework/albumHandler.js";
+import * as messages from "../framework/messages.js";
 
 export const get = async (ctx) => {
-  let cartAmount;
-  if (ctx.session.cart) {
-    cartAmount = ctx.session.cart.images.length;
-  }
   let albumImages = getAlbumsJs.getAlbumImagesById(ctx.db, ctx.params);
 
   if (ctx.session.cart) {
@@ -21,18 +17,14 @@ export const get = async (ctx) => {
     });
   }
 
-  //console.log(albumImages);
-
-  ctx.response.body = await ctx.nunjucks.render("album.html", {
-    cartAmount,
-    isLoggedIn: ctx.session.state.isLoggedIn,
-    albumImages,
-    album: getAlbumsJs.getAlbumById(ctx.db, ctx.params),
-    state: ctx.state,
-  });
-  ctx.response.status = 200;
-  ctx.response.headers.set("content-type", "text/html");
-  return ctx;
+  return ctx.setResponse(
+    await ctx.render(`album.html`, {
+      albumImages,
+      album: getAlbumsJs.getAlbumById(ctx.db, ctx.params),
+    }),
+    200,
+    "text/html"
+  );
 };
 
 export const update = async (ctx) => {
@@ -42,6 +34,7 @@ export const update = async (ctx) => {
     status: 303,
     headers: { Location: `/fotos/${ctx.params}` },
   });
+  ctx.session.flash = messages.UPDATE_ALBUM_SUCCESS;
   return ctx;
 };
 
@@ -60,6 +53,8 @@ export const add = async (ctx) => {
     status: 303,
     headers: { Location: "/fotos" },
   });
+
+  ctx.session.flash = messages.ADD_ALBUM_SUCCESS;
   return ctx;
 };
 
@@ -67,23 +62,20 @@ export const removeConfirmation = async (ctx) => {
   //console.log(ctx.params);
   const album = getAlbumsJs.getAlbumById(ctx.db, ctx.params);
 
-  ctx.response.body = await ctx.nunjucks.render(
-    `albumDeleteConfirmation.html`,
-    {
-      isLoggedIn: ctx.session.state.isLoggedIn,
+  return ctx.setResponse(
+    await ctx.render(`albumDeleteConfirmation.html`, {
       item: album,
       id: ctx.params,
-    }
+    }),
+    200,
+    "text/html"
   );
-  ctx.response.status = 200;
-  ctx.response.headers.set("content-type", "text/html");
-  return ctx;
 };
 
 export const remove = (ctx) => {
   getAlbumsJs.deleteAlbum(ctx.db, ctx.params);
-  albumDelete.deleteAlbum(ctx.params);
-
+  albumHandler.deleteAlbum(ctx.params);
+  ctx.session.flash = messages.REMOVE_ALBUM_SUCCESS;
   ctx.redirect = new Response("", {
     status: 303,
     headers: { Location: "/fotos" },

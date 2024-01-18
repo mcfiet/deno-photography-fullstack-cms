@@ -1,4 +1,4 @@
-{% extends "layout.html" %} {% block content %} {% if state.CanUpdateAlbum %}
+{% extends "layout.html" %} {% block content %} {% if CanUpdateAlbum %}
 <form
   class=""
   action="/album/update/{{album.album_id}}"
@@ -22,8 +22,10 @@
 <div class="album-container">
   {% for albumImage in albumImages %}
   <div style="position: relative">
-    {% if state.CanRemoveImage %}
-    <a href="/image/remove/{{albumImage.image_id}}" class="delete-btn"></a>
+    {% if CanRemoveImage %}
+    <a href="/image/remove/{{albumImage.image_id}}" class="delete-btn">
+      <span class="material-symbols-outlined">close</span>
+    </a>
     {% endif %}
     <figure>
       <img class="album-img" src="/{{albumImage.albums_images_link}}" alt="" />
@@ -49,7 +51,7 @@
       {% endif %}
     </figure>
   </div>
-  {% endfor %} {% if state.CanAddImage %}
+  {% endfor %} {% if CanAddImage %}
   <form
     class="album-img"
     action="/image/add"

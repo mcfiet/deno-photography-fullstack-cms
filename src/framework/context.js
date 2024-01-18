@@ -14,4 +14,21 @@ export const createContext = (request, options) => ({
   nunjucks: options.nunjucks,
   cookies: new CookieMap(request),
   state: {},
+  async render(site, options) {
+    let cartAmount;
+    if (this.session.cart) {
+      cartAmount = this.session.cart.images.length;
+    }
+    return await this.nunjucks.render(site, {
+      cartAmount,
+      ...options,
+      ...this.state,
+    });
+  },
+  setResponse(site, status, contentType) {
+    this.response.body = site;
+    this.response.status = status;
+    this.response.headers.set("content-type", contentType);
+    return this;
+  },
 });

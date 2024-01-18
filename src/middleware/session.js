@@ -35,10 +35,7 @@ export const getSession = (ctx) => {
   // Get Session
   ctx.sessionId = ctx.cookies.get(SESSION_KEY);
 
-  ctx.session = ctx.sessionStore.get(ctx.sessionId) ?? {
-    user: {},
-    state: { isLoggedIn: null },
-  };
+  ctx.session = ctx.sessionStore.get(ctx.sessionId) ?? {};
   return ctx;
 };
 

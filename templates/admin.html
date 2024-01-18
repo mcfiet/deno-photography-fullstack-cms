@@ -4,13 +4,15 @@
 
 <section>
   <h2>Nachrichten</h2>
-  <div class="messages">
+  <div class="messages table-container">
     <table>
       <tr>
         <th>Absender Email</th>
         <th>Absender Name</th>
         <th>Betreff</th>
         <th>Nachricht</th>
+        <th></th>
+        <th></th>
       </tr>
       {% for message in messages %}
       <tr>
@@ -20,10 +22,16 @@
         <td class="message-text">{{message.message_text }}</td>
         <td>
           <a
+            class="symbol-text-link"
             href="mailto:{{ message.sender_email }}?subject=Ihre Anfrage: {{ message.message_subject }}"
             ><span class="material-symbols-outlined"> mail </span>Nachricht
             beantworten</a
           >
+        </td>
+        <td>
+          <a href="/message/remove/{{message.message_id}}" class="delete-btn">
+            <span class="material-symbols-outlined">close</span>
+          </a>
         </td>
       </tr>
       {% endfor %}
@@ -31,37 +39,90 @@
   </div>
 </section>
 
-<section>
-  <h2>User</h2>
-  <div class="messages">
-    <table>
-      <tr>
-        <th>Username</th>
-        <th>Rollen</th>
-      </tr>
-      {% for user in users %}
-      <tr>
-        <td class="username">{{ user.username }}</td>
-        <td class="role">
-          {% for role in user.roles %} {{ role.role_name }}, {% endfor %}
-        </td>
-        {% if state.CanUpdateUser %}
-        <td>
-          <a href="user/edit/{{user.user_id}}">
-            <span class="material-symbols-outlined"> manage_accounts </span>
-            User bearbeiten
-          </a>
-        </td>
-        {% endif %}
-      </tr>
-      {% endfor %}
-    </table>
+<section class="grid-container">
+  <div>
+    <h2>User</h2>
+    <div class="table-container">
+      <table>
+        <tr>
+          <th>Username</th>
+          <th>Rollen</th>
+          {% if CanUpdateUser %}
+          <th></th>
+          {% endif %} {% if CanRemoveUser %}
+          <th></th>
+          {% endif %}
+        </tr>
+        {% for user in users %}
+        <tr>
+          <td class="username">{{ user.username }}</td>
+          <td class="role">
+            {% for role in user.roles %} {{ role.role_name }}, {% endfor %}
+          </td>
+          {% if CanUpdateUser %}
+          <td>
+            <a class="symbol-text-link" href="user/edit/{{user.user_id}}">
+              <span class="material-symbols-outlined"> manage_accounts </span>
+              User bearbeiten
+            </a>
+          </td>
+          {% endif %} {% if CanRemoveUser %}
+          <td>
+            <a href="/user/remove/{{user.user_id}}" class="delete-btn">
+              <span class="material-symbols-outlined">close</span>
+            </a>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </table>
+      {% if CanAddUser %}
+      <a class="symbol-text-link" href="user/add">
+        <span class="material-symbols-outlined"> person_add </span>
+        User hinzufügen
+      </a>
+      {% endif %}
+    </div>
   </div>
-  {% if state.CanAddUser %}
-  <a href="user/add">
-    <span class="material-symbols-outlined"> person_add </span>
-    User hinzufügen
-  </a>
-  {% endif %}
+  <div>
+    <h2>Rollen</h2>
+    <div class="table-container">
+      <table>
+        <tr>
+          <th>Rolle</th>
+          {% if CanUpdateRole %}
+          <th></th>
+          {% endif %} {% if CanRemoveRole %}
+          <th></th>
+          {% endif %}
+        </tr>
+        {% for role in roles %}
+        <tr>
+          <td class="role-name">{{ role.role_name }}</td>
+          {% if CanUpdateRole %}
+          <td>
+            <a class="symbol-text-link" href="role/edit/{{role.role_id}}">
+              <span class="material-symbols-outlined"> manage_accounts </span>
+              Rolle bearbeiten
+            </a>
+          </td>
+          {% endif %} {% if CanRemoveRole %}
+          <td>
+            <a href="/role/remove/{{role.role_id}}" class="delete-btn">
+              <span class="material-symbols-outlined">close</span>
+            </a>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </table>
+      {% if CanAddRole %}
+      <a class="symbol-text-link" href="role/add">
+        <span class="material-symbols-outlined"> person_add </span>
+        Rolle hinzufügen
+      </a>
+      {% endif %}
+    </div>
+  </div>
 </section>
 {% endblock %}

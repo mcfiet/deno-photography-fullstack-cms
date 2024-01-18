@@ -13,9 +13,6 @@
   </head>
 
   <body>
-    {% if isLoggedIn %}
-    <div class="admin-panel">Admin Panel</div>
-    {% endif %}
     <a
       href="#main-content
   "
@@ -60,10 +57,16 @@
             <li class="big-link-parent">
               <a href="/kontakt" class="big-link">Kontakt</a>
             </li>
-            {% if isLoggedIn %}
+            {% if authenticated %}
+            <li class="big-link-parent">
+              <a href="/admin" class="big-link">
+                <span class="material-symbols-outlined"> passkey </span>
+              </a>
+            </li>
             <li class="big-link-parent">
               <a href="/logout" class="big-link">Logout</a>
             </li>
+
             {% else %}
             <li class="big-link-parent">
               <a href="/login" class="big-link">Login</a>
@@ -131,7 +134,7 @@
     <main id="main-content">{% block content %}{% endblock %}</main>
     <footer>
       <div class="logo-container">
-        <a href="index.html">
+        <a href="/">
           <img src="/img/fotofiete.svg" alt="fotofiete Logo" class="logo" />
         </a>
       </div>

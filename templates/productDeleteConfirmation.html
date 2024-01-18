@@ -1,4 +1,4 @@
-{% extends "layout.html" %} {% block content %} {% if isLoggedIn %}
+{% extends "layout.html" %} {% block content %} {% if CanRemoveProduct %}
 <h2>Wirklich löschen?</h2>
 <section class="grid-container products two">
   <div class="">
@@ -13,7 +13,12 @@
       </p>
     </article>
 
-    <form class="" action="/product/remove/{{id}}" method="post" style="margin-bottom: 2rem">
+    <form
+      class=""
+      action="/product/remove/{{id}}"
+      method="post"
+      style="margin-bottom: 2rem"
+    >
       <button type="submit">Löschen</button>
       <a class="button" href="/products">Zurück</a>
     </form>

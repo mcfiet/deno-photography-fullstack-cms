@@ -1,0 +1,19 @@
+{% extends "layout.html" %} {% block content %} {% if CanRemoveUser %}
+<h2>Wirklich löschen?</h2>
+<section class="grid-container products two">
+  <div class="">
+    <p>{{username}}</p>
+
+    <form
+      class=""
+      action="/user/remove/{{user_id}}"
+      method="post"
+      style="margin-bottom: 2rem"
+    >
+      <button type="submit">Löschen</button>
+      <a class="button" href="/admin">Zurück</a>
+    </form>
+  </div>
+</section>
+
+{% endif %} {% endblock %}

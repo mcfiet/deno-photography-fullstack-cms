@@ -2,6 +2,8 @@ import * as sqlite from "https://deno.land/x/sqlite@v3.8/mod.ts";
 import { createContext } from "./framework/context.js";
 import { createApp } from "./framework/app.js";
 import * as controller from "./controller/controller.js";
+import { getUser } from "./middleware/user.js";
+import { getFlash } from "./middleware/flash.js";
 import { router } from "./router.js";
 import { serveStaticFile } from "./middleware/serveStaticFiles.js";
 import nunjucks from "npm:nunjucks@3.2.4";
@@ -20,7 +22,8 @@ nunjucks.configure("templates", { autoescape: true });
 const middleware = [
   getCookies,
   getSession,
-  // TODO getUser,
+  getFlash,
+  getUser,
   router.routes(),
   serveStaticFile,
   setSession,
@@ -46,8 +49,7 @@ const sessionStore = createSessionStore();
 export const handleRequest = async (request) => {
   let ctx = createContext(request, {
     db,
-    staticPath: "web",
-    staticBase: `${Deno.cwd()}/public`,
+    staticBase: "public",
     nunjucks,
     sessionStore,
   });

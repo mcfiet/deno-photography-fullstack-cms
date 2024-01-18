@@ -1,4 +1,4 @@
-import * as model from "../model/messageModel.js";
+import * as messages from "../framework/messages.js";
 import * as getProductsJs from "../model/productModel.js";
 import * as formDataController from "../framework/formData.js";
 
@@ -7,32 +7,26 @@ export const get = async (ctx) => {
   if (ctx.session.cart) {
     cartAmount = ctx.session.cart.images.length;
   }
-  ctx.response.body = await ctx.nunjucks.render("preise.html", {
-    cartAmount,
-    products: getProductsJs.getProducts(ctx.db),
-    bundles: getProductsJs.getBundles(ctx.db),
-    isLoggedIn: ctx.session.state.isLoggedIn,
-    state: ctx.state,
-  });
-  ctx.response.status = 200;
-  ctx.response.headers.set("content-type", "text/html");
-  return ctx;
+  return ctx.setResponse(
+    await ctx.render(`preise.html`, {
+      products: getProductsJs.getProducts(ctx.db),
+      bundles: getProductsJs.getBundles(ctx.db),
+    }),
+    200,
+    "text/html"
+  );
 };
 
 export const removeConfirmation = async (ctx) => {
   const product = getProductsJs.getProductById(ctx.db, ctx.params);
-
-  ctx.response.body = await ctx.nunjucks.render(
-    `productDeleteConfirmation.html`,
-    {
-      isLoggedIn: ctx.session.state.isLoggedIn,
+  return ctx.setResponse(
+    await ctx.render(`productDeleteConfirmation.html`, {
       item: product,
       id: ctx.params,
-    }
+    }),
+    200,
+    "text/html"
   );
-  ctx.response.status = 200;
-  ctx.response.headers.set("content-type", "text/html");
-  return ctx;
 };
 
 export const update = async (ctx) => {
@@ -44,6 +38,7 @@ export const update = async (ctx) => {
     status: 303,
     headers: { Location: `/products` },
   });
+  ctx.session.flash = messages.UPDATE_PRODUCT_SUCCESS;
   return ctx;
 };
 
@@ -54,6 +49,7 @@ export const remove = async (ctx) => {
     status: 303,
     headers: { Location: `/products` },
   });
+  ctx.session.flash = messages.REMOVE_PRODUCT_SUCCESS;
   return ctx;
 };
 
@@ -69,5 +65,6 @@ export const add = async (ctx) => {
     status: 303,
     headers: { Location: `/products` },
   });
+  ctx.session.flash = messages.ADD_PRODUCT_SUCCESS;
   return ctx;
 };

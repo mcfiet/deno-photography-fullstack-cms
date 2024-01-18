@@ -8,7 +8,7 @@
     category.category_name %}
 
     <figure class="album big-link-parent img-container">
-      {% if state.CanRemoveAlbum %}
+      {% if CanRemoveAlbum %}
 
       <a href="/album/remove/{{album.album_id}}" class="delete-btn">
         <span class="material-symbols-outlined">close</span>
@@ -27,7 +27,7 @@
         </a>
       </figcaption>
     </figure>
-    {% endif %} {% endfor %} {% if state.CanAddAlbum %}
+    {% endif %} {% endfor %} {% if CanAddAlbum %}
 
     <form class="" action="/album/add" method="post">
       <fieldset>

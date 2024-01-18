@@ -18,7 +18,10 @@
         <h3>{{product.product_name}}</h3>
         <p>{{product.product_text}}</p>
       </div>
-      <p class="price">{{product.product_price}}€</p>
+      <p class="price">
+        {{product.product_price}}€
+        <span> (Einzelpreis ohne Bundle)</span>
+      </p>
     </div>
   </li>
   {% endfor %}

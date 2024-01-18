@@ -9,14 +9,14 @@
   </p>
 </div>
 <section class="grid-container products two">
-  {% for item in products %} {% if state.CanUpdateProduct %}
+  {% for item in products %} {% if CanUpdateProduct %}
   <form
     action="/product/update/{{item.product_id}}"
     method="POST"
     class="product"
     id="product-{{item.product_id}}"
   >
-    {% if state.CanRemoveProduct %}
+    {% if CanRemoveProduct %}
     <a href="/product/remove/{{item.product_id}}" class="delete-btn">
       <span class="material-symbols-outlined">close</span>
     </a>
@@ -43,7 +43,7 @@
       <span class="price-info">{{item.product_priceDes}}</span>
     </p>
   </article>
-  {% endif %} {% endfor %} {% if state.CanAddProduct %}
+  {% endif %} {% endfor %} {% if CanAddProduct %}
   <form action="/product/add" method="POST" class="product bundle">
     <fieldset>
       <input type="hidden" name="id" />
@@ -65,14 +65,14 @@
   </p>
 </div>
 <section class="grid-container products">
-  {% for item in bundles %} {% if state.CanUpdateProduct %}
+  {% for item in bundles %} {% if CanUpdateProduct %}
   <form
     action="/product/update/{{item.product_id}}"
     method="POST"
     class="product bundle"
     id="bundle-{{item.id}}"
   >
-    {% if state.CanRemoveProduct %}
+    {% if CanRemoveProduct %}
     <a href="/product/remove/{{item.product_id}}" class="delete-btn">
       <span class="material-symbols-outlined">close</span>
     </a>
@@ -119,7 +119,7 @@
     <p class="text-info">{{item.product_bundleAmount}} Bilder inklusive</p>
     {% endif %}
   </article>
-  {% endfor %} {% if state.CanAddProduct %}
+  {% endfor %} {% if CanAddProduct %}
   <form action="/product/add" method="POST" class="product bundle">
     <fieldset>
       <input type="hidden" name="id" />

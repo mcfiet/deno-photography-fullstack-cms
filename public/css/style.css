@@ -257,16 +257,17 @@ table td,
 table  th {
   padding: 0.5rem;
   text-align: left;
-  border: 1px solid var(--ff-light)
+  border: 1px solid var(--ff-light);
+  max-width: 80ch;
 }
 
 table .message-subject {
   min-width: 20ch;
 }
 
-table a {
+.symbol-text-link {
   display: flex;
-  justify-content: center;
+  align-items: center;
   text-decoration: none;
   gap: 0.5rem;
 }
@@ -348,6 +349,10 @@ input[type="button"] {
   transition: var(--transition-duration) all ease-in-out;
   text-decoration: none;
   font-size: 0.9rem;
+}
+
+.checkbox {
+  margin: 0.5rem;
 }
 
 a.button:hover,
@@ -735,10 +740,20 @@ footer .sm-icon:hover {
 
 .cart-element .price {
   display: flex;
-  align-items: end;
+  justify-content: end;
   font-size: 2rem;
   font-weight: bold;
   margin-left: auto;
+  flex-direction: column;
+  text-align: right;
+}
+.cart-element .price span{
+  display: block;
+  font-family: Wix;
+  font-size: 1rem;
+  font-weight: normal;
+  margin-left: auto;
+  color: black;
 }
 
 .order-container {
@@ -822,9 +837,12 @@ footer .sm-icon:hover {
 .grid-container {
   display: grid;
   grid-template-columns: 1fr;
-  align-items: center;
   grid-gap: 2rem;
   justify-content: center;
+}
+
+.grid-container.products {
+  align-items: center;
 }
 
 .grid-img {
@@ -1016,8 +1034,6 @@ footer .logo-container {
   }
   .grid-container {
     grid-template-columns: 1fr 1fr;
-    align-items: center;
-    justify-content: center;
   }
 
   .two .teaser-text {
@@ -1075,6 +1091,22 @@ footer .logo-container {
     text-decoration: none;
   }
 
+  table .delete-btn {
+
+    position:inherit;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 1rem;
+    transform: translate(0, 0);
+    background-color: red;
+    z-index: 102;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-items: center;
+    text-decoration: none;
+  }
+
   .delete-btn span {
     color: var(--ff-akzent_pink);
     font-size: 1rem;
@@ -1082,8 +1114,6 @@ footer .logo-container {
 
   .grid-container {
     grid-template-columns: 1fr 1fr;
-    align-items: center;
-    justify-content: center;
   }
 
   .teaser-text {
@@ -1115,8 +1145,6 @@ footer .logo-container {
   /*---          ---*/
   .grid-container {
     grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
-    justify-content: center;
   }
 
   .teaser-text {
@@ -1147,13 +1175,9 @@ footer .logo-container {
   /*---          ---*/
   .grid-container {
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    align-items: center;
-    justify-content: center;
   }
   .grid-container.products {
     grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
-    justify-content: center;
   }
 
   .teaser-text {

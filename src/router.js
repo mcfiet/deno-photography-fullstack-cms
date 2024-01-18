@@ -7,33 +7,17 @@ import * as controllerLogin from "./controller/loginController.js";
 import * as controllerAdmin from "./controller/adminController.js";
 import * as controllerCart from "./controller/cartController.js";
 import * as controllerKontakt from "./controller/kontaktController.js";
-import * as model from "./model/messageModel.js";
-import * as getUserByIdJs from "./model/userModel.js";
 
 const isMatching = (pattern, method, ctx) => {
   return pattern.test(ctx.url) && ctx.request.method === method;
 };
 const hasPermission = (permission) => (ctx) => {
-  console.log(ctx.state.user);
-  if (!check(ctx.state.user, permission)) {
+  if (!ctx.state.user || !ctx.state.user.check(permission)) {
     ctx.response.body = "";
     ctx.response.status = 403;
     ctx.response.headers.set("content-type", "text/html");
   }
-};
-const check = (user, permission) => {
-  let hasPermission = false;
-  //console.log(user);
-  if (user.permissions) {
-    user.permissions.forEach((role) => {
-      role.permissions.forEach((element) => {
-        if (element.permission_name == permission) {
-          hasPermission = true;
-        }
-      });
-    });
-  }
-  return hasPermission;
+  return ctx;
 };
 const checkRole = (user, role) => {
   let hasRole = false;
@@ -45,26 +29,6 @@ const checkRole = (user, role) => {
     });
   }
   return hasRole;
-};
-
-export const addPermissions = (ctx) => {
-  if (ctx.session.user) {
-    ctx.state.CanRemoveAlbum = check(ctx.state.user, "remove album");
-    ctx.state.CanAddAlbum = check(ctx.state.user, "add album");
-    ctx.state.CanUpdateAlbum = check(ctx.state.user, "update album");
-
-    ctx.state.CanRemoveImage = check(ctx.state.user, "remove image");
-    ctx.state.CanAddImage = check(ctx.state.user, "add image");
-
-    //ctx.state.CanRemoveProduct = check(ctx.state.user, "remove product");
-    ctx.state.CanAddProduct = check(ctx.state.user, "add product");
-    ctx.state.CanUpdateProduct = check(ctx.state.user, "update product");
-
-    ctx.state.CanRemoveUser = check(ctx.state.user, "remove user");
-    ctx.state.CanAddUser = check(ctx.state.user, "add user");
-    ctx.state.CanUpdateUser = check(ctx.state.user, "update user");
-  }
-  return ctx;
 };
 
 export const router = createRouter();
@@ -120,6 +84,16 @@ router.post(
   hasPermission("update user"),
   controllerAdmin.saveUser
 );
+router.get(
+  "/user/remove/:id",
+  hasPermission("remove user"),
+  controllerAdmin.removeUserConfirmation
+);
+router.post(
+  "/user/remove/:id",
+  hasPermission("remove user"),
+  controllerAdmin.removeUser
+);
 router.get("/user/add", hasPermission("add user"), controllerAdmin.addUserForm);
 router.post("/user/add", hasPermission("add user"), controllerAdmin.addUser);
 router.post("/addMessage", [], controllerKontakt.addMessage);
@@ -128,55 +102,63 @@ router.get("/login", [], controllerLogin.get);
 router.post("/login", [], controllerLogin.login);
 router.get("/logout", [], controllerLogin.logout);
 router.get(
-  "/image/delete/:id",
-  hasPermission("delete image"),
+  "/image/remove/:id",
+  hasPermission("remove image"),
   controllerImage.removeConfirmation
 );
 router.post(
-  "/image/delete/:id",
-  hasPermission("delete image"),
+  "/image/remove/:id",
+  hasPermission("remove image"),
   controllerImage.remove
 );
 router.post("/image/add", hasPermission("add image"), controllerImage.add);
 router.get("/image/addToCart/:id", [], controllerImage.addToCart);
 router.get("/image/removeFromCart/:id", [], controllerImage.removeFromCart);
 router.get("/cart", [], controllerCart.get);
+router.get("/role/add", hasPermission("add role"), controllerAdmin.addRoleForm);
+router.post("/role/add", hasPermission("add role"), controllerAdmin.addRole);
+router.get(
+  "/role/edit/:id",
+  hasPermission("update role"),
+  controllerAdmin.editRole
+);
+router.post(
+  "/role/edit/:id",
+  hasPermission("update role"),
+  controllerAdmin.saveRole
+);
+router.get(
+  "/role/remove/:id",
+  hasPermission("remove role"),
+  controllerAdmin.removeRoleConfirmation
+);
+router.post(
+  "/role/remove/:id",
+  hasPermission("remove role"),
+  controllerAdmin.removeRole
+);
 
 const runRouter = (routes) => async (ctx) => {
   if (ctx.response.status) {
     return ctx;
   }
-  const match = routes.find((route) =>
+  const route = routes.find((route) =>
     isMatching(route.pattern, route.method, ctx)
   );
 
-  if (match) {
-    if (Object.values(ctx.session.user).some((el) => el !== undefined)) {
-      //console.log(ctx.session.user);
-      const user = getUserByIdJs.getUserById(ctx.db, ctx.session.user.user_id);
-      user.permissions = getUserByIdJs.getPermissionByUserId(
-        ctx.db,
-        ctx.session.user.user_id
-      );
-      //console.log(ctx.state);
-      ctx.state.user = user;
-      ctx.state.authenticated = true;
-      ctx = addPermissions(ctx);
-      //console.log(ctx.state);
-    }
-
-    ctx.params = extractParams(match.pattern, ctx.url);
+  if (route) {
+    ctx.params = extractParams(route.pattern, ctx.url);
     if (ctx.response.status) {
       return ctx;
     }
-    if (match.middleware.length > 0) {
-      match.middleware(ctx);
+    if (route.middleware.length > 0) {
+      ctx = route.middleware(ctx);
       if (ctx.response.status) {
         return ctx;
       }
     }
 
-    return await match.controller(ctx);
+    return await route.controller(ctx);
   }
   return ctx;
 };
