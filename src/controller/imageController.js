@@ -26,7 +26,7 @@ export const add = async (ctx) => {
 
 export const removeConfirmation = async (ctx) => {
   return ctx.setResponse(
-    await ctx.render(`imageDeleteConfirmation.html`, {
+    await ctx.render(`imageRemoveForm.html`, {
       imageId: ctx.params,
       imageLink: albumModel.getImageById(ctx.db, ctx.params).albums_images_link,
     }),

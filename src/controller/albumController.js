@@ -63,7 +63,7 @@ export const removeConfirmation = async (ctx) => {
   const album = getAlbumsJs.getAlbumById(ctx.db, ctx.params);
 
   return ctx.setResponse(
-    await ctx.render(`albumDeleteConfirmation.html`, {
+    await ctx.render(`albumDeleteForm.html`, {
       item: album,
       id: ctx.params,
     }),

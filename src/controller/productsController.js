@@ -20,7 +20,7 @@ export const get = async (ctx) => {
 export const removeConfirmation = async (ctx) => {
   const product = getProductsJs.getProductById(ctx.db, ctx.params);
   return ctx.setResponse(
-    await ctx.render(`productDeleteConfirmation.html`, {
+    await ctx.render(`productRemoveForm.html`, {
       item: product,
       id: ctx.params,
     }),

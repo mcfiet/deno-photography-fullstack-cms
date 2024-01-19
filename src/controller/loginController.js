@@ -4,14 +4,21 @@ import * as getUserByIdJs from "../model/userModel.js";
 import * as csfr from "../framework/csrf.js";
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 
-// { KEY:VALUE, KEY_2, VALUE_2 }
-
 export const login = async (ctx) => {
   const formData = await formDataController.getEntries(ctx);
   if (ctx.session.csrf !== formData._csrf) {
     ctx.response.status = 403;
     return;
   }
+
+  if (ctx.session.client) {
+    ctx.session.flash = "Bitte erst als Kunde ausloggen";
+    return (ctx.redirect = new Response("", {
+      status: 303,
+      headers: { Location: `/` },
+    }));
+  }
+
   const users = getUserByIdJs.getUsers(ctx.db);
 
   let authenticated = false;
@@ -27,7 +34,7 @@ export const login = async (ctx) => {
       authenticated = true;
     }
   }
-
+  console.log(ctx.session);
   if (authenticated) {
     ctx.session.flash = messages.LOGGEDIN_SUCCESS;
     ctx.redirect = new Response("", {
@@ -38,7 +45,7 @@ export const login = async (ctx) => {
     ctx.session.flash = messages.LOGGEDIN_FAILURE;
     ctx.redirect = new Response("", {
       status: 303,
-      headers: { Location: `/login` },
+      headers: { Location: `/admin-login` },
     });
   }
 
@@ -48,7 +55,7 @@ export const login = async (ctx) => {
 export const get = async (ctx) => {
   ctx.session.csrf = csfr.generateToken();
   return ctx.setResponse(
-    await ctx.render(`login.html`, {
+    await ctx.render(`adminLogin.html`, {
       csrf: ctx.session.csrf,
     }),
     200,

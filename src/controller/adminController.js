@@ -1,5 +1,6 @@
 import * as model from "../model/messageModel.js";
 import * as userModel from "../model/userModel.js";
+import * as clientModel from "../model/clientModel.js";
 import * as formDataController from "../framework/formData.js";
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 import * as messages from "../framework/messages.js";
@@ -12,10 +13,11 @@ export const index = async (ctx) => {
     for (const user of users) {
       user.roles = userModel.getRolesByUserId(ctx.db, user.user_id);
     }
-
+    const clients = clientModel.getClients(ctx.db);
     return ctx.setResponse(
       await ctx.render(`admin.html`, {
         users,
+        clients,
         roles: userModel.getRoles(ctx.db),
         messages: model.getMessages(ctx.db),
       }),
@@ -25,7 +27,7 @@ export const index = async (ctx) => {
   } else {
     ctx.redirect = new Response("", {
       status: 303,
-      headers: { Location: "/login" },
+      headers: { Location: "/admin-login" },
     });
   }
 
@@ -36,7 +38,7 @@ export const editUser = async (ctx) => {
   const user = userModel.getUserById(ctx.db, ctx.params);
   if (ctx.state.authenticated) {
     return ctx.setResponse(
-      await ctx.render(`editUser.html`, {
+      await ctx.render(`userEdit.html`, {
         user,
         roles: userModel.getRolesByUserId(ctx.db, user.user_id),
       }),
@@ -75,7 +77,7 @@ export const saveUser = async (ctx) => {
 export const addUserForm = async (ctx) => {
   if (ctx.state.authenticated) {
     return ctx.setResponse(
-      await ctx.render(`addUser.html`, {
+      await ctx.render(`userAdd.html`, {
         roles: userModel.getRoles(ctx.db),
       }),
       200,
@@ -136,7 +138,7 @@ export const removeUserConfirmation = async (ctx) => {
   const user = userModel.getUserById(ctx.db, ctx.params);
 
   return ctx.setResponse(
-    await ctx.render(`userRemoveConfirmation.html`, {
+    await ctx.render(`userRemoveForm.html`, {
       ...user,
     }),
     200,
@@ -227,7 +229,7 @@ export const removeRoleConfirmation = async (ctx) => {
   const role = userModel.getRoleById(ctx.db, ctx.params);
 
   return ctx.setResponse(
-    await ctx.render(`roleRemoveConfirmation.html`, {
+    await ctx.render(`roleRemoveForm.html`, {
       ...role,
     }),
     200,

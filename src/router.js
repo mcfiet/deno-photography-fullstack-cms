@@ -7,6 +7,7 @@ import * as controllerLogin from "./controller/loginController.js";
 import * as controllerAdmin from "./controller/adminController.js";
 import * as controllerCart from "./controller/cartController.js";
 import * as controllerKontakt from "./controller/kontaktController.js";
+import * as controllerClient from "./controller/clientController.js";
 
 const isMatching = (pattern, method, ctx) => {
   return pattern.test(ctx.url) && ctx.request.method === method;
@@ -19,6 +20,7 @@ const hasPermission = (permission) => (ctx) => {
   }
   return ctx;
 };
+
 const checkRole = (user, role) => {
   let hasRole = false;
   if (user.permissions) {
@@ -98,8 +100,8 @@ router.get("/user/add", hasPermission("add user"), controllerAdmin.addUserForm);
 router.post("/user/add", hasPermission("add user"), controllerAdmin.addUser);
 router.post("/addMessage", [], controllerKontakt.addMessage);
 router.get("/kontakt", [], controllerKontakt.index);
-router.get("/login", [], controllerLogin.get);
-router.post("/login", [], controllerLogin.login);
+router.get("/admin-login", [], controllerLogin.get);
+router.post("/admin-login", [], controllerLogin.login);
 router.get("/logout", [], controllerLogin.logout);
 router.get(
   "/image/remove/:id",
@@ -115,6 +117,8 @@ router.post("/image/add", hasPermission("add image"), controllerImage.add);
 router.get("/image/addToCart/:id", [], controllerImage.addToCart);
 router.get("/image/removeFromCart/:id", [], controllerImage.removeFromCart);
 router.get("/cart", [], controllerCart.get);
+router.get("/order", [], controllerCart.orderForm);
+router.post("/order", [], controllerCart.order);
 router.get("/role/add", hasPermission("add role"), controllerAdmin.addRoleForm);
 router.post("/role/add", hasPermission("add role"), controllerAdmin.addRole);
 router.get(
@@ -137,6 +141,11 @@ router.post(
   hasPermission("remove role"),
   controllerAdmin.removeRole
 );
+router.get("/register", [], controllerClient.registerForm);
+router.post("/register", [], controllerClient.register);
+router.get("/client-login", [], controllerClient.loginForm);
+router.post("/client-login", [], controllerClient.login);
+router.get("/client-logout", [], controllerClient.logout);
 
 const runRouter = (routes) => async (ctx) => {
   if (ctx.response.status) {
@@ -157,7 +166,11 @@ const runRouter = (routes) => async (ctx) => {
         return ctx;
       }
     }
-
+    if (ctx.session.client) {
+      ctx.state.clientLoggedIn = true;
+    } else {
+      ctx.state.clientLoggedIn = false;
+    }
     return await route.controller(ctx);
   }
   return ctx;

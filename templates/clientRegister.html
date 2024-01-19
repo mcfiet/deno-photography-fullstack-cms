@@ -1,0 +1,24 @@
+{% extends "layout.html" %} {% block content %}
+<h1 class="visually-hidden">Registrierung</h1>
+
+<section>
+  <form action="/register" method="POST" class="header-teaser-element">
+    <fieldset>
+      <input type="hidden" name="_csrf" value="{{ csrf }}" />
+      <div>
+        <label for="name">Benutzername</label>
+        <input name="name" id="name" type="text" placeholder=" " />
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input name="email" id="email" type="email" placeholder=" " />
+      </div>
+      <div>
+        <label for="email">Passwort</label>
+        <input name="password" id="password" type="password" placeholder=" " />
+      </div>
+    </fieldset>
+    <button type="submit">Registrieren</button>
+  </form>
+</section>
+{% endblock %}

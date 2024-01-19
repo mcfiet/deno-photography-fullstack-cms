@@ -1,6 +1,7 @@
 {% extends "layout.html" %} {% block content %}
 
 <h1 class="visually-hidden">Admin Panel</h1>
+<a href="/client-logout" class="button">Logout</a>
 
 <section>
   <h2>Nachrichten</h2>
@@ -122,6 +123,25 @@
         Rolle hinzufügen
       </a>
       {% endif %}
+    </div>
+  </div>
+  <div>
+    <h2>Kunden</h2>
+    <div class="table-container">
+      <table>
+        <tr>
+          <th>Kundennummer</th>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+        {% for client in clients %}
+        <tr>
+          <td class="client-id">{{ client.client_id }}</td>
+          <td class="client-name">{{ client.client_name }}</td>
+          <td class="role-email">{{ client.client_email }}</td>
+        </tr>
+        {% endfor %}
+      </table>
     </div>
   </div>
 </section>
