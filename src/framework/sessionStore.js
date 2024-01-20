@@ -1,4 +1,4 @@
-import { encode as base64Encode } from "https://deno.land/std/encoding/base64.ts";
+import { encodeBase64 } from "https://deno.land/std@0.212.0/encoding/base64.ts";
 
 export const create = () => {
   const sessionStore = new Map();
@@ -23,5 +23,5 @@ export const create = () => {
 export const createId = () => {
   const array = new Uint8Array(64);
   crypto.getRandomValues(array);
-  return base64Encode(array);
+  return encodeBase64(array);
 };

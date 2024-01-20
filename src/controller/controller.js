@@ -7,7 +7,6 @@ export const get = async (ctx, site, status) => {
 
 export const index = async (ctx) => {
   let cartAmount;
-  sdadsa;
   if (ctx.session.cart) {
     cartAmount = ctx.session.cart.images.length;
   }
