@@ -102,6 +102,7 @@ export const register = async (ctx) => {
     ctx.session.csrf = csrf.generateToken();
 
     formData.password = undefined;
+    console.log(formData);
     ctx.setResponse(
       await ctx.render(`register.html`, {
         csrf: ctx.session.csrf,
