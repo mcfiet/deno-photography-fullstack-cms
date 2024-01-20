@@ -14,3 +14,23 @@ VALUES ($senderName, $senderEmail, $messageSubject, $messageText)`,
 export const getMessages = (db) => {
   return db.queryEntries(`SELECT * FROM messages`);
 };
+
+export const getMessageById = (db, id) => {
+  return db.queryEntries(
+    `SELECT * FROM messages
+    WHERE message_id = $id`,
+    {
+      $id: id,
+    }
+  )[0];
+};
+
+export const removeMessageById = (db, id) => {
+  db.query(
+    `DELETE FROM messages
+    WHERE message_id = $id`,
+    {
+      $id: id,
+    }
+  );
+};

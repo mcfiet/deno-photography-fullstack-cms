@@ -18,7 +18,7 @@
 
       <img
         class="album-img"
-        src="img/mx/2020-08-09_tensfeld_reduziert/199A8546.jpg"
+        src="/img/mx/2020-08-09_tensfeld_reduziert/199A8546.jpg"
         alt="2020-08-09 Tensfeld"
       />
       <figcaption>
@@ -31,10 +31,18 @@
 
     <form class="" action="/album/add" method="post">
       <fieldset>
-        <!-- <label for="form_file" class=""> Bild hinzufügen </label> -->
-        <!-- <input type="file" id="form_file" name="upload" value=""> -->
+        <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
+        {% if formErrors.title %}
+        <div class="error-message">{{formErrors.title}}</div>
+        {% endif %}
         <label for="title" class=""> Titel </label>
-        <input type="text" id="title" name="title" value="" />
+        <input
+          value="{{formData.album_title}}"
+          type="text"
+          id="album_title"
+          name="album_title"
+        />
         <label for="category" class=""> Kategorie </label>
         <select id="category" name="category" size="1">
           <option value="{{category.category_name}}">

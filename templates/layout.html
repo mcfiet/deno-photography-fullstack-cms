@@ -57,15 +57,15 @@
             <li class="big-link-parent">
               <a href="/kontakt" class="big-link">Kontakt</a>
             </li>
-            {% if clientLoggedIn %}
+            {% if authenticated %}
             <li class="big-link-parent">
-              <a href="/client-logout" class="big-link">Logout</a>
+              <a href="/logout" class="big-link">Logout</a>
             </li>
             {% else %}
             <li class="big-link-parent">
-              <a href="/client-login" class="big-link">Login</a>
+              <a href="/login" class="big-link">Login</a>
             </li>
-            {% endif %} {% if authenticated %}
+            {% endif %} {% if isAdmin %}
             <li class="big-link-parent">
               <a href="/admin" class="big-link">
                 <span class="material-symbols-outlined"> passkey </span>

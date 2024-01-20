@@ -1,7 +1,7 @@
 import * as mediaTypes from "https://deno.land/std/media_types/mod.ts";
 import * as path from "https://deno.land/std@0.152.0/path/posix.ts";
 import * as model from "../model/messageModel.js";
-import * as getAlbumsJs from "../model/albumModel.js";
+import * as albumModel from "../model/albumModel.js";
 
 async function generateFilename(file, albumId) {
   //const files = Deno.readDir(Deno.cwd() + "./public");
@@ -27,22 +27,19 @@ async function getHighestNumberFromDir(albumId) {
   return highestNumber;
 }
 
-export async function saveImage(db, upload, albumId) {
+export async function saveImage(db, upload, albumId, image_alt) {
   const filename = await generateFilename(upload, albumId);
-  //console.log("Filename: ", filename);
 
-  //console.log(filename);
   const destFile = await Deno.open(path.join(Deno.cwd(), "public", filename), {
     create: true,
     write: true,
     truncate: true,
   });
   await upload.stream().pipeTo(destFile.writable);
-  getAlbumsJs.saveAlbumImageById(db, albumId, filename);
+  albumModel.saveAlbumImageById(db, albumId, filename, image_alt);
 }
 
 export async function deleteImage(db, image) {
-  //console.log(image);
   await Deno.remove(`public/${image.albums_images_link}`);
-  getAlbumsJs.deleteImageById(db, image.image_id);
+  albumModel.deleteImageById(db, image.image_id);
 }

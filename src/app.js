@@ -71,6 +71,12 @@ export const handleRequest = async (request) => {
   if (!ctx.response.body && ctx.response.status == 404) {
     ctx = await controller.error404(ctx);
   }
+  if (!ctx.response.body && ctx.response.status == 403) {
+    ctx = await controller.error403(ctx);
+  }
+  if (!ctx.response.body && ctx.response.status == 500) {
+    ctx = await controller.error500(ctx);
+  }
   return new Response(ctx.response.body, {
     status: ctx.response.status,
     headers: ctx.response.headers,

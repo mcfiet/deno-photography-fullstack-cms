@@ -1,13 +1,14 @@
 import * as controller from "./controller/controller.js";
-import * as controllerProducts from "./controller/productsController.js";
-import * as controllerFotos from "./controller/fotosController.js";
-import * as controllerAlbum from "./controller/albumController.js";
-import * as controllerImage from "./controller/imageController.js";
-import * as controllerLogin from "./controller/loginController.js";
-import * as controllerAdmin from "./controller/adminController.js";
-import * as controllerCart from "./controller/cartController.js";
-import * as controllerKontakt from "./controller/kontaktController.js";
-import * as controllerClient from "./controller/clientController.js";
+import * as productsController from "./controller/productsController.js";
+import * as fotosController from "./controller/fotosController.js";
+import * as albumController from "./controller/albumController.js";
+import * as imageController from "./controller/imageController.js";
+import * as loginController from "./controller/loginController.js";
+import * as adminController from "./controller/adminController.js";
+import * as roleController from "./controller/roleController.js";
+import * as userController from "./controller/userController.js";
+import * as cartController from "./controller/cartController.js";
+import * as kontaktController from "./controller/kontaktController.js";
 
 const isMatching = (pattern, method, ctx) => {
   return pattern.test(ctx.url) && ctx.request.method === method;
@@ -21,131 +22,132 @@ const hasPermission = (permission) => (ctx) => {
   return ctx;
 };
 
-const checkRole = (user, role) => {
-  let hasRole = false;
-  if (user.permissions) {
-    user.permissions.forEach((element) => {
-      if (element.role_name == role) {
-        hasRole = true;
-      }
-    });
+const checkRole = (role) => (ctx) => {
+  if (!ctx.state.user || !ctx.state.user.checkRole(role)) {
+    ctx.response.body = "";
+    ctx.response.status = 403;
+    ctx.response.headers.set("content-type", "text/html");
   }
-  return hasRole;
+  return ctx;
 };
 
 export const router = createRouter();
 router.get("/", [], controller.index);
-router.get("/fotos", [], controllerFotos.get);
-router.get("/fotos/:id", [], controllerAlbum.get);
+router.get("/fotos", [], fotosController.get);
+router.get("/fotos/:id", [], albumController.get);
 router.get(
   "/album/remove/:id",
   hasPermission("remove album"),
-  controllerAlbum.removeConfirmation
+  albumController.removeForm
 );
 router.post(
   "/album/remove/:id",
   hasPermission("remove album"),
-  controllerAlbum.remove
+  albumController.remove
 );
-router.post("/album/add", hasPermission("add album"), controllerAlbum.add);
+router.post("/album/add", hasPermission("add album"), albumController.add);
 router.post(
   "/album/update/:id",
   hasPermission("update album"),
-  controllerAlbum.update
+  albumController.update
 );
-router.get("/products", [], controllerProducts.get);
+router.get("/products", [], productsController.get);
 router.get(
   "/product/remove/:id",
   hasPermission("remove product"),
-  controllerProducts.removeConfirmation
+  productsController.removeConfirmation
 );
 router.post(
   "/product/remove/:id",
   hasPermission("remove product"),
-  controllerProducts.remove
+  productsController.remove
 );
 router.post(
   "/product/add",
   hasPermission("add product"),
-  controllerProducts.add
+  productsController.add
 );
 router.post(
   "/product/update/:id",
   hasPermission("update product"),
-  controllerProducts.update
+  productsController.update
 );
 router.get("/ueber-mich", [], controller.ueberMich);
-router.get("/admin", [], controllerAdmin.index);
+router.get("/admin", checkRole("admin"), adminController.index);
 router.get(
   "/user/edit/:id",
   hasPermission("update user"),
-  controllerAdmin.editUser
+  userController.editUser
 );
 router.post(
   "/user/edit/:id",
   hasPermission("update user"),
-  controllerAdmin.saveUser
+  userController.saveUser
 );
 router.get(
   "/user/remove/:id",
   hasPermission("remove user"),
-  controllerAdmin.removeUserConfirmation
+  userController.removeForm
 );
 router.post(
   "/user/remove/:id",
   hasPermission("remove user"),
-  controllerAdmin.removeUser
+  userController.remove
 );
-router.get("/user/add", hasPermission("add user"), controllerAdmin.addUserForm);
-router.post("/user/add", hasPermission("add user"), controllerAdmin.addUser);
-router.post("/addMessage", [], controllerKontakt.addMessage);
-router.get("/kontakt", [], controllerKontakt.index);
-router.get("/admin-login", [], controllerLogin.get);
-router.post("/admin-login", [], controllerLogin.login);
-router.get("/logout", [], controllerLogin.logout);
+router.get("/user/add", hasPermission("add user"), userController.addUserForm);
+router.post("/user/add", hasPermission("add user"), userController.addUser);
+router.post("/addMessage", [], kontaktController.addMessage);
+router.get("/kontakt", [], kontaktController.index);
+
 router.get(
   "/image/remove/:id",
   hasPermission("remove image"),
-  controllerImage.removeConfirmation
+  imageController.removeForm
 );
 router.post(
   "/image/remove/:id",
   hasPermission("remove image"),
-  controllerImage.remove
+  imageController.remove
 );
-router.post("/image/add", hasPermission("add image"), controllerImage.add);
-router.get("/image/addToCart/:id", [], controllerImage.addToCart);
-router.get("/image/removeFromCart/:id", [], controllerImage.removeFromCart);
-router.get("/cart", [], controllerCart.get);
-router.get("/order", [], controllerCart.orderForm);
-router.post("/order", [], controllerCart.order);
-router.get("/role/add", hasPermission("add role"), controllerAdmin.addRoleForm);
-router.post("/role/add", hasPermission("add role"), controllerAdmin.addRole);
-router.get(
-  "/role/edit/:id",
-  hasPermission("update role"),
-  controllerAdmin.editRole
-);
+router.post("/image/add", hasPermission("add image"), imageController.add);
+router.get("/image/addToCart/:id", [], imageController.addToCart);
+router.get("/image/removeFromCart/:id", [], imageController.removeFromCart);
+router.get("/cart", [], cartController.get);
+router.get("/order", [], cartController.orderForm);
+router.post("/order", [], cartController.order);
+router.get("/role/add", hasPermission("add role"), roleController.addForm);
+router.post("/role/add", hasPermission("add role"), roleController.add);
+router.get("/role/edit/:id", hasPermission("update role"), roleController.edit);
 router.post(
   "/role/edit/:id",
   hasPermission("update role"),
-  controllerAdmin.saveRole
+  roleController.save
 );
 router.get(
   "/role/remove/:id",
   hasPermission("remove role"),
-  controllerAdmin.removeRoleConfirmation
+  roleController.removeForm
 );
 router.post(
   "/role/remove/:id",
   hasPermission("remove role"),
-  controllerAdmin.removeRole
+  roleController.remove
 );
-router.get("/register", [], controllerClient.registerForm);
-router.post("/register", [], controllerClient.register);
-router.get("/client-login", [], controllerClient.loginForm);
-router.post("/client-login", [], controllerClient.login);
-router.get("/client-logout", [], controllerClient.logout);
+router.get("/register", [], loginController.registerForm);
+router.post("/register", [], loginController.register);
+router.get("/login", [], loginController.get);
+router.post("/login", [], loginController.login);
+router.get("/logout", [], loginController.logout);
+router.get(
+  "/message/remove/:id",
+  hasPermission("remove message"),
+  adminController.deleteMessageForm
+);
+router.post(
+  "/message/remove/:id",
+  hasPermission("remove message"),
+  adminController.deleteMessage
+);
 
 const runRouter = (routes) => async (ctx) => {
   if (ctx.response.status) {

@@ -1,12 +1,9 @@
 import * as userModel from "../model/userModel.js";
 
 export const getUser = (ctx) => {
-  //console.log(ctx.session.user);
   if (ctx.session.user) {
-    //console.log(ctx.session.user);
     const user = createUser(ctx);
     ctx.state.user = user;
-    //console.log(user);
     ctx.state.authenticated = true;
     ctx = user.addPermissions(ctx);
   }
@@ -19,7 +16,7 @@ export const createUser = (ctx) => {
     ctx.session.user.user_id
   );
   return {
-    user,
+    ...user,
     check(permission) {
       let hasPermission = false;
 
@@ -34,7 +31,15 @@ export const createUser = (ctx) => {
       }
       return hasPermission;
     },
-
+    checkRole(role) {
+      let hasRole = false;
+      user.roles.forEach((element) => {
+        if (element.role_name == role) {
+          hasRole = true;
+        }
+      });
+      return hasRole;
+    },
     addPermissions(ctx) {
       if (ctx.session.user) {
         ctx.state.CanRemoveAlbum = this.check("remove album");
@@ -55,6 +60,10 @@ export const createUser = (ctx) => {
         ctx.state.CanRemoveRole = this.check("remove role");
         ctx.state.CanAddRole = this.check("add role");
         ctx.state.CanUpdateRole = this.check("update role");
+        ctx.state.CanRemoveMessage = this.check("remove message");
+      }
+      if (this.checkRole("admin")) {
+        ctx.state.isAdmin = true;
       }
       return ctx;
     },

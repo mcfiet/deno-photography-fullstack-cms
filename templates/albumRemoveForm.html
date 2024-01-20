@@ -17,6 +17,8 @@
       method="post"
       style="margin-bottom: 2rem"
     >
+      <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
       <button type="submit">Löschen</button>
       <a class="button" href="/fotos">Zurück</a>
     </form>

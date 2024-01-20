@@ -1,13 +1,12 @@
-export const addOrder = (db, cart, client) => {
+export const addOrder = (db, cart, user) => {
   let errormessage;
-
-  db.queryEntries(
+  db.query(
     `
-    INSERT INTO orders (fk_client, totalPrice)
-    VALUES ($clientId, $totalPrice)
+    INSERT INTO orders (fk_user, totalPrice)
+    VALUES ($userId, $totalPrice)
     `,
     {
-      $clientId: client.client_id,
+      $userId: user.user_id,
       $totalPrice: cart.totalPriceWithBundles,
     }
   );
@@ -37,4 +36,12 @@ export const addOrder = (db, cart, client) => {
   if (errormessage) {
     return errormessage;
   }
+};
+
+export const getOrders = (db) => {
+  return db.queryEntries(
+    `
+    SELECT * FROM orders
+    `
+  );
 };

@@ -2,7 +2,7 @@
 <h1 class="visually-hidden">Login</h1>
 
 <section>
-  <form action="/client-login" method="POST" class="header-teaser-element">
+  <form action="/login" method="POST" class="header-teaser-element">
     <fieldset>
       <input type="hidden" name="_csrf" value="{{ csrf }}" />
       <div>
@@ -16,5 +16,6 @@
     </fieldset>
     <button type="submit">Einloggen</button>
   </form>
+  <p>Kein Account? Dann <a href="/register">hier registrieren</a></p>
 </section>
 {% endblock %}

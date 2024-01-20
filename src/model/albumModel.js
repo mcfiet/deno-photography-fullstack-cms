@@ -1,7 +1,7 @@
 export const getAlbums = (db) => {
   return db.queryEntries(`
   SELECT album_id, album_title, category_name FROM albums
-JOIN categories 
+  JOIN categories 
   ON category_id = album_category
   `);
 };
@@ -10,7 +10,22 @@ export const getAlbumById = (db, id) => {
   const album = db.queryEntries(
     `
   SELECT * FROM albums
-WHERE album_id = $albumId
+WHERE album_id = $albumId;
+  `,
+    {
+      $albumId: id,
+    }
+  );
+  return album[0];
+};
+
+export const getCategoryByAlbumId = (db, id) => {
+  const album = db.queryEntries(
+    `
+  SELECT category_id, category_name FROM albums
+  JOIN categories 
+  ON category_id = album_category
+  WHERE album_id = $albumId;
   `,
     {
       $albumId: id,
@@ -28,7 +43,7 @@ export const updateAlbum = (db, formData, id) => {
     `,
     {
       $id: id,
-      $albumName: formData.albumName,
+      $albumName: formData.album_title,
     }
   );
 };
@@ -106,15 +121,16 @@ WHERE album_id = $albumId
   return value[0].album_title;
 };
 
-export const saveAlbumImageById = (db, albumId, filename) => {
+export const saveAlbumImageById = (db, albumId, filename, image_alt) => {
   return db.queryEntries(
     `
-  INSERT INTO albums_images(fk_albums_id, albums_images_link)
-VALUES ($albumId, $filename);
+  INSERT INTO albums_images(fk_albums_id, albums_images_link, image_alt)
+VALUES ($albumId, $filename, $imageAlt);
   `,
     {
       $albumId: albumId,
       $filename: filename,
+      $imageAlt: image_alt,
     }
   );
 };
@@ -126,8 +142,8 @@ export const addAlbum = (db, formData) => {
 VALUES ($album_title, $albums_category);
   `,
     {
-      $album_title: formData.title,
-      $albums_category: formData.category,
+      $album_title: formData.album_title,
+      $albums_category: formData.category.category_id,
     }
   );
 };

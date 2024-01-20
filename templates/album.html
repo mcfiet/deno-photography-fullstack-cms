@@ -5,11 +5,13 @@
   method="post"
   style="margin-bottom: 2rem"
 >
+  <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
   <label for="albumName" class="">Album Name</label>
   <input
     type="text"
-    id="albumName"
-    name="albumName"
+    id="album_title"
+    name="album_title"
     value="{{album.album_title}}"
   />
   <button type="submit">Titel ändern</button>
@@ -28,7 +30,11 @@
     </a>
     {% endif %}
     <figure>
-      <img class="album-img" src="/{{albumImage.albums_images_link}}" alt="" />
+      <img
+        class="album-img"
+        src="/{{albumImage.albums_images_link}}"
+        alt="{{albumImage.image_alt}}"
+      />
       {% if albumImage.isInCart %}
 
       <figcaption class="cart isInCart">
@@ -59,6 +65,10 @@
     enctype="multipart/form-data"
   >
     <fieldset>
+      <input type="hidden" name="_csrf" value="{{ csrf }}" />
+      <label for="image_alt" class="">Bild Alternative Text</label>
+
+      <input type="text" name="image_alt" />
       <input
         type="hidden"
         name="album_id"

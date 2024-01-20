@@ -1,0 +1,76 @@
+{% extends "layout.html" %} {% block content %}
+<h1 class="visually-hidden">Produkt hinzufügen</h1>
+
+<div class="product-teaser-text teaser-text">
+  <h2>Produkt hinzufügen</h2>
+</div>
+<section class="grid-container products two">
+  <form
+    {%
+    if
+    product_id
+    %}
+    action="/product/update/{{product_id}}"
+    {%
+    else
+    %}
+    action="/product/add"
+    {%
+    endif
+    %}
+    method="POST"
+    class="product bundle"
+  >
+    <fieldset>
+      <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
+      {% if formErrors.product_name %}
+      <div class="error-message">{{ formErrors.product_name }}</div>
+      {% endif %}
+      <input
+        type="text"
+        placeholder="Name"
+        name="product_name"
+        value="{{product_name}}"
+      />
+      {% if formErrors.product_text %}
+      <div class="error-message">{{ formErrors.product_text }}</div>
+      {% endif %}
+      <textarea name="product_text" rows="5" placeholder="Produktbeschreibung">
+{{product_text}}</textarea
+      >
+      {% if formErrors.product_price %}
+      <div class="error-message">{{ formErrors.product_price }}</div>
+      {% endif %}
+      <input
+        type="number"
+        name="product_price"
+        value="{{product_price}}"
+        class="price"
+        placeholder="Preis"
+      />
+      {% if formErrors.product_priceDes %}
+      <div class="error-message">{{ formErrors.product_priceDes }}</div>
+      {% endif %}
+      <input
+        name="product_priceDes"
+        value="{{product_priceDes}}"
+        placeholder="Preis Beschreibung"
+      />
+      {% if product_bundleAmount %}
+      <input
+        type="number"
+        id="product_bundleAmount"
+        name="bundleAmount"
+        value="{{product_bundleAmount}}"
+        placeholder="Bundle-Größe (Anzahl der Bilder)"
+        rows="8"
+        cols="20"
+      />
+      {% endif %}
+    </fieldset>
+    <button type="submit">Hinzufügen</button>
+  </form>
+</section>
+
+{% endblock %}

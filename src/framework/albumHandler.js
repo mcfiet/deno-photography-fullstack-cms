@@ -16,7 +16,6 @@ export async function checkDir(albumId) {
 }
 
 export async function createDir(albumId) {
-  //console.log(await checkDir(albumId));
   if (!(await checkDir(albumId))) {
     await Deno.mkdir(`public/upload/${albumId}`);
   } else {

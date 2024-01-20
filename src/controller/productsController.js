@@ -1,16 +1,17 @@
 import * as messages from "../framework/messages.js";
-import * as getProductsJs from "../model/productModel.js";
+import * as productModel from "../model/productModel.js";
 import * as formDataController from "../framework/formData.js";
+import { getFormErrors } from "../framework/validation.js";
+import * as csrf from "../framework/csrf.js";
 
 export const get = async (ctx) => {
-  let cartAmount;
-  if (ctx.session.cart) {
-    cartAmount = ctx.session.cart.images.length;
-  }
+  ctx.session.csrf = csrf.generateToken();
+
   return ctx.setResponse(
     await ctx.render(`preise.html`, {
-      products: getProductsJs.getProducts(ctx.db),
-      bundles: getProductsJs.getBundles(ctx.db),
+      csrf: ctx.session.csrf,
+      products: productModel.getProducts(ctx.db),
+      bundles: productModel.getBundles(ctx.db),
     }),
     200,
     "text/html"
@@ -18,9 +19,13 @@ export const get = async (ctx) => {
 };
 
 export const removeConfirmation = async (ctx) => {
-  const product = getProductsJs.getProductById(ctx.db, ctx.params);
+  ctx.session.csrf = csrf.generateToken();
+
+  const product = productModel.getProductById(ctx.db, ctx.params);
   return ctx.setResponse(
     await ctx.render(`productRemoveForm.html`, {
+      csrf: ctx.session.csrf,
+
       item: product,
       id: ctx.params,
     }),
@@ -29,21 +34,14 @@ export const removeConfirmation = async (ctx) => {
   );
 };
 
-export const update = async (ctx) => {
+export const remove = async (ctx) => {
   const formData = await formDataController.getEntries(ctx);
 
-  getProductsJs.updateProduct(ctx.db, formData, ctx.params);
+  if (ctx.session.csrf !== formData._csrf) {
+    return (ctx.response.status = 403);
+  }
 
-  ctx.redirect = new Response("", {
-    status: 303,
-    headers: { Location: `/products` },
-  });
-  ctx.session.flash = messages.UPDATE_PRODUCT_SUCCESS;
-  return ctx;
-};
-
-export const remove = async (ctx) => {
-  getProductsJs.deleteProduct(ctx.db, ctx.params);
+  productModel.deleteProduct(ctx.db, ctx.params);
 
   ctx.redirect = new Response("", {
     status: 303,
@@ -53,18 +51,74 @@ export const remove = async (ctx) => {
   return ctx;
 };
 
+export const update = async (ctx) => {
+  const formData = await formDataController.getEntries(ctx);
+
+  if (ctx.session.csrf !== formData._csrf) {
+    return (ctx.response.status = 403);
+  }
+
+  formData.product_id = ctx.params;
+  ctx.state.formErrors = getFormErrors(formData);
+
+  if (!Object.values(ctx.state.formErrors).some((el) => el !== undefined)) {
+    if (ctx.state.CanUpdateUser) {
+      productModel.updateProduct(ctx.db, formData);
+      ctx.session.flash = messages.UPDATE_PRODUCT_SUCCESS;
+      return (ctx.redirect = new Response("", {
+        status: 303,
+        headers: { Location: `/products` },
+      }));
+    } else {
+      return (ctx.response.status = 403);
+    }
+  } else {
+    ctx.session.csrf = csrf.generateToken();
+
+    return ctx.setResponse(
+      await ctx.render(`productErrorForm.html`, {
+        csrf: ctx.session.csrf,
+        ...formData,
+      }),
+      200,
+      "text/html"
+    );
+  }
+};
+
 export const add = async (ctx) => {
   const formData = await formDataController.getEntries(ctx);
+
+  if (ctx.session.csrf !== formData._csrf) {
+    return (ctx.response.status = 403);
+  }
 
   if (formData.bundleAmount == "") {
     formData.bundleAmount = null;
   }
-  getProductsJs.addProduct(ctx.db, formData);
+  ctx.state.formErrors = getFormErrors(formData);
 
-  ctx.redirect = new Response("", {
-    status: 303,
-    headers: { Location: `/products` },
-  });
-  ctx.session.flash = messages.ADD_PRODUCT_SUCCESS;
-  return ctx;
+  if (!Object.values(ctx.state.formErrors).some((el) => el !== undefined)) {
+    if (ctx.state.CanAddUser) {
+      productModel.addProduct(ctx.db, formData);
+      ctx.session.flash = messages.ADD_PRODUCT_SUCCESS;
+      return (ctx.redirect = new Response("", {
+        status: 303,
+        headers: { Location: `/products` },
+      }));
+    } else {
+      return (ctx.response.status = 403);
+    }
+  } else {
+    ctx.session.csrf = csrf.generateToken();
+
+    return ctx.setResponse(
+      await ctx.render(`productErrorForm.html`, {
+        csrf: ctx.session.csrf,
+        ...formData,
+      }),
+      200,
+      "text/html"
+    );
+  }
 };

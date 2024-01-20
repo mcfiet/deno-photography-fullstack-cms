@@ -1,13 +1,14 @@
-import * as model from "../model/messageModel.js";
-import * as getAlbumsJs from "../model/albumModel.js";
+import * as albumModel from "../model/albumModel.js";
+import * as csrf from "../framework/csrf.js";
 
 export const get = async (ctx) => {
-  let cartAmount;
+  ctx.session.csrf = csrf.generateToken();
 
   return ctx.setResponse(
-    await ctx.render(`gallerie.html`, {
-      albums: getAlbumsJs.getAlbums(ctx.db),
-      album_categories: getAlbumsJs.getAlbumCategories(ctx.db),
+    await ctx.render(`fotos.html`, {
+      albums: albumModel.getAlbums(ctx.db),
+      album_categories: albumModel.getAlbumCategories(ctx.db),
+      csrf: ctx.session.csrf,
     }),
     200,
     "text/html"

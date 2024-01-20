@@ -1,0 +1,34 @@
+{% extends "layout.html" %} {% block content %}
+
+<h1 class="visually-hidden">Message löschen</h1>
+
+<h2>Wirklich löschen?</h2>
+<div class="messages table-container">
+  <table>
+    <tr>
+      <th>Absender Email</th>
+      <th>Absender Name</th>
+      <th>Betreff</th>
+      <th>Nachricht</th>
+    </tr>
+    <tr>
+      <td class="sender-email">{{ sender_email }}</td>
+      <td class="sender-name">{{sender_name }}</td>
+      <td class="message-subject">{{ message_subject }}</td>
+      <td class="message-text">{{ message_text }}</td>
+    </tr>
+  </table>
+</div>
+<form
+  class=""
+  action="/message/remove/{{message_id}}"
+  method="post"
+  style="margin-bottom: 2rem"
+>
+  <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
+  <button type="submit">Löschen</button>
+  <a class="button" href="/admin">Zurück</a>
+</form>
+
+{% endblock %}

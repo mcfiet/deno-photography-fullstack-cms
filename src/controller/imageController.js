@@ -1,7 +1,7 @@
 import * as albumHandler from "../framework/albumHandler.js";
 import * as getProductsJs from "../model/productModel.js";
 import * as albumModel from "../model/albumModel.js";
-import * as imageValidation from "../framework/imageValidation.js";
+import * as imageValidation from "../framework/validation.js";
 import * as imageHandler from "../framework/imageHandler.js";
 import { CHAR_0 } from "https://deno.land/std@0.152.0/path/_constants.ts";
 import * as messages from "../framework/messages.js";
@@ -10,11 +10,12 @@ export const add = async (ctx) => {
   const formData = await ctx.request.formData();
   const upload = formData.get("upload");
   const albumId = formData.get("album_id");
+  const image_alt = formData.get("image_alt");
   if (imageValidation.validateImage(upload) == "Validiert") {
     await albumHandler.createDir(albumId);
-    await imageHandler.saveImage(ctx.db, upload, albumId);
+    await imageHandler.saveImage(ctx.db, upload, albumId, image_alt);
   } else {
-    //console.log(imageValidation.validateImage(upload));
+    //TODO
   }
 
   ctx.redirect = new Response("", {
@@ -24,18 +25,27 @@ export const add = async (ctx) => {
   return ctx;
 };
 
-export const removeConfirmation = async (ctx) => {
+export const removeForm = async (ctx) => {
+  ctx.session.csrf = csrf.generateToken();
+
   return ctx.setResponse(
     await ctx.render(`imageRemoveForm.html`, {
       imageId: ctx.params,
       imageLink: albumModel.getImageById(ctx.db, ctx.params).albums_images_link,
+      csrf: ctx.session.csrf,
     }),
     200,
     "text/html"
   );
 };
 
-export const remove = (ctx) => {
+export const remove = async (ctx) => {
+  const formData = await formDataController.getEntries(ctx);
+
+  if (ctx.session.csrf !== formData._csrf) {
+    return (ctx.response.status = 403);
+  }
+
   const albumId = albumModel.getAlbumIdByImageId(ctx.db, ctx.params);
 
   imageHandler.deleteImage(ctx.db, albumModel.getImageById(ctx.db, ctx.params));
@@ -63,8 +73,6 @@ export const addToCart = (ctx) => {
     ctx.session.flash = "Bild ist bereits im Warenkorb";
     console.log("Bild ist bereits im Warenkorb");
   }
-
-  //console.log(ctx.session.cart);
 
   ctx.redirect = new Response("", {
     status: 303,
@@ -135,7 +143,6 @@ export function checkBundles(cart, sortetBundlesAsc, db) {
     if (
       cart.singleImages >= sortetBundlesAsc[sortetBundlesAsc.length - 1 - i]
     ) {
-      //console.log(cart.bundlesUsed);
       cart.bundlesUsed.push(
         getProductsJs.getBundleByBundleAmount(
           db,

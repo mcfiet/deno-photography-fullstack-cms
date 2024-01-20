@@ -4,6 +4,8 @@
   <form class="" action="/image/remove/{{imageId}}" method="post">
     <img src="/{{imageLink}}" alt="" />
     <fieldset>
+      <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
       <button type="submit">Bild löschen</button>
       <a class="button" href="/fotos">Zurück</a>
     </fieldset>

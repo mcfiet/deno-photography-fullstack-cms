@@ -1,0 +1,38 @@
+{% extends "layout.html" %} {% block content %}
+<h1 class="visually-hidden">Album</h1>
+
+<section id="{{ category.category_name }}">
+  <div class="album-container">
+    {% if album_id %}
+    <form class="" action="/album/update/{{album_id}}" method="post">
+      {% else %}
+      <form class="" action="/album/add" method="post">
+      {% endif %}
+      <fieldset>
+         <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
+
+        {% if formErrors.album_title %}
+        <div class="error-message">{{ formErrors.album_title }}</div>
+        {% endif %}
+        <label for="album_title" class=""> Titel </label>
+        <input
+          value="{{ album_title }}"
+          type="text"
+          id="album_title"
+          name="album_title"
+          value=""
+        />
+        <label for="category" class=""> Kategorie </label>
+        <select id="category" name="category" size="1">
+          <option value="{{ category.category_name }}">
+            {{ category.category_name }}
+          </option>
+        </select>
+        <button type="submit">Speichern</button>
+        <a href="/fotos" class="button">Vorgang abbrechen</a>
+      </fieldset>
+    </form>
+  </div>
+</section>
+{% endblock %}

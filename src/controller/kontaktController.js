@@ -11,7 +11,6 @@ export const index = async (ctx) => {
 };
 export const addMessage = async (ctx) => {
   const formData = await formDataController.getEntries(ctx);
-  //console.log(formData);
   model.addMessage(ctx.db, formData);
   ctx.session.flash = messages.INQUIRY_SEND_SUCCESS;
   ctx.redirect = new Response("", {

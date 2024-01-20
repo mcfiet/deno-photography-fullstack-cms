@@ -5,3 +5,8 @@ export const generateToken = () => {
   crypto.getRandomValues(array);
   return base64Encode(array);
 };
+
+export const getCsrf = (ctx) => {
+  ctx.session.csrf = generateToken();
+  return ctx;
+};

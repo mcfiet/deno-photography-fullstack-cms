@@ -21,12 +21,18 @@
       <span class="material-symbols-outlined">close</span>
     </a>
     {% endif %}
+    <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
     <!--<input type="hidden" name="id" value="{{item.product_id}}">-->
-    <input name="name" value="{{item.product_name}}" />
-    <textarea name="text">{{item.product_text}}</textarea>
-    <input name="price" class="price" value="{{item.product_price}}" />,-
+    <input name="product_name" value="{{item.product_name}}" />
+    <textarea name="product_text" rows="5">{{item.product_text}}</textarea>
     <input
-      name="priceDes"
+      name="product_price"
+      class="price"
+      value="{{item.product_price}}"
+    />,-
+    <input
+      name="product_priceDes"
       value="{{item.product_priceDes}}"
       class="price-info"
     />
@@ -46,11 +52,22 @@
   {% endif %} {% endfor %} {% if CanAddProduct %}
   <form action="/product/add" method="POST" class="product bundle">
     <fieldset>
+      <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
       <input type="hidden" name="id" />
-      <input type="text" placeholder="Name" name="name" />
-      <textarea name="text" placeholder="Produktbeschreibung"></textarea>
-      <input type="number" name="price" class="price" placeholder="Preis" />
-      <input name="priceDes" placeholder="Preis Beschreibung" />
+      <input type="text" placeholder="Name" name="product_name" />
+      <textarea
+        name="product_text"
+        rows="5"
+        placeholder="Produktbeschreibung"
+      ></textarea>
+      <input
+        type="number"
+        name="product_price"
+        class="price"
+        placeholder="Preis"
+      />
+      <input name="product_priceDes" placeholder="Preis Beschreibung" />
     </fieldset>
     <button type="submit">Hinzufügen</button>
   </form>
@@ -77,12 +94,18 @@
       <span class="material-symbols-outlined">close</span>
     </a>
     {% endif %}
-    <input type="hidden" name="id" value="{{item.product_id}}" />
-    <input name="name" value="{{item.product_name}}" />
-    <textarea name="text">{{item.product_text}}</textarea>
-    <input name="price" class="price" value="{{item.product_price}}" />,-
+    <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
+    <input type="hidden" name="product_id" value="{{item.product_id}}" />
+    <input name="product_name" value="{{item.product_name}}" />
+    <textarea name="product_text" rows="5">{{item.product_text}}</textarea>
     <input
-      name="priceDes"
+      name="product_price"
+      class="price"
+      value="{{item.product_price}}"
+    />,-
+    <input
+      name="product_priceDes"
       value="{{item.product_priceDes}}"
       class="price-info"
     />
@@ -94,7 +117,7 @@
       {% endfor %}
     </div>
     <input
-      name="bundleAmount"
+      name="product_bundleAmount"
       value="{{item.product_bundleAmount}}"
       class="text-info"
     />Bilder inklusive
@@ -122,15 +145,26 @@
   {% endfor %} {% if CanAddProduct %}
   <form action="/product/add" method="POST" class="product bundle">
     <fieldset>
-      <input type="hidden" name="id" />
-      <input type="text" placeholder="Name" name="name" />
-      <textarea name="text" placeholder="Produktbeschreibung"></textarea>
-      <input type="number" name="price" class="price" placeholder="Preis" />
-      <input name="priceDes" placeholder="Preis Beschreibung" />
+      <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
+      <input type="hidden" name="product_id" />
+      <input type="text" placeholder="Name" name="product_name" />
+      <textarea
+        name="product_text"
+        rows="5"
+        placeholder="Produktbeschreibung"
+      ></textarea>
       <input
         type="number"
-        id="bundleAmount"
-        name="bundleAmount"
+        name="product_price"
+        class="product_price"
+        placeholder="Preis"
+      />
+      <input name="product_priceDes" placeholder="Preis Beschreibung" />
+      <input
+        type="number"
+        id="product_bundleAmount"
+        name="product_bundleAmount"
         placeholder="Bundle-Größe (Anzahl der Bilder)"
         rows="8"
         cols="20"

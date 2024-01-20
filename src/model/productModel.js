@@ -67,16 +67,16 @@ export const addProduct = (db, formData) => {
     VALUES ($name, $text, $price, $priceDes, $bundleAmount);
     `,
     {
-      $name: formData.name,
-      $text: formData.text,
-      $price: formData.price,
-      $priceDes: formData.priceDes,
-      $bundleAmount: formData.bundleAmount,
+      $name: formData.product_name,
+      $text: formData.product_text,
+      $price: formData.product_price,
+      $priceDes: formData.product_priceDes,
+      $bundleAmount: formData.product_bundleAmount,
     }
   );
 };
 
-export const updateProduct = (db, formData, id) => {
+export const updateProduct = (db, formData) => {
   db.query(
     `
     UPDATE products
@@ -88,12 +88,12 @@ export const updateProduct = (db, formData, id) => {
     WHERE product_id = $id;
     `,
     {
-      $id: id,
-      $name: formData.name,
-      $text: formData.text,
-      $price: formData.price,
-      $priceDes: formData.priceDes,
-      $bundleAmount: formData.bundleAmount,
+      $id: formData.product_id,
+      $name: formData.product_name,
+      $text: formData.product_text,
+      $price: formData.product_price,
+      $priceDes: formData.product_priceDes,
+      $bundleAmount: formData.product_bundleAmount,
     }
   );
 };

@@ -1,0 +1,78 @@
+{% extends "layout.html" %} {% block content %} {% if formData.user_id %}
+<h2>{{formData.username}} bearbeiten</h2>
+{% else %}
+<h2>Benutzer hinzufügen</h2>
+{% endif %}
+<section>
+  <form
+    {%
+    if
+    formData.user_id
+    %}
+    action="/user/edit/{{formData.user_id}}"
+    {%
+    else
+    %}
+    action="/user/add"
+    {%
+    endif
+    %}
+    method="POST"
+    class="header-teaser-element"
+  >
+    <fieldset>
+      <input type="hidden" name="_csrf" value="{{ csrf }}" />
+      <div>
+        {% if formErrors.username %}
+        <div class="error-message">{{formErrors.username}}</div>
+        {% endif %}
+        <label for="username">Benutzername</label>
+        <input
+          value="{{formData.username}}"
+          name="username"
+          id="username"
+          type="text"
+          placeholder=" "
+        />
+      </div>
+      <div>
+        {% if formErrors.email %}
+        <div class="error-message">{{formErrors.email}}</div>
+        {% endif %}
+        <label for="email">Email</label>
+        <input
+          value="{{formData.email}}"
+          name="email"
+          id="email"
+          type="email"
+          placeholder=" "
+        />
+      </div>
+      <div>
+        {% if formErrors.password %}
+        <div class="error-message">{{formErrors.password}}</div>
+        {% endif %}
+        <label for="email">Passwort</label>
+        <input
+          value="{{formData.password}}"
+          name="password"
+          id="password"
+          type="password"
+          placeholder=" "
+        />
+      </div>
+      {% for role in formData.roles %}
+      <div class="checkbox">
+        <input type="checkbox" id="{{role.role_id}}" name="role"
+        value="{{role.role_id}}" {% for userRole in formData.userRoles %} {% if
+        role.role_id == userRole.role_id %} checked {% endif %} {% endfor %}/>
+        <label for="role">{{role.role_name}}</label>
+      </div>
+      {% endfor %}
+      <button type="submit">Speichern</button>
+    </fieldset>
+
+    <a class="button" href="/admin">Zurück</a>
+  </form>
+</section>
+{% endblock %}
