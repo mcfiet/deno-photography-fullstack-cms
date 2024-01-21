@@ -53,11 +53,11 @@ export const saveUser = async (ctx) => {
     const passwordHash = await bcrypt.hash(formData.password);
     if (ctx.state.CanUpdateUser) {
       userModel.updateUser(ctx.db, formData, passwordHash, ctx.params, roleIds);
-      ctx.redirect = new Response("", {
+      ctx.session.flash = messages.UPDATE_USER_SUCCESS;
+      return (ctx.redirect = new Response("", {
         status: 303,
         headers: { Location: "/admin" },
-      });
-      ctx.session.flash = messages.UPDATE_USER_SUCCESS;
+      }));
     } else {
       ctx.response.status = 403;
       return;
@@ -72,8 +72,6 @@ export const saveUser = async (ctx) => {
       "text/html"
     );
   }
-
-  return ctx;
 };
 
 export const addUserForm = async (ctx) => {

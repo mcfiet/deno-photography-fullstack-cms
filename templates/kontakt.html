@@ -6,21 +6,55 @@
   <div class="grid-container header-teaser">
     <form action="/addMessage" method="POST" class="header-teaser-element">
       <fieldset>
+        <input type="hidden" name="_csrf" value="{{ csrf }}" />
+
         <div>
+          {% if formErrors.name %}
+          <div class="error-message">{{formErrors.name}}</div>
+          {% endif %}
           <label for="name">Name</label>
-          <input name="name" id="name" type="text" placeholder=" " />
+          <input
+            name="name"
+            value="{{formData.name}}"
+            id="name"
+            type="text"
+            placeholder=" "
+          />
         </div>
         <div>
+          {% if formErrors.email %}
+          <div class="error-message">{{formErrors.email}}</div>
+          {% endif %}
           <label for="email">E-Mail</label>
-          <input name="email" id="email" type="text" placeholder=" " />
+          <input
+            name="email"
+            value="{{formData.email}}"
+            id="email"
+            type="text"
+            placeholder=" "
+          />
         </div>
         <div>
+          {% if formErrors.subject %}
+          <div class="error-message">{{formErrors.subject}}</div>
+          {% endif %}
           <label for="subject">Betreff</label>
-          <input name="subject" id="subject" type="text" placeholder=" " />
+          <input
+            name="subject"
+            value="{{formData.subject}}"
+            id="subject"
+            type="text"
+            placeholder=" "
+          />
         </div>
         <div>
+          {% if formErrors.message %}
+          <div class="error-message">{{formErrors.message}}</div>
+          {% endif %}
           <label for="nachricht">Nachricht</label>
-          <textarea name="message" id="message" rows="5" cols="80"></textarea>
+          <textarea name="message" id="message" rows="5" cols="80">
+{{formData.message}}</textarea
+          >
         </div>
       </fieldset>
       <button type="submit">Anfrage senden</button>

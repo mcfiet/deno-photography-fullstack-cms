@@ -66,6 +66,24 @@ export const getFormErrors = (formData) => {
     formErrors.username = "Falsche Eingabe: mind. 4 Zeichen und nur Buchstaben";
   }
   if (
+    (formData.name || formData.name == "") &&
+    !validateText(formData.name, 4, 50)
+  ) {
+    formErrors.name = "Falsche Eingabe: mind. 4 Zeichen und nur Buchstaben";
+  }
+  if (
+    (formData.subject || formData.subject == "") &&
+    !validateText(formData.subject, 4, 50)
+  ) {
+    formErrors.subject = "Falsche Eingabe: mind. 4 Zeichen und nur Buchstaben";
+  }
+  if (
+    (formData.message || formData.message == "") &&
+    !validateText(formData.message, 4, 500)
+  ) {
+    formErrors.message = "Falsche Eingabe: mind. 4 Zeichen und nur Buchstaben";
+  }
+  if (
     (formData.email || formData.email == "") &&
     !validateEmail(formData.email)
   ) {
