@@ -462,6 +462,33 @@ select {
   border: var(--ff-inner-border-width) solid var(--ff-blue);
 }
 
+/*---      ---*/
+/*--- CODE ---*/
+/*---      ---*/
+pre {
+  font-family: 'Fira Code', 'Consolas', monospace;
+  background-color: rgb(243, 243, 243);
+  padding: 0.5rem;
+  border: 1px solid rgb(200, 200, 200);
+  font-size: 1em;
+  white-space: pre-wrap;
+}
+
+code {
+    font-family: 'Fira Code', 'Consolas', monospace;
+}
+
+/*---      ---*/
+/*--- DOKU ---*/
+/*---      ---*/
+
+.doku-wrapper {
+  max-width: 80ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 /*---         ---*/
 /*--- DETAILS ---*/
 /*---         ---*/

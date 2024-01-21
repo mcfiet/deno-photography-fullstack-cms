@@ -20,16 +20,26 @@ const extractResponse = (ctx) => {
   });
 };
 
-const callback = (pipeline, extra_context) => {
+const _callback = (pipeline, extra_context) => {
   return async (request) => {
     let ctx = createContext(request, extra_context);
     ctx = await runMiddleware(pipeline, ctx);
-    // if (ctx.redirect) {
-    //   return ctx.redirect;
-    // }
-    // if (!ctx.response.body && ctx.response.status == 404) {
-    //   ctx = await controller.error404(ctx);
-    // }
+    if (ctx.redirect) {
+      return ctx.redirect;
+    }
+
+    if (!ctx.response.body && ctx.response.status == 403) {
+      ctx = await controller.error403(ctx);
+    }
+    if (!ctx.response.body && ctx.response.status == 500) {
+      ctx = await controller.error500(ctx);
+    }
+
+    ctx.response.status = ctx.response.status ?? 404;
+
+    if (!ctx.response.body && ctx.response.status == 404) {
+      ctx = await controller.error404(ctx);
+    }
     return extractResponse(ctx);
   };
 };
@@ -50,7 +60,7 @@ export const createApp = () => {
       pipeline.push(middleware);
     },
     callback() {
-      return _callback(this.context, pipeline);
+      return _callback(pipeline, this.context);
     },
   };
 };

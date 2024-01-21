@@ -4,21 +4,15 @@
 
 {{ client.client_id}} {{ client.name}} {{ client.email}} {% if cart %}
 
-<ul class="cart-list">
+<ul>
   {% for image in cart.images %}
   <li>
-    <div class="cart-element">
-      <a href="/image/removeFromCart/{{image.image_id}}" class="delete-btn">
-        <span class="material-symbols-outlined">delete</span>
-      </a>
-      <figure>
-        <img class="album-img" src="/{{image.albums_images_link}}" alt="" />
-      </figure>
-      <div class="description">
-        <h3>{{product.product_name}}</h3>
+    <div>
+      <div>
+        <h3>{{product.product_name}}: {{image.image_id}}</h3>
         <p>{{product.product_text}}</p>
       </div>
-      <p class="price">
+      <p>
         {{product.product_price}}€
         <span> (Einzelpreis ohne Bundle)</span>
       </p>
