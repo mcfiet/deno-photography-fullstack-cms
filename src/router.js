@@ -149,6 +149,10 @@ router.post(
   adminController.deleteMessage
 );
 
+router.get("/datenschutz", [], controller.datenschutz);
+router.get("/impressum", [], controller.impressum);
+router.get("/dokumentation", [], controller.dokumentation);
+
 const runRouter = (routes) => async (ctx) => {
   if (ctx.response.status) {
     return ctx;

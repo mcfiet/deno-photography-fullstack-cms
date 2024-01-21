@@ -22,6 +22,30 @@ export const ueberMich = async (ctx) => {
   );
 };
 
+export const datenschutz = async (ctx) => {
+  return ctx.setResponse(
+    await ctx.render(`datenschutz.html`, {}),
+    200,
+    "text/html"
+  );
+};
+
+export const impressum = async (ctx) => {
+  return ctx.setResponse(
+    await ctx.render(`impressum.html`, {}),
+    200,
+    "text/html"
+  );
+};
+
+export const dokumentation = async (ctx) => {
+  return ctx.setResponse(
+    await ctx.render(`dokumentation.html`, {}),
+    200,
+    "text/html"
+  );
+};
+
 export const error404 = async (ctx) => {
   return ctx.setResponse(
     await ctx.render(`error404.html`, {}),
