@@ -1,9 +1,23 @@
 export const getAlbums = (db) => {
-  return db.queryEntries(`
+  const albums = db.queryEntries(`
   SELECT album_id, album_title, category_name FROM albums
   JOIN categories 
-  ON category_id = album_category
+  ON category_id = album_category;
   `);
+
+  for (const album of albums) {
+    album.thumbnail = db.queryEntries(
+      `
+  SELECT * FROM albums_images
+  WHERE fk_albums_id = $id
+  LIMIT 1;
+  `,
+      {
+        $id: album.album_id,
+      }
+    )[0];
+  }
+  return albums;
 };
 
 export const getAlbumById = (db, id) => {
