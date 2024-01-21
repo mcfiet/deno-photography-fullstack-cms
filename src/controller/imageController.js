@@ -1,10 +1,10 @@
-import * as albumHandler from "../framework/albumHandler.js";
+import * as albumHandler from "../helper/albumHandler.js";
 import * as getProductsJs from "../model/productModel.js";
 import * as albumModel from "../model/albumModel.js";
-import * as imageValidation from "../framework/validation.js";
-import * as imageHandler from "../framework/imageHandler.js";
-import * as csrf from "../framework/csrf.js";
-import * as formDataController from "../framework/formData.js";
+import * as imageValidation from "../helper/validation.js";
+import * as imageHandler from "../helper/imageHandler.js";
+import * as csrf from "../helper/csrf.js";
+import * as formDataController from "../helper/formData.js";
 
 export const add = async (ctx) => {
   const formData = await ctx.request.formData();

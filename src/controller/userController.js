@@ -1,9 +1,9 @@
 import * as userModel from "../model/userModel.js";
 import * as roleModel from "../model/roleModel.js";
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
-import * as csrf from "../framework/csrf.js";
-import * as messages from "../framework/messages.js";
-import { getFormErrors } from "../framework/validation.js";
+import * as csrf from "../helper/csrf.js";
+import * as messages from "../helper/messages.js";
+import { getFormErrors } from "../helper/validation.js";
 
 export const editUser = async (ctx) => {
   ctx.session.csrf = csrf.generateToken();

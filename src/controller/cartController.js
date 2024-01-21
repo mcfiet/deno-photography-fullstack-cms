@@ -1,6 +1,6 @@
 import * as getProductsJs from "../model/productModel.js";
 import * as orderModel from "../model/orderModel.js";
-import * as csrf from "../framework/csrf.js";
+import * as csrf from "../helper/csrf.js";
 
 export const get = async (ctx) => {
   const product = getProductsJs.getProductByName(ctx.db, "Einzelbild");

@@ -1,5 +1,3 @@
-import * as imageHandler from "./imageHandler.js";
-
 export async function deleteAlbum(albumId) {
   if (await checkDir(albumId)) {
     await Deno.remove(`public/upload/${albumId}`, { recursive: true });

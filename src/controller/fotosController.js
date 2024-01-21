@@ -1,5 +1,5 @@
 import * as albumModel from "../model/albumModel.js";
-import * as csrf from "../framework/csrf.js";
+import * as csrf from "../helper/csrf.js";
 
 export const get = async (ctx) => {
   ctx.session.csrf = csrf.generateToken();

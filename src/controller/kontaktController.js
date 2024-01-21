@@ -1,8 +1,8 @@
 import * as model from "../model/messageModel.js";
-import * as formDataController from "../framework/formData.js";
-import * as messages from "../framework/messages.js";
-import * as csrf from "../framework/csrf.js";
-import { getFormErrors } from "../framework/validation.js";
+import * as formDataController from "../helper/formData.js";
+import * as messages from "../helper/messages.js";
+import * as csrf from "../helper/csrf.js";
+import { getFormErrors } from "../helper/validation.js";
 
 export const index = async (ctx) => {
   ctx.session.csrf = csrf.generateToken();
