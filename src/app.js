@@ -1,6 +1,5 @@
 import * as sqlite from "https://deno.land/x/sqlite@v3.8/mod.ts";
 import { createContext } from "./framework/context.js";
-import { createApp } from "./framework/app.js";
 import * as controller from "./controller/controller.js";
 import { getUser } from "./middleware/user.js";
 import { getFlash } from "./middleware/flash.js";
@@ -13,7 +12,6 @@ import {
   setSession,
 } from "./middleware/session.js";
 import { getCookies, setCookies } from "./middleware/cookies.js";
-import { serve } from "https://deno.land/std@0.156.0/http/server.ts";
 
 const db = new sqlite.DB("./data/data.db");
 
