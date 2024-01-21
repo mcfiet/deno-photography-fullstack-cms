@@ -3,8 +3,8 @@ import * as getProductsJs from "../model/productModel.js";
 import * as albumModel from "../model/albumModel.js";
 import * as imageValidation from "../framework/validation.js";
 import * as imageHandler from "../framework/imageHandler.js";
-import { CHAR_0 } from "https://deno.land/std@0.152.0/path/_constants.ts";
-import * as messages from "../framework/messages.js";
+import * as csrf from "../framework/csrf.js";
+import * as formDataController from "../framework/formData.js";
 
 export const add = async (ctx) => {
   const formData = await ctx.request.formData();
@@ -15,7 +15,7 @@ export const add = async (ctx) => {
     await albumHandler.createDir(albumId);
     await imageHandler.saveImage(ctx.db, upload, albumId, image_alt);
   } else {
-    //TODO
+    ctx.session.flash = imageValidation.validateImage(upload);
   }
 
   ctx.redirect = new Response("", {
