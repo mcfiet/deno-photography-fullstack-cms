@@ -192,23 +192,29 @@ export const registerUser = (db, user) => {
 };
 
 export const removeUser = (db, id) => {
-  db.query(
-    `
+  let errormessage = "";
+  try {
+    db.query(
+      `
     DELETE FROM users
     WHERE user_id = $id;
     `,
-    {
-      $id: id,
-    }
-  );
-  db.query(
-    `
+      {
+        $id: id,
+      }
+    );
+    db.query(
+      `
     
     DELETE FROM users_roles
     WHERE fk_user = $id;
     `,
-    {
-      $id: id,
-    }
-  );
+      {
+        $id: id,
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return (errormessage = "User hat noch Bestellungen!");
+  }
 };

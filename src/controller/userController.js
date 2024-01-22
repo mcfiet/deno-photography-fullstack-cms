@@ -143,16 +143,15 @@ export const remove = async (ctx) => {
   }
 
   if (ctx.state.CanRemoveUser) {
-    userModel.removeUser(ctx.db, ctx.params);
-    ctx.redirect = new Response("", {
+    ctx.session.flash = messages.REMOVE_USER_SUCCESS + " ID: " + ctx.params;
+    ctx.session.flash = userModel.removeUser(ctx.db, ctx.params);
+    return (ctx.redirect = new Response("", {
       status: 303,
       headers: { Location: "/admin" },
-    });
-    ctx.session.flash = messages.REMOVE_USER_SUCCESS + " ID: " + ctx.params;
+    }));
   } else {
     return (ctx.response.status = 403);
   }
-  return ctx;
 };
 
 export const removeForm = async (ctx) => {
