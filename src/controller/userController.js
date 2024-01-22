@@ -4,6 +4,7 @@ import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 import * as csrf from "../helper/csrf.js";
 import * as messages from "../helper/messages.js";
 import { getFormErrors } from "../helper/validation.js";
+import * as formDataController from "../helper/formData.js";
 
 export const editUser = async (ctx) => {
   ctx.session.csrf = csrf.generateToken();

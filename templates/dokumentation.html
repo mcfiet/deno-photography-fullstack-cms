@@ -6,16 +6,12 @@
   <h2>Das Unternehmen und Ziel der Seite</h2>
   <p>
     „fotofiete” ist ein Kleingewerbe von Fiete Scheel, welches im Bereich
-    Sportfotografie unterwegs ist
+    Sportfotografie unterwegs ist.
   </p>
   <p>
     Dabei konzentriert sich der Schwerpunkt hauptsächlich auf Pferde- und
-    Motocrossfotografie. Das Kleingewerbe wurde 2017 gegründet und hat bisher
-    sich und seine Fotos auf Social-Media-Kanälen präsentiert und vertrieben.
-  </p>
-  <p>
-    Die ursprünglichen Aufgaben der Site werden aus Frontend Design übernommen.
-    Zusätzlich hat die Site folgende Aufgaben:
+    Motocrossfotografie. Das Kleingewerbe wurde 2017 gegründet und hat sich und
+    seine Fotos bisher auf Social-Media-Kanälen präsentiert und vertrieben.
   </p>
   <h3>Aufgaben der Site</h3>
   <p>
@@ -25,30 +21,72 @@
   <h4>Verkauf von Bildern:</h4>
   <p>
     Die Site vereinfacht den bisher nur einzeln abgewickelten Verkauf von
-    Bildern. So können Kunden sich selbst Bilder aussuchen und diese kaufen.
+    Bildern. Kunden können sich Bilder aussuchen und diese direkt über die Site
+    kaufen.
   </p>
   <h4>Kaufabwicklung:</h4>
   <p>
-    Kunden können sich Bilder aussuchen und diese direkt über die Site kaufen.
+    Kunden können sich Bilder aussuchen, in den Warenkorb packen und wieder
+    löschen und diese dann direkt über die Site kaufen.
+  </p>
+  <img src="/img/dokumentation/cart-1.png" alt="" />
+  <p class="img-line">
+    Bilder können direkt im Album dem Warenkorb hinzugefügt oder wieder entfernt
+    werden.
+  </p>
+  <img src="/img/dokumentation/cart-2.png" alt="" />
+  <p class="img-line">
+    Im Warenkorb kann man in der Übersicht die Bilder auch noch einmal verwalten
+    und die Bundles werden automatisch für den User per Rekursion berechnet.
+  </p>
+  <img src="/img/dokumentation/cart-3.png" alt="" />
+  <p class="img-line">
+    Die Bestellung wird wenn man angemeldet ist noch einmal zusammengefasst.
+  </p>
+  <img src="/img/dokumentation/cart-4.png" alt="" />
+  <p class="img-line">
+    Wenn man nicht angemeldet ist, hat man die Möglichkeit sich anzumelden oder
+    zu registrieren.
   </p>
   <h4>Verwaltung der Inhalte:</h4>
   <p>
     Die User können per Login Inhalte der Site verändern, löschen oder
-    hinzufügen. Mit verschiedenen Rechten und Rollen kann man bestimmen welcher
+    hinzufügen. Mit verschiedenen Rechten und Rollen kann man bestimmen, welcher
     User was verändern kann.
+  </p>
+  <p>
+    Auf der Startseite sind nur statische Inhalte, da diese per Hand eingespielt
+    werden sollen. Es handelt sich hierbei immer um Produkte und Kategorien die
+    individuell auf der Seite beworben werden sollen und nicht um Standard-Daten
+    aus der Datenbank.
   </p>
   <h4>Speicherung der Inhalte:</h4>
   <p>
     Die erstellten und veränderten Daten (Preisbundles, Alben, Nutzer etc.)
-    werden in einer Datenbank gespeichert und werden über diese auch wieder
-    abgerufen.
+    werden in einer Datenbank gespeichert und über diese auch wieder abgerufen.
+  </p>
+  <img src="/img/dokumentation/admin-fotos.png" alt="" />
+  <p class="img-line">
+    Ansicht: Fotos mit den Alben wenn man mit einem dafür angelegten User
+    angemeldet ist.
+  </p>
+  <img src="/img/dokumentation/admin-album.png" alt="" />
+  <p class="img-line">
+    Ansicht: Alben mit den Fotos wenn man mit einem dafür angelegten User
+    angemeldet ist.
+  </p>
+  <img src="/img/dokumentation/admin-preise.png" alt="" />
+  <p class="img-line">
+    Ansicht: Produkte wenn man mit einem dafür angelegten User angemeldet ist.
   </p>
   <h4>Verwaltung der User:</h4>
   <p>
     Der Admin kann per Login User der Site bearbeiten, löschen oder hinzufügen.
-    Dazu gehört auch den Usern Rollen zu vergeben. Der Admin oder der User mit
+    Dazu gehört auch, den Usern Rollen zu vergeben. Der Admin oder der User mit
     den entsprechenden Rechten kann Rollen erstellen, verändern und löschen.
   </p>
+  <img src="/img/dokumentation/admin-panel.png" alt="" />
+  <p class="img-line">Das Admin-Panel in den man alle Daten verwalten kann.</p>
   <h4>Vereinfachte Kontaktaufnahme:</h4>
   <p>
     Der Client kann über das Kontaktformular eine Anfrage senden. Diese wird in
@@ -57,6 +95,11 @@
     Beantwortung öffnet sich das Email-Standardprogramm und der Absender und
     Betreff sind automatisch ausgefüllt.
   </p>
+  <img src="/img/dokumentation/kontakt.png" alt="" />
+  <p class="img-line">
+    Das Kontakt-Formular, dessen abgeschickte Anfragen in der Datenbank
+    gespeichert und im Admin-Panel angezeigt werden.
+  </p>
   <h2>Aufbau der Datenbank</h2>
   <pre>
     <code>
@@ -64,13 +107,13 @@
 ├── albums_images // Bilder mit Id, Url zum Speicherort auf Server, alt-text, Fremdschlüssel auf <i>albums</i>
 ├── categories // Kategorien mit Id und Name
 ├── messages // Anfragen mit Id, Absender- Name, Email und Betreff, Nachricht
-├── orders // Bestellungen mit Id, Fremschlüssel auf <i>users</i>, Gesamtpreis
-├── orders_images // Referenztabelle in der festgehalten wird welche Bilder in welcher Bestellung sind
+├── orders // Bestellungen mit Id, Fremdschlüssel auf <i>users</i>, Gesamtpreis
+├── orders_images // Referenztabelle in der festgehalten wird, welche Bilder in welcher Bestellung sind
 ├── users // Benutzer mit Id, Name, Passwort (hash), Email
 ├── roles // Rollen mit Id und Name
-├── users_roles // Referenztabelle in der festgehalten wird welche Rolle welcher Benutzer hat
+├── users_roles // Referenztabelle in der festgehalten wird, welche Rolle welcher Benutzer hat
 ├── permissions // Rechte mit Id und Name
-├── roles_permissions // Referenztabelle in der festgehalten wird welche Rechte welche Rolle hat
+├── roles_permissions // Referenztabelle in der festgehalten wird, welche Rechte welche Rolle hat
 └── products // Produkte mit Id, Name, Text, Preis, Preisbeschreibung, und falls Bundle Bilder-Anzahl in Bundle
     </code>
   </pre>
@@ -78,13 +121,13 @@
   <p>Die Anwendung ist in verschiedene Strukturen aufgeteilt.</p>
   <p>
     Dabei liegen im Hauptverzeichnis die wichtigsten Dateien zum Starten der
-    Anwednung.
+    Anwendung.
   </p>
   <p>
-    Die <strong>server.js</strong> wird mithilfe von einem Deno-Befehl
-    gestartet. Daneben liegt noch eine <strong>README.md</strong> mit den
-    wichtigsten Informationen für den Anfang und eine
-    <strong>bcrypt.js</strong> zum Anlegen eines gehashten Passwortes.
+    Die <strong>server.js</strong> wird mithilfe eines Deno-Befehl gestartet.
+    Daneben liegt noch eine <strong>README.md</strong> mit den wichtigsten
+    Informationen für den Anfang und eine <strong>bcrypt.js</strong> zum Anlegen
+    eines gehashten Passwortes.
   </p>
   <p>Weitere vier Ordner liegen im Hauptverzeichnis.</p>
   <p>
@@ -94,22 +137,25 @@
   </p>
   <p>
     In <strong>/public</strong> sind alle Dateien abgelegt, auf die der Client
-    Zugriff hat. Also dinge wie <strong>/css, /img, /js</strong>. Dazu ist dort
-    auch der Ordner <strong>upload</strong> abgelegt, in dem die hochgeladenen
-    Daten der Clients gespeichert werden.
+    Zugriff hat: wie <strong>/css, /img, /js</strong>. Dazu ist dort auch der
+    Ordner <strong>upload</strong> abgelegt, in dem die hochgeladenen Daten der
+    Clients gespeichert werden.
   </p>
-  <p>Der größte Ordner des Projekts beinhaltet weitere wichtige Ordner.</p>
+  <p>
+    Der größte Ordner des Projekts <strong>/src</strong> beinhaltet weitere
+    wichtige Ordner.
+  </p>
   <p>
     In diesem Verzeichnis liegt eine Datei: Der <strong>router.js</strong>. Der
-    Router kümmert sich um das korrekte Routing der Request. Das heißt anhand
-    der URL wird im Router ermittelt welcher Controller, die Request verarbeiten
-    soll. Weitere Funktionen werden später erläutert.
+    Router kümmert sich um das korrekte Routing der Request. Das heißt: Anhand
+    der URL wird im Router ermittelt, welcher Controller, die Request
+    verarbeiten soll. Weitere Funktionen werden später erläutert.
   </p>
   <p>
     Die eben erwähnten <strong>/controller</strong> sind im gleichnamigen Ordner
     in einzelne Module thematisch aufgeteilt. In den Controllern werden die
-    Requests verarbeitet, je nachdem welchen Controller und darin enthaltene
-    Funktion der Router aufuruft. So wird zum Beispiel die Route /user/edit/3 in
+    Requests verarbeitet, je nachdem, welchen Controller und darin enthaltene
+    Funktion der Router aufruft. So wird zum Beispiel die Route /user/edit/3 in
     dem Controller <code>userController.edit()</code> verarbeitet.
   </p>
   <p>
@@ -120,13 +166,13 @@
     <strong>SessionStorage.js</strong>, in dem die Sessions gespeichert werden.
   </p>
   <p>
-    Zusätzlich gibt es in <strong>/helper</strong> einige Hilfsmodule die einige
+    Zusätzlich gibt es in <strong>/helper</strong> Hilfsmodule, die einige
     Funktionen, losgelöst von der Anwendung bereitstellen. So werden mithilfe
     des <strong>album- und imageHandler.js</strong> Alben und Bilder erstellt,
     hochgeladen und gelöscht. Außerdem können Daten mit
     <strong>validation.js</strong> validiert werden. Da eine Reihe von
-    Nachrichten auf dem Server wiederholend auf der Website ausgegben werden und
-    um dort einheitliche Meldungen zu erhalten, wurden diese in
+    Nachrichten auf dem Server wiederholend auf der Website ausgegeben werden
+    und um dort einheitliche Meldungen zu erhalten, wurden diese in
     <strong>messages.js</strong> ausgelagert.
   </p>
   <p>
@@ -202,7 +248,7 @@
   </p>
   <h3>server.js</h3>
   <p>
-    Die <strong>server.js</strong> instantiiert den Router und die app. Außerdem
+    Die <strong>server.js</strong> instanziiert den Router und die app. Außerdem
     wird hier auch die Datenbankanbindung und die Templating-Engine Nunjucks
     konfiguriert. Auch der Session-Store wird hier erstellt.
   </p>
@@ -244,20 +290,20 @@ app.context.sessionStore = createSessionStore();
     <code>pipe(...pipeline)(ctx)</code> ausgepackt und nacheinander mit
     <code>reduce()</code> abgearbeitet. Dabei ist <code>ctx</code> das
     Context-Objekt, welches den einzelnen Funktionen in dem Array übergeben
-    wird. Das Abbarbeiten der Middleware sitzt in einem
+    wird. Das Abarbeiten der Middleware sitzt in einem
     <code>try {} catch (error) {}</code> Block. Falls der Server also nun einen
     Error ausgibt, beendet das die Anwendung nicht, sondern der Server kann
     weiterlaufen und der Fehler wird in der Console ausgegeben.
   </p>
   <p>
     Nachdem die Middleware abgearbeitet ist, haben wir ein überarbeitetes
-    Context-Objekt. Mit dem wir nun am Ende noch einmal den Response-Status
-    abrufen um ggfs. Error-Seiten zu renden.
+    Context-Objekt, mit dem wir nun am Ende noch einmal den Response-Status
+    abrufen um ggfs. Error-Seiten zu rendern.
   </p>
   <p>
     Damit ist das Context-Objekt vollständig konfiguriert und wir geben die
     <code>extractResponse(ctx)</code> zurück. Diese Funktion generiert uns aus
-    dem Context-Objekt eine Response die dann über die Callback-Methode an
+    dem Context-Objekt eine Response, die dann über die Callback-Methode an
     <strong>server.js -> serve(app.callback())</strong> übergeben wird. Ähnlich
     wie bei der handleRequest in früheren Stadien der Anwendung.
   </p>
@@ -266,7 +312,7 @@ app.context.sessionStore = createSessionStore();
     Unsere Anwendung hat sehr viele Routen, die verschiedene Rechte benötigen.
     Alle Routen wie früher in der
     <code>handleRequest(request)</code> abzubilden, würde den Rahmen sprengen.
-    Deshalb haben wir uns entschieden einen Router nach dem Vorbild in der
+    Deshalb haben wir uns entschieden, einen Router nach dem Vorbild in der
     Vorlesung zu bauen. Das gesamte Routing wird nun von
     <strong>router.js</strong> übernommen.
   </p>
@@ -298,16 +344,16 @@ app.context.sessionStore = createSessionStore();
   </p>
   <p>
     Dort kann auch eine Middleware mit übergeben werden. Das ist bei uns die
-    Funktion <code>hasPermission(permission)</code>. Das ist eine Funktion die
-    eine anonyme Funktion zurückliefert, die prüft ob der User (falls es einen
+    Funktion <code>hasPermission(permission)</code>. Das ist eine Funktion, die
+    eine anonyme Funktion zurückliefert, die prüft, ob der User (falls es einen
     in der Session gibt) die Rechte hat, die er benötigt. So wird gleich beim
     Routing festgelegt, ob eine bestimmte Route aufgerufen werden darf oder
     nicht.
   </p>
   <p>
     Außerdem wird den beiden Funktionen neben dem Pfad zur gewünschten Route
-    auch der entsprechende Controller mit der Funktion, die sich um das
-    abhandlen der Request dann kümmert, mit übergeben.
+    auch der entsprechende Controller mit der Funktion, die sich dann um das
+    Abhandlen der Request kümmert, mit übergeben.
   </p>
   <p>
     Nach dem Abhandeln der Middleware wird in
@@ -315,8 +361,7 @@ app.context.sessionStore = createSessionStore();
     zurückgegeben, die wiederum das ctx bearbeitet und zurückgibt.
   </p>
   <p>
-    Hier sind die Routen des Servers und die dazu benötigten Rechte noch einmal
-    aufgelistet. Hier sind die Routen des Servers und die dazu benötigten Rechte
+    Hier sind die wichtigsten Routen des Servers und die dazu benötigten Rechte
     noch einmal aufgelistet:
   </p>
   <pre>
@@ -354,14 +399,14 @@ app.context.sessionStore = createSessionStore();
   </pre>
   <h3>/controller</h3>
   <p>
-    Wie schon erwähnt wird der entsprechende Controller im Routing aufgerufen.
-    Die Controller sind thematisch in Module aufgeteilt um eine Übesichtlichkeit
-    zu garantieren.
+    Wie schon erwähnt, wird der entsprechende Controller im Routing aufgerufen.
+    Die Controller sind thematisch in Module aufgeteilt, um eine
+    Übersichtlichkeit zu garantieren.
   </p>
   <p>
     Die Funktionen in den Controllern sind alle nach dem gleichen Prinzip
     aufgebaut und unterscheiden sich in einem wesentlichen Punkt. Wird eine
-    Route aufgerufen in dem keine Daten geändert werden, wird einfach eine
+    Route aufgerufen, in dem keine Daten geändert werden, wird einfach eine
     Response mithilfe des Context-Objekts gesetzt. (Dazu später mehr unter dem
     Punkt <a href="#context">context.js)</a>
   </p>
@@ -387,7 +432,7 @@ ctx.session.csrf = csrf.generateToken();
   <p>
     Wird das Formular nun mit POST abgeschickt, wird die entsprechende
     Controller-Funktion aufgerufen. Dort werden die Formulardaten mit dem
-    <strong>helper formData.js</strong> ausgelesen. Nun wird controlliert ob der
+    <strong>helper formData.js</strong> ausgelesen. Nun wird kontrolliert ob der
     csrf-Token aus dem Formular mit dem aus der Session übereinstimmt. Stimmt er
     nicht überein wird ein 403-Error ausgeworfen und die Request nicht weiter
     bearbeitet.
@@ -402,7 +447,7 @@ if (ctx.session.csrf !== formData._csrf) {
     <strong>helper validation.js</strong> validiert. Damit auch das zentral
     abläuft und keine mehrfachen Funktionsaufrufe in den Controllern verursacht,
     ist in <strong>validation.js</strong> eine große Funktion
-    <code>getFormErrors(formData)</code> die mehrere Funktionen vereint, das
+    <code>getFormErrors(formData)</code>, die mehrere Funktionen vereint, das
     formData-Objekt abläuft und ein formErrors-Objekt zurückgibt. Die formErrors
     werden im Context-Objekt gespeichert.
   </p>
@@ -412,7 +457,7 @@ ctx.state.formErrors = getFormErrors(formData);
   <p>Anhand der formErrors wird dann die passende Response erzeugt.</p>
   <h2>Weitere Module</h2>
   <p>
-    Um den Aufbau der Anwendung vollständig zu verstehen werden im Folgenden
+    Um den Aufbau der Anwendung vollständig zu verstehen, werden im Folgenden
     noch weitere Module erläutert.
   </p>
   <h3 id="context">/framework/context.js</h3>
@@ -443,21 +488,21 @@ export const createContext = (request, options) => ({
     Mit der Zeit kamen dann die Cookies dazu, die uns den Sessionkey des Clients
     liefert, mit dem wir die ihm zugehörige Session laden können. Mit der
     Session und dann auch bearbeitbaren Inhalten brauchten wir auch ein
-    <strong>state-Objekt</strong> welches uns den User, entsprechenden Rechte
+    <strong>state-Objekt</strong>, welches uns den User, entsprechenden Rechte
     etc. zurückgibt.
   </p>
   <p>
     In den Controllern ist uns irgendwann aufgefallen, dass wir immer den
     gleichen Codeblock beim Erstellen einer Response kopieren. Wir haben uns
-    also entschieden, das setzen der Response mit in das Context-Objekt zu
+    also entschieden, das Setzen der Response mit in das Context-Objekt zu
     integrieren. Die Funktion <code>setResponse()</code> wird mit
-    <code>createContext()</code> zurückgegeben. Dadurch können wir diese jeder
-    Zeit über das Context-Objekt aufrufen. Sie erwartet drei Parameter:
+    <code>createContext()</code> zurückgegeben. Dadurch können wir diese
+    jederzeit über das Context-Objekt aufrufen. Sie erwartet drei Parameter:
   </p>
   <ol>
-    <li>site -> die gerenderte Seite von nunjucks</li>
-    <li>status -> den Responsestatus der Response</li>
-    <li>contenType -> den Contenttype der Response</li>
+    <li><code>site</code> -> die gerenderte Seite von nunjucks</li>
+    <li><code>status</code> -> den Responsestatus der Response</li>
+    <li><code>contentType</code> -> den Contenttype der Response</li>
   </ol>
   <p>
     Um Daten, die auf der Seite wiederholend angezeigt werden, nicht in jedem
@@ -504,8 +549,8 @@ export const createContext = (request, options) => ({
   </code></pre>
   <h3>/middleware/user.js</h3>
   <p>
-    Der User wird in der Session gespeichert. Es kann aber sein, dass sich
-    während, der User in der Session ist, seine Rechte in der Datenbank ändern.
+    Der User wird in der Session gespeichert. Es kann aber sein, dass sich,
+    während der User in der Session ist, seine Rechte in der Datenbank ändern.
     Damit dann auch seine Rechte aktualisiert werden, wird nur die Id und sein
     Name in der Session gespeichert.
   </p>
@@ -517,7 +562,7 @@ export const createContext = (request, options) => ({
   </p>
   <p>
     <code>createUser()</code> gibt dabei noch weitere Funktionen, wie das
-    überprüfen seiner Rechte und das Hinzufügen der Rechte in das state-Objekt,
+    Überprüfen seiner Rechte und das Hinzufügen der Rechte in das state-Objekt,
     zurück. Dadurch kann man die Funktionen einfach über den User jederzeit
     aufrufen. Vorher waren diese im Router implementiert.
   </p>
@@ -532,26 +577,31 @@ export const createContext = (request, options) => ({
     enthalten sind mehrere kleinere Funktionen, die die Eingaben validieren.
   </p>
   <p>
-    Das geschieht über reguläre Ausdrücke die wir mit
+    Das geschieht über reguläre Ausdrücke, die wir mit
     <a href="https://regexr.com/">RegExr</a> erstellt haben. Dadurch kann man
     ein einfaches Schema verwenden, welches die Eingabe überprüft.
   </p>
   <p>
     Es gibt noch zahlreiche weitere Module, die aber keine weiteren Erklärungen
-    benötigen, sondern sich deren Funktionen durch den Quellcode ergibt.
+    benötigen, weil sich deren Funktionen durch den Quellcode ergeben.
   </p>
 
   <h2>Sicherheiten</h2>
   <p>
     Der Server wurde gehackt und alle Daten aus der Datenbank sind frei
-    verfügbar. Ein Horrorszenario, welches nicht unwahrscheinlich ist. Diesen
-    Fall haben wir bei dem Datenbank-Aufbau Gedanken gemacht.
+    verfügbar. Ein Horrorszenario, welches nicht unwahrscheinlich ist. Über
+    diesen Fall haben wir uns bei dem Datenbank-Aufbau Gedanken gemacht.
   </p>
   <p>
     So werden Passwörter bei uns nicht als Klartext, sondern als Hash-Wert
-    gespeichert. Dazu wird dem Passwort-Hash noch ein Salt hinzugfeügt, sodass
-    es fast unmöglich bzw. mit sehr viel Rechenaufwand möglich ist das wirkliche
-    Passwort herauszufinden.
+    gespeichert. Dazu wird dem Passwort-Hash noch ein Salt hinzugefügt, sodass
+    es fast unmöglich bzw. nur mit sehr viel Rechenaufwand möglich ist das
+    wirkliche Passwort herauszufinden.
+  </p>
+  <p>
+    Dazu werden keine Zahlungsdaten gespeichert, da der aktuelle Ablauf die
+    Orders abspeichert und diese dann per Hand mit einer Rechnung abgearbeitet
+    werden.
   </p>
 
   <h3>Sicherheitslevel</h3>
@@ -564,10 +614,9 @@ export const createContext = (request, options) => ({
       <h4><code>hasPermission()</code> im Router</h4>
       <p>
         Wie schon erwähnt kommt man auf bestimmte Routen nur mit der
-        entsprechenden Berechtigung. Dabei wird bevor der Controller im Router
-        aufgerufen wird, geprüft, ob die jeweilige Permission vorhanden ist und
-        falls nicht wird ein 403 geworfen und der Controller nicht mehr
-        verwendet.
+        entsprechenden Berechtigung. Bevor der Controller im Router aufgerufen
+        wird, wird geprüft, ob die jeweilige Permission vorhanden ist. Falls
+        nicht wird ein 403 geworfen und der Controller nicht mehr verwendet.
       </p>
     </li>
     <li>
@@ -598,7 +647,7 @@ if (ctx.state.CanUpdateUser) {
       <p>
         Um SQL-Injections zu verhindern, also, dass Strings aus dem
         Formular-Feld direkt in das SQL-Statement geschrieben werden, verwenden
-        wir dafür variablen in der query-Funktion als Objekt mit übergeben
+        wir dafür Variablen in der query-Funktion als Objekt mit übergeben
         werden.
       </p>
       <p>Beispiel aus <i>userModel.js</i>:</p>
@@ -634,9 +683,9 @@ export const getUserById = (db, id) => {
 ctx.session.csrf = csrf.generateToken();
   </code></pre>
       <p>
-        Dann wird beim dem Abschicken des Formulars geprüft ob der csrf-Token
-        aus der formData mit dem aus der Session übereinstimmt. Falls nicht wird
-        ein 403 geworfen.
+        Dann wird beim Abschicken des Formulars geprüft ob der csrf-Token aus
+        der formData mit dem aus der Session übereinstimmt. Falls nicht wird ein
+        403 geworfen.
       </p>
 
       <pre><code>
@@ -666,7 +715,7 @@ if (ctx.session.csrf !== formData._csrf) {
         etwas abheben, haben wir ein kleines Script
         <strong>/public/js/formatCode.js</strong> geschrieben, welches die
         Zeilen pro Code-Block aufteilt und nach Kommentaren durchsucht. ist ein
-        Kommentar gefunden wird dieser mit einem <code>span</code> mit einer
+        Kommentar gefunden, wird dieser mit einem <code>span</code> und einer
         Klasse, die den Kommentar stylet, versehen.
       </p>
     </li>
@@ -675,7 +724,7 @@ if (ctx.session.csrf !== formData._csrf) {
   <p>
     Unsere Seite aus Frontend-Design hatte Punkte wie Progressive Enhancement
     schon berücksichtigt und neben einigen Fallsbacks im CSS für verschiedene
-    Browser, auch auf die Semantische Richtigkeit des HTML-Dokuments geachtet.
+    Browser, auch auf die semantische Richtigkeit des HTML-Dokuments geachtet.
     Unter anderem, dass es nur eine H1 als Seitentitel auf der Seite gibt und
     das Dokument korrekt aufgebaut ist (Näheres dazu in der Frontend-Doku)
   </p>
@@ -693,7 +742,7 @@ if (ctx.session.csrf !== formData._csrf) {
     Das CSS und JS ist in externe Dateien ausgelagert, so kann es zentral für
     alle Seiten verwendet werden und der Browser muss diese Dateien nur einmal
     herunterladen. Würde man das CSS z.B. direkt auf der HTML-Seite schreiben,
-    so müsste man es auf viele Seiten kopieren und der Browser parst jedes mal
+    so müsste man es auf viele Seiten kopieren und der Browser parst jedes Mal
     das gleiche CSS.
   </p>
   <h3>Frontend-Javascript</h3>
@@ -707,36 +756,29 @@ if (ctx.session.csrf !== formData._csrf) {
     auf der Seite. Erst durch <strong>/public/js/menu-fd2023.js</strong> wird
     das Menü eingeklappt und kann per Button ausgeklappt werden.
   </p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
+  <h2>Arbeitsaufteilung</h2>
+  <p>
+    Das Auslagern der Logik in <strong>/framework/app.js</strong> und
+    <strong>router.js</strong> hat Fiete gemacht.
+  </p>
+  <p>
+    Die Controller wurden von Mattis und Fiete geschrieben. Da es eine Vielzahl
+    an Controllern gibt, haben wir diese immer je nach Anwendungsfall
+    aufgeteilt.
+  </p>
+  <p>
+    Auch beim Model hat sich die Arbeit aufgeteilt, je nachdem wer welche Daten
+    für seinen Controller brauchte.
+  </p>
+  <p>
+    Die Logik hinter dem Warenkorb, mit der Rekursion, die die Bundles
+    berechnet, hat Mattis übernommen.
+  </p>
+  <p>
+    Es sind immer erst nach Absprache mit dem jeweiligen anderen Teammitglied
+    Funktionen umgesetzt worden. So waren immer beide Teammitglieder in den
+    vollen Produktionsverlauf mit eingebunden.
+  </p>
   <h2>Quellen</h2>
   <ul>
     <li>

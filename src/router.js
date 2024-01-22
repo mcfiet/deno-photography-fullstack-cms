@@ -185,7 +185,7 @@ const runRouter = (routes) => async (ctx) => {
 };
 
 export function createRouter() {
-  let routes = [];
+  const routes = [];
 
   function addRouter(method, pathname, middleware, controller) {
     routes.push({

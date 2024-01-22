@@ -491,11 +491,19 @@ pre .comment {
 /*---      ---*/
 
 .doku-wrapper {
-  max-width: 80ch;
+  max-width: 100ch;
   margin-left: auto;
   margin-right: auto;
 }
 
+.doku-wrapper img {
+  border: 1px solid rgb(200, 200, 200);
+}
+
+.doku-wrapper .img-line {
+  color: rgb(80, 80, 80); 
+  font-style: italic;
+}
 
 /*---         ---*/
 /*--- DETAILS ---*/

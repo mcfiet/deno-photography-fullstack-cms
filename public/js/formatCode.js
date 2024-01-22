@@ -2,7 +2,7 @@ const codeblocks = document.querySelectorAll("code");
 //console.log(codeblocks);
 
 for (let k = 0; k < codeblocks.length; k++) {
-  let lines = codeblocks.item(k).innerHTML.split("\n");
+  const lines = codeblocks.item(k).innerHTML.split("\n");
 
   for (let i = 1; i < lines.length; i++) {
     const firstWord = lines[i].split("//")[1];
