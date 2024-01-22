@@ -466,17 +466,25 @@ select {
 /*--- CODE ---*/
 /*---      ---*/
 pre {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+pre, code {
   font-family: 'Fira Code', 'Consolas', monospace;
   background-color: rgb(243, 243, 243);
-  padding: 0.5rem;
   border: 1px solid rgb(200, 200, 200);
   font-size: 1em;
   white-space: pre-wrap;
 }
-
-code {
-    font-family: 'Fira Code', 'Consolas', monospace;
+pre code {
+  background-color: transparent;
+  border: none;
 }
+
+pre .comment {
+  color:rgb(150, 150, 150);
+}
+
 
 /*---      ---*/
 /*--- DOKU ---*/

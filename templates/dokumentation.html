@@ -25,8 +25,7 @@
   <h4>Verkauf von Bildern:</h4>
   <p>
     Die Site vereinfacht den bisher nur einzeln abgewickelten Verkauf von
-    Bildern. So sollen Kunden sich selbst Bilder aussuchen und diese kaufen
-    können.
+    Bildern. So können Kunden sich selbst Bilder aussuchen und diese kaufen.
   </p>
   <h4>Kaufabwicklung:</h4>
   <p>
@@ -35,8 +34,8 @@
   <h4>Verwaltung der Inhalte:</h4>
   <p>
     Die User können per Login Inhalte der Site verändern, löschen oder
-    hinzufügen können. Mit verschiedenen Rechten und Rollen kann man bestimmen
-    welcher User was verändern kann.
+    hinzufügen. Mit verschiedenen Rechten und Rollen kann man bestimmen welcher
+    User was verändern kann.
   </p>
   <h4>Speicherung der Inhalte:</h4>
   <p>
@@ -47,76 +46,760 @@
   <h4>Verwaltung der User:</h4>
   <p>
     Der Admin kann per Login User der Site bearbeiten, löschen oder hinzufügen.
-    Dazu gehört auch den Usern Rollen und Rechte zu vergeben. Der Admin oder der
-    User mit den entsprechenden Rechten kann Rollen erstellen, verändern und
-    löschen.
+    Dazu gehört auch den Usern Rollen zu vergeben. Der Admin oder der User mit
+    den entsprechenden Rechten kann Rollen erstellen, verändern und löschen.
   </p>
-  <h2>Aufbau der Anwendung</h2>
+  <h4>Vereinfachte Kontaktaufnahme:</h4>
+  <p>
+    Der Client kann über das Kontaktformular eine Anfrage senden. Diese wird in
+    der Datenbank gespeichert und im Admin-Panel ausgegeben. Die Nachrichten
+    können direkt über einen Link beantwortet und gelöscht werden. Bei der
+    Beantwortung öffnet sich das Email-Standardprogramm und der Absender und
+    Betreff sind automatisch ausgefüllt.
+  </p>
+  <h2>Aufbau der Datenbank</h2>
   <pre>
     <code>
-┌── data
-│   ├── data.db
-├── public
-│   ├── css
-│   │   ├── font
-│   │   ├── style.css
-│   ├── img
-│   ├── js
-│   ├── upload
-│   ├── favicon.ico
-├── src
-│   ├── controller
-│   ├── framework
-│   ├── middleware
-│   ├── model
-│   ├── router.js
-├── templates
-├── bcrypt.js 
-├── README.md 
-└── server.js
-
+┌── albums // Alben mit Id, Titel, Fremdschlüssel auf <i>categories</i>
+├── albums_images // Bilder mit Id, Url zum Speicherort auf Server, alt-text, Fremdschlüssel auf <i>albums</i>
+├── categories // Kategorien mit Id und Name
+├── messages // Anfragen mit Id, Absender- Name, Email und Betreff, Nachricht
+├── orders // Bestellungen mit Id, Fremschlüssel auf <i>users</i>, Gesamtpreis
+├── orders_images // Referenztabelle in der festgehalten wird welche Bilder in welcher Bestellung sind
+├── users // Benutzer mit Id, Name, Passwort (hash), Email
+├── roles // Rollen mit Id und Name
+├── users_roles // Referenztabelle in der festgehalten wird welche Rolle welcher Benutzer hat
+├── permissions // Rechte mit Id und Name
+├── roles_permissions // Referenztabelle in der festgehalten wird welche Rechte welche Rolle hat
+└── products // Produkte mit Id, Name, Text, Preis, Preisbeschreibung, und falls Bundle Bilder-Anzahl in Bundle
     </code>
   </pre>
-  <h3>test</h3>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p></p>
-
-  <h2>Code</h2>
+  <h2>Aufbau der Anwendung</h2>
+  <p>Die Anwendung ist in verschiedene Strukturen aufgeteilt.</p>
+  <p>
+    Dabei liegen im Hauptverzeichnis die wichtigsten Dateien zum Starten der
+    Anwednung.
+  </p>
+  <p>
+    Die <strong>server.js</strong> wird mithilfe von einem Deno-Befehl
+    gestartet. Daneben liegt noch eine <strong>README.md</strong> mit den
+    wichtigsten Informationen für den Anfang und eine
+    <strong>bcrypt.js</strong> zum Anlegen eines gehashten Passwortes.
+  </p>
+  <p>Weitere vier Ordner liegen im Hauptverzeichnis.</p>
+  <p>
+    <strong>/data</strong> beinhaltet die Sqlite-Datenbank
+    <strong>data.db</strong> und einige SQL-Befehle, die aber nur als Backup
+    gelten.
+  </p>
+  <p>
+    In <strong>/public</strong> sind alle Dateien abgelegt, auf die der Client
+    Zugriff hat. Also dinge wie <strong>/css, /img, /js</strong>. Dazu ist dort
+    auch der Ordner <strong>upload</strong> abgelegt, in dem die hochgeladenen
+    Daten der Clients gespeichert werden.
+  </p>
+  <p>Der größte Ordner des Projekts beinhaltet weitere wichtige Ordner.</p>
+  <p>
+    In diesem Verzeichnis liegt eine Datei: Der <strong>router.js</strong>. Der
+    Router kümmert sich um das korrekte Routing der Request. Das heißt anhand
+    der URL wird im Router ermittelt welcher Controller, die Request verarbeiten
+    soll. Weitere Funktionen werden später erläutert.
+  </p>
+  <p>
+    Die eben erwähnten <strong>/controller</strong> sind im gleichnamigen Ordner
+    in einzelne Module thematisch aufgeteilt. In den Controllern werden die
+    Requests verarbeitet, je nachdem welchen Controller und darin enthaltene
+    Funktion der Router aufuruft. So wird zum Beispiel die Route /user/edit/3 in
+    dem Controller <code>userController.edit()</code> verarbeitet.
+  </p>
+  <p>
+    In <strong>/framework</strong> befinden sich alle Dateien, die das Gerüst
+    der Anwendung bilden. Die <strong>app.js</strong> handelt die Request. Darin
+    enthalten sind auch die <strong>context.js</strong>, die den Kontext einer
+    Request, also alle dafür benötigten Daten enthält und der
+    <strong>SessionStorage.js</strong>, in dem die Sessions gespeichert werden.
+  </p>
+  <p>
+    Zusätzlich gibt es in <strong>/helper</strong> einige Hilfsmodule die einige
+    Funktionen, losgelöst von der Anwendung bereitstellen. So werden mithilfe
+    des <strong>album- und imageHandler.js</strong> Alben und Bilder erstellt,
+    hochgeladen und gelöscht. Außerdem können Daten mit
+    <strong>validation.js</strong> validiert werden. Da eine Reihe von
+    Nachrichten auf dem Server wiederholend auf der Website ausgegben werden und
+    um dort einheitliche Meldungen zu erhalten, wurden diese in
+    <strong>messages.js</strong> ausgelagert.
+  </p>
+  <p>
+    Die gesamte Middleware des Servers, die in
+    <strong>app.js</strong> abgearbeitet wird, ist im Ordner
+    <strong>/middleware</strong> in verschiedenen Modulen ausgelagert.
+  </p>
+  <p>
+    In <strong>/model</strong> befinden sich in verschiedenen Modulen,
+    thematisch ausgelagert, die Datenbank-Verbindung mit SQLite-Befehlen.
+  </p>
   <pre>
-        <code>
-        export const validateUsername = (username) => {
-            const re = /(?=^.{4,}$)(?=^.*[a-zA-Z]$)/;
-            return re.test(username);
-        };
-        </code>
-    </pre>
+    <code>
+┌── /data // Datenbank
+│   └── data.db
+├── /public // Zu erreichender Ordner 
+│   ├── /css
+│   │   ├── /font
+│   │   └── style.css
+│   ├── /img
+│   ├── /js
+│   ├── /upload
+│   └── favicon.ico
+├── /src // Serverdateien
+│   ├── /controller // Requestverarbeitung in thematisch aufgeteilten Controllern
+│   │   ├── adminController.js
+│   │   ├── albumController.js
+│   │   ├── cartController.js
+│   │   ├── controller.js
+│   │   ├── fotosController.js
+│   │   ├── imageController.js
+│   │   ├── kontaktController.js
+│   │   ├── loginController.js
+│   │   ├── productsController.js
+│   │   ├── roleController.js
+│   │   └── userController.js
+│   ├── /framework // selbst gebautes Framework um die Anwendung generativer zu gestalten
+│   │   ├── app.js
+│   │   ├── context.js
+│   │   └── sessionStore.js
+│   ├── /helper // Module die auf ihre jeweiligen Funktionen aufgeteilt sind
+│   │   ├── albumHandler.js
+│   │   ├── csrf.js
+│   │   ├── formData.js
+│   │   ├── imageHandler.js
+│   │   ├── messages.js
+│   │   └── validation.js
+│   ├── /middleware // Abhandlung der Middleware in verschiedenen Modulen
+│   │   ├── cookies.js
+│   │   ├── flash.js
+│   │   ├── serveStaticFiles.js
+│   │   ├── session.js
+│   │   └── user.js
+│   ├── /model // Datenbankverarbeitung in verschiedenen Modulen
+│   │   ├── albumModel.js
+│   │   ├── messageModel.js
+│   │   ├── orderModel.js
+│   │   ├── productModel.js
+│   │   ├── roleModel.js
+│   │   └── userModel.js
+│   └── router.js
+├── /templates // HTML-Dateien zum rendern
+├── bcrypt.js 
+├── README.md 
+└── server.js // Anwendungs-Einstiegspunkt
+    </code>
+  </pre>
+  <h2>Abhandeln einer Request</h2>
+  <p>
+    Was in früheren Laboraufgaben in der app.js und der darin enthaltenen
+    Funktion <code>handleRequest(request)</code> war, ist nun in das Framework
+    <strong>app.js</strong> und <strong>router.js</strong> ausgelagert.
+  </p>
+  <h3>server.js</h3>
+  <p>
+    Die <strong>server.js</strong> instantiiert den Router und die app. Außerdem
+    wird hier auch die Datenbankanbindung und die Templating-Engine Nunjucks
+    konfiguriert. Auch der Session-Store wird hier erstellt.
+  </p>
+  <pre>
+    <code>
+const db = new sqlite.DB("./data/data.db");
+nunjucks.configure("templates", { autoescape: true });
+
+// Konfiguration der app
+app.context.db = db;
+app.context.staticBase = "public";
+app.context.nunjucks = nunjucks;
+app.context.session = {};
+app.context.sessionStore = createSessionStore();
+  </code>
+</pre>
+  <h3>/framework/app.js</h3>
+  <p>
+    Danach wird die Middleware der app.js übergeben. Hier gibt es die
+    Möglichkeit die Middleware einzeln mit der <code>use(middleware)</code> der
+    app.js zu übergeben. Da das aber sehr unübersichtlich und lästig werden
+    kann, wurde ein Array mit der ganzen benötigten Middleware erzeugt und
+    dieses der <code>useMiddleware(middleware)</code> übergeben.
+  </p>
+  <p>
+    Die Middleware wird der <strong>pipeline</strong> übergeben. Da wir der
+    <code>serve()</code> keine <code>handleRequest(request)</code> mehr aus der
+    vorherigen <strong>app.js</strong> übergeben, brauchen wir eine neue
+    Methode, die in <strong>/framework/app.js</strong> vorhanden ist.
+    <code>app.callback()</code> wird in serve aufgerufen.
+  </p>
+  <p>
+    Diese Methode ruft die private Methode
+    <code>_callback(pipeline, this.context)</code> auf. In dieser Methode wird
+    der Context mit den übergebenen Parametern erzeugt und die Middleware
+    abgearbeitet. Dafür wird die Funktion
+    <code>pipe(...pipeline)(ctx)</code> verwendet. die Pipeline ist nichts
+    anderes als ein Array mit Funktionen. Dieses Array wird in
+    <code>pipe(...pipeline)(ctx)</code> ausgepackt und nacheinander mit
+    <code>reduce()</code> abgearbeitet. Dabei ist <code>ctx</code> das
+    Context-Objekt, welches den einzelnen Funktionen in dem Array übergeben
+    wird. Das Abbarbeiten der Middleware sitzt in einem
+    <code>try {} catch (error) {}</code> Block. Falls der Server also nun einen
+    Error ausgibt, beendet das die Anwendung nicht, sondern der Server kann
+    weiterlaufen und der Fehler wird in der Console ausgegeben.
+  </p>
+  <p>
+    Nachdem die Middleware abgearbeitet ist, haben wir ein überarbeitetes
+    Context-Objekt. Mit dem wir nun am Ende noch einmal den Response-Status
+    abrufen um ggfs. Error-Seiten zu renden.
+  </p>
+  <p>
+    Damit ist das Context-Objekt vollständig konfiguriert und wir geben die
+    <code>extractResponse(ctx)</code> zurück. Diese Funktion generiert uns aus
+    dem Context-Objekt eine Response die dann über die Callback-Methode an
+    <strong>server.js -> serve(app.callback())</strong> übergeben wird. Ähnlich
+    wie bei der handleRequest in früheren Stadien der Anwendung.
+  </p>
+  <h3>router.js</h3>
+  <p>
+    Unsere Anwendung hat sehr viele Routen, die verschiedene Rechte benötigen.
+    Alle Routen wie früher in der
+    <code>handleRequest(request)</code> abzubilden, würde den Rahmen sprengen.
+    Deshalb haben wir uns entschieden einen Router nach dem Vorbild in der
+    Vorlesung zu bauen. Das gesamte Routing wird nun von
+    <strong>router.js</strong> übernommen.
+  </p>
+  <p>
+    In <strong>router.js</strong> wird der Router mit
+    <code>createRouter()</code> erstellt und in
+    <strong>server.js</strong> importiert.
+  </p>
+  <p>
+    <code>createRouter()</code> liefert ein Objekt mit drei Funktionen zurück.
+    <code>routes()</code> wird in der Middleware verwendet und führt den Router
+    mit der Funktion <code>runRouter(routes)</code> aus. In dieser Funktion wird
+    erst die richtige Route aus dem <code>routes</code> Array herausgesucht.
+    Danach werden die URL-Parameter aus der URL herausgelesen und im
+    Context-Objekt gespeichert.
+  </p>
+  <p>
+    Da einige Pfade bestimmte Rechte von einem User erfordern, und wir nicht in
+    jedem Controller diese Rechte abfragen wollten, haben wir uns auch hier für
+    eine zentrale Lösung entschieden.
+  </p>
+  <p>
+    Dazu betrachten wir zuerst noch einmal die <code>createRouter()</code>. Denn
+    diese gibt noch zwei weitere Funktionen zurück. Mit
+    <code>get(pathname, middleware, controller)</code> und
+    <code>post(pathname, middleware, controller)</code> lassen sich die Routen
+    nun nicht mehr mit mehrfachen if Statements hinzufügen, sondern sauber
+    jeweils über eine Funktion.
+  </p>
+  <p>
+    Dort kann auch eine Middleware mit übergeben werden. Das ist bei uns die
+    Funktion <code>hasPermission(permission)</code>. Das ist eine Funktion die
+    eine anonyme Funktion zurückliefert, die prüft ob der User (falls es einen
+    in der Session gibt) die Rechte hat, die er benötigt. So wird gleich beim
+    Routing festgelegt, ob eine bestimmte Route aufgerufen werden darf oder
+    nicht.
+  </p>
+  <p>
+    Außerdem wird den beiden Funktionen neben dem Pfad zur gewünschten Route
+    auch der entsprechende Controller mit der Funktion, die sich um das
+    abhandlen der Request dann kümmert, mit übergeben.
+  </p>
+  <p>
+    Nach dem Abhandeln der Middleware wird in
+    <code>runRouter(routes)</code> dann die übergebene Controller-Funktion
+    zurückgegeben, die wiederum das ctx bearbeitet und zurückgibt.
+  </p>
+  <p>
+    Hier sind die Routen des Servers und die dazu benötigten Rechte noch einmal
+    aufgelistet. Hier sind die Routen des Servers und die dazu benötigten Rechte
+    noch einmal aufgelistet:
+  </p>
+  <pre>
+    <code>
+/image/add  // Bild hinzufügen -> hasPermission("add image")
+/image/addToCart/:id  // Bild zum Warenkorb hinzufügen
+/image/removeFromCart/:id  // Bild vom Warenkorb entfernen
+/role/add  // Rolle hinzufügen -> hasPermission("add role")
+/role/edit/:id  // Rolle editieren -> hasPermission("update role")
+/role/remove/:id  // Rolle löschen -> hasPermission("remove role")
+/kontakt  // Kontaktseite mit Kontaktformular
+/addMessage  // Kontaktanfrage absenden
+/message/remove/:id  // Kontaktanfrage löschen -> hasPermission("remove message")
+/fotos  // Seite mit allen Alben
+/fotos/:id  // Einzelne Albumseite mit darin enthaltenen Bildern
+/album/add  // Album hinzufügen -> hasPermission("add album")
+/album/remove/:id  // Album löschen -> hasPermission("remove album")
+/album/update/:id  // Album editieren -> hasPermission("update album")
+/products  // Preiseseite mit den Einzelpreisen und Bundles
+/product/add  // Product hinzufügen -> hasPermission("add product")
+/product/update/:id  // Product editieren -> hasPermission("update product")
+/product/remove/:id  // Product löschen -> hasPermission("remove product")
+/user/add  // Benutzer hinzufügen -> hasPermission("add user")
+/user/edit/:id  // Benutzer editieren -> hasPermission("update user")
+/user/remove/:id  // Benutzer löschen -> hasPermission("remove user")
+/ueber-mich
+/admin
+/register
+/login
+/logout
+/datenschutz
+/impressum
+/dokumentation
+    </code>
+  </pre>
+  <h3>/controller</h3>
+  <p>
+    Wie schon erwähnt wird der entsprechende Controller im Routing aufgerufen.
+    Die Controller sind thematisch in Module aufgeteilt um eine Übesichtlichkeit
+    zu garantieren.
+  </p>
+  <p>
+    Die Funktionen in den Controllern sind alle nach dem gleichen Prinzip
+    aufgebaut und unterscheiden sich in einem wesentlichen Punkt. Wird eine
+    Route aufgerufen in dem keine Daten geändert werden, wird einfach eine
+    Response mithilfe des Context-Objekts gesetzt. (Dazu später mehr unter dem
+    Punkt <a href="#context">context.js)</a>
+  </p>
+  <pre>
+    <code>
+return ctx.setResponse(
+   await ctx.render(`dokumentation.html`, {}),
+   200,
+   "text/html"
+);
+    </code>
+  </pre>
+  <p>
+    Werden doch Daten über z.B. Formulare geändert, ist es ein anderer Ablauf.
+  </p>
+  <p>
+    Zuerst wird die Controller-Funktion für das Formular aufgerufen. Darin wird
+    ein csrf-Token generiert, der dem Formular beim Rendern übergeben wird.
+  </p>
+  <pre><code>
+ctx.session.csrf = csrf.generateToken();
+  </code></pre>
+  <p>
+    Wird das Formular nun mit POST abgeschickt, wird die entsprechende
+    Controller-Funktion aufgerufen. Dort werden die Formulardaten mit dem
+    <strong>helper formData.js</strong> ausgelesen. Nun wird controlliert ob der
+    csrf-Token aus dem Formular mit dem aus der Session übereinstimmt. Stimmt er
+    nicht überein wird ein 403-Error ausgeworfen und die Request nicht weiter
+    bearbeitet.
+  </p>
+  <pre><code>
+if (ctx.session.csrf !== formData._csrf) {
+  return (ctx.response.status = 403);
+}
+  </code></pre>
+  <p>
+    Danach werden die Daten mit dem
+    <strong>helper validation.js</strong> validiert. Damit auch das zentral
+    abläuft und keine mehrfachen Funktionsaufrufe in den Controllern verursacht,
+    ist in <strong>validation.js</strong> eine große Funktion
+    <code>getFormErrors(formData)</code> die mehrere Funktionen vereint, das
+    formData-Objekt abläuft und ein formErrors-Objekt zurückgibt. Die formErrors
+    werden im Context-Objekt gespeichert.
+  </p>
+  <pre><code>
+ctx.state.formErrors = getFormErrors(formData);
+  </code></pre>
+  <p>Anhand der formErrors wird dann die passende Response erzeugt.</p>
+  <h2>Weitere Module</h2>
+  <p>
+    Um den Aufbau der Anwendung vollständig zu verstehen werden im Folgenden
+    noch weitere Module erläutert.
+  </p>
+  <h3 id="context">/framework/context.js</h3>
+  <p>
+    Die <strong>context.js</strong> hat sich über die Zeit sehr
+    weiterentwickelt.
+  </p>
+  <p>
+    Am Anfang wurden nur die request, url, response, Datenbank, staticBase und
+    nunjucks abgespeichert.
+  </p>
+  <pre><code>
+export const createContext = (request, options) => ({
+  request,
+  url: new URL(request.url),
+  response: {
+    body: "",
+    status: null,
+    headers: new Headers(),
+  },
+  db: options.db,
+  staticBase: options.staticBase,
+  sessionStore: options.sessionStore,
+  nunjucks: options.nunjucks,
+});
+  </code></pre>
+  <p>
+    Mit der Zeit kamen dann die Cookies dazu, die uns den Sessionkey des Clients
+    liefert, mit dem wir die ihm zugehörige Session laden können. Mit der
+    Session und dann auch bearbeitbaren Inhalten brauchten wir auch ein
+    <strong>state-Objekt</strong> welches uns den User, entsprechenden Rechte
+    etc. zurückgibt.
+  </p>
+  <p>
+    In den Controllern ist uns irgendwann aufgefallen, dass wir immer den
+    gleichen Codeblock beim Erstellen einer Response kopieren. Wir haben uns
+    also entschieden, das setzen der Response mit in das Context-Objekt zu
+    integrieren. Die Funktion <code>setResponse()</code> wird mit
+    <code>createContext()</code> zurückgegeben. Dadurch können wir diese jeder
+    Zeit über das Context-Objekt aufrufen. Sie erwartet drei Parameter:
+  </p>
+  <ol>
+    <li>site -> die gerenderte Seite von nunjucks</li>
+    <li>status -> den Responsestatus der Response</li>
+    <li>contenType -> den Contenttype der Response</li>
+  </ol>
+  <p>
+    Um Daten, die auf der Seite wiederholend angezeigt werden, nicht in jedem
+    Controller wiederholend setzen zu müssen, wurde auch die Render-Funktion mit
+    in das Context-Objekt übernommen. Hier werden nun Werte wie die
+    Warenkorb-Elemente-Anzahl oder das state-Objekt mit den darin enthaltenen
+    formErrors, immer mit an das Template übergeben. Die Renderfunktion wird
+    dann im Controller direkt der <code>setResponse()</code> übergeben.
+  </p>
+  <p>Und so sieht dann die fertige <code>createContext()</code> aus.</p>
+  <pre><code>
+export const createContext = (request, options) => ({
+  request,
+  url: new URL(request.url),
+  response: {
+    body: "",
+    status: null,
+    headers: new Headers(),
+  },
+  db: options.db,
+  staticBase: options.staticBase,
+  sessionStore: options.sessionStore,
+  nunjucks: options.nunjucks,
+  cookies: new CookieMap(request),
+  state: {},
+  async render(site, options) {
+    let cartAmount;
+    if (this.session.cart) {
+      cartAmount = this.session.cart.images.length;
+    }
+    return await this.nunjucks.render(site, {
+      cartAmount,
+      ...options,
+      ...this.state,
+    });
+  },
+  setResponse(site, status, contentType) {
+    this.response.body = site;
+    this.response.status = status;
+    this.response.headers.set("content-type", contentType);
+    return this;
+  },
+});    
+  </code></pre>
+  <h3>/middleware/user.js</h3>
+  <p>
+    Der User wird in der Session gespeichert. Es kann aber sein, dass sich
+    während, der User in der Session ist, seine Rechte in der Datenbank ändern.
+    Damit dann auch seine Rechte aktualisiert werden, wird nur die Id und sein
+    Name in der Session gespeichert.
+  </p>
+  <p>
+    Dann werden bei jeder Request die Rechte des Users geladen und der User mit
+    seinen Rechten in ctx.state.user gespeichert. Bei der nächsten Request
+    werden diese Werte dann wieder überschrieben. Darum kümmert sich die
+    <strong>user.js</strong>.
+  </p>
+  <p>
+    <code>createUser()</code> gibt dabei noch weitere Funktionen, wie das
+    überprüfen seiner Rechte und das Hinzufügen der Rechte in das state-Objekt,
+    zurück. Dadurch kann man die Funktionen einfach über den User jederzeit
+    aufrufen. Vorher waren diese im Router implementiert.
+  </p>
+  <h3>/helper/validation.js</h3>
+  <p>
+    In der <strong>validation.js</strong> werden alle Validationen vorgenommen.
+  </p>
+  <p>
+    Das hochgeladene Bildformat muss überprüft werden und alle Eingaben der
+    Formulare. Letzteres wird in einer großen Funktion zusammengefasst, um nur
+    einen Funktionsaufruf für das formErrors-Objekt zu generieren. Darin
+    enthalten sind mehrere kleinere Funktionen, die die Eingaben validieren.
+  </p>
+  <p>
+    Das geschieht über reguläre Ausdrücke die wir mit
+    <a href="https://regexr.com/">RegExr</a> erstellt haben. Dadurch kann man
+    ein einfaches Schema verwenden, welches die Eingabe überprüft.
+  </p>
+  <p>
+    Es gibt noch zahlreiche weitere Module, die aber keine weiteren Erklärungen
+    benötigen, sondern sich deren Funktionen durch den Quellcode ergibt.
+  </p>
+
+  <h2>Sicherheiten</h2>
+  <p>
+    Der Server wurde gehackt und alle Daten aus der Datenbank sind frei
+    verfügbar. Ein Horrorszenario, welches nicht unwahrscheinlich ist. Diesen
+    Fall haben wir bei dem Datenbank-Aufbau Gedanken gemacht.
+  </p>
+  <p>
+    So werden Passwörter bei uns nicht als Klartext, sondern als Hash-Wert
+    gespeichert. Dazu wird dem Passwort-Hash noch ein Salt hinzugfeügt, sodass
+    es fast unmöglich bzw. mit sehr viel Rechenaufwand möglich ist das wirkliche
+    Passwort herauszufinden.
+  </p>
+
+  <h3>Sicherheitslevel</h3>
+  <p>
+    Wir haben in unserer Andwendung verschiedene Sicherheitslevel, auf die im
+    Folgenden näher eingegangen wird.
+  </p>
+  <ol>
+    <li>
+      <h4><code>hasPermission()</code> im Router</h4>
+      <p>
+        Wie schon erwähnt kommt man auf bestimmte Routen nur mit der
+        entsprechenden Berechtigung. Dabei wird bevor der Controller im Router
+        aufgerufen wird, geprüft, ob die jeweilige Permission vorhanden ist und
+        falls nicht wird ein 403 geworfen und der Controller nicht mehr
+        verwendet.
+      </p>
+    </li>
+    <li>
+      <h4>Permission-Abfrage im Controller</h4>
+      <p>
+        Eigentlich deckt das vorher erwähnte Sicherheitslevel die
+        Permission-Abfrage im Controller schon ab, aber es bietet doch noch
+        einmal eine tiefergehende Sicherheit. Falls die vorherige Abfrage aus
+        irgendwelchen Gründen fehlerhaft sein sollte, wird direkt im Controller,
+        wo die Daten dann geändert werden, vorher noch die Permission abgefragt.
+        So können wir sichergehen, dass zum Zeitpunkt der Datenänderung die
+        entsprechende Permission noch vorhanden ist.
+      </p>
+      <p>Beispiel aus dem <i>userController.js</i>:</p>
+      <pre><code>
+if (ctx.state.CanUpdateUser) {
+  userModel.updateUser(ctx.db, formData, passwordHash, ctx.params, roleIds);
+  ctx.session.flash = messages.UPDATE_USER_SUCCESS;
+  return (ctx.redirect = new Response("", {
+    status: 303,
+    headers: { Location: "/admin" },
+  }));
+}
+  </code></pre>
+    </li>
+    <li>
+      <h4>SQL-Injections</h4>
+      <p>
+        Um SQL-Injections zu verhindern, also, dass Strings aus dem
+        Formular-Feld direkt in das SQL-Statement geschrieben werden, verwenden
+        wir dafür variablen in der query-Funktion als Objekt mit übergeben
+        werden.
+      </p>
+      <p>Beispiel aus <i>userModel.js</i>:</p>
+      <pre><code>
+export const getUserById = (db, id) => {
+  const user = db.queryEntries(
+    `
+    SELECT user_id, username, email FROM users
+    WHERE user_id = $id
+    `,
+    {
+      $id: id,
+    }
+  );
+  return user[0];
+};
+  </code></pre>
+    </li>
+    <li>
+      <h4>CSRF-Token</h4>
+      <p>
+        Um ein <strong>Cross-Site-Request-Forgery</strong> zu verhindern,
+        benutzen wir in jedem Formular CSRF-Tokens.
+      </p>
+      <p>
+        Cross-Site-Request-Forgery heißt, dass ein Angreifer einem Nutzer
+        HTTP-Requests unterschiebt. Deshalb wird beim Rendern eines Formulars
+        mithilfe des <strong>/helper csrf.js</strong> ein CSRF-Token generiert,
+        in der Session gespeichert und einem hidden-Input-Feld übergeben.
+      </p>
+      <pre><code>
+// Generierung des Tokens mithilfe des /helper/csrf.js
+ctx.session.csrf = csrf.generateToken();
+  </code></pre>
+      <p>
+        Dann wird beim dem Abschicken des Formulars geprüft ob der csrf-Token
+        aus der formData mit dem aus der Session übereinstimmt. Falls nicht wird
+        ein 403 geworfen.
+      </p>
+
+      <pre><code>
+// Prüfung ob CSRF aus formData mit dem aus der Session übereinstimmt
+if (ctx.session.csrf !== formData._csrf) {
+    return (ctx.response.status = 403);
+}
+  </code></pre>
+    </li>
+    <li>
+      <h4>Templating-Rendering (kosmetisch)</h4>
+      <p>
+        Eigentlich keine echte Sicherheit, weil Buttons und Links je nach
+        Permission ein- oder ausgeblendet werden und man über die Eingabe der
+        richtigen URL trotzdem zu dem gewünschten Befehl kommt. Aber der
+        einfache User sieht die Aktionen schonmal nicht auf seinem Bildschirm.
+      </p>
+    </li>
+  </ol>
+
+  <h2>Frontend Javascript</h2>
+  <ol>
+    <li>
+      <h3>Dokumentation</h3>
+      <p>
+        Um in die Code-Felder Kommentare schreiben zu können, die sich visuell
+        etwas abheben, haben wir ein kleines Script
+        <strong>/public/js/formatCode.js</strong> geschrieben, welches die
+        Zeilen pro Code-Block aufteilt und nach Kommentaren durchsucht. ist ein
+        Kommentar gefunden wird dieser mit einem <code>span</code> mit einer
+        Klasse, die den Kommentar stylet, versehen.
+      </p>
+    </li>
+  </ol>
+  <h2>Übernommene Aspekte aus Frontend-Design</h2>
+  <p>
+    Unsere Seite aus Frontend-Design hatte Punkte wie Progressive Enhancement
+    schon berücksichtigt und neben einigen Fallsbacks im CSS für verschiedene
+    Browser, auch auf die Semantische Richtigkeit des HTML-Dokuments geachtet.
+    Unter anderem, dass es nur eine H1 als Seitentitel auf der Seite gibt und
+    das Dokument korrekt aufgebaut ist (Näheres dazu in der Frontend-Doku)
+  </p>
+  <pre>
+    <code>
+// CSS Fallback für verschiedene Browser:
+.big-link-parent:hover {
+  transform: translate(-0.25rem, -0.25rem);
+  -webkit-box-shadow: 9px 8px 0px 2px rgba(41, 59, 93, var(--shadow-opacity));
+  box-shadow: 9px 8px 0px 2px rgba(41, 59, 93, var(--shadow-opacity));
+}
+  </code>
+  </pre>
+  <p>
+    Das CSS und JS ist in externe Dateien ausgelagert, so kann es zentral für
+    alle Seiten verwendet werden und der Browser muss diese Dateien nur einmal
+    herunterladen. Würde man das CSS z.B. direkt auf der HTML-Seite schreiben,
+    so müsste man es auf viele Seiten kopieren und der Browser parst jedes mal
+    das gleiche CSS.
+  </p>
+  <h3>Frontend-Javascript</h3>
+  <p>
+    Das Frontend-Javascript wird immer am Ende des Dokuments geladen. Dazu wird
+    es auch auf die fertige Seite ausgeführt. Das heißt, wenn man das Javascript
+    ausschaltet, dann sieht man die Seite noch.
+  </p>
+  <p>
+    Ein Beispiel ist das mobile Menü. Dieses ist standardmäßig ausgeklappt oben
+    auf der Seite. Erst durch <strong>/public/js/menu-fd2023.js</strong> wird
+    das Menü eingeklappt und kann per Button ausgeklappt werden.
+  </p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
   <h2>Quellen</h2>
   <ul>
-    <li></li>
+    <li>
+      <h3>Icons</h3>
+      <ul>
+        <li>
+          Facebook SVG:
+          <a href="https://www.iconfinder.com/icons/104498/facebook_icon"
+            >https://www.iconfinder.com/icons/104498/facebook_icon</a
+          >
+        </li>
+        <li>
+          Instagram SVG:
+          <a href="https://www.iconfinder.com/icons/1161953/instagram_icon"
+            >https://www.iconfinder.com/icons/1161953/instagram_icon</a
+          >
+        </li>
+        <li>
+          Google Icons
+          <a href="https://fonts.google.com/icons"
+            >https://fonts.google.com/icons</a
+          >
+        </li>
+      </ul>
+    </li>
+    <li>
+      <h3>Schriften</h3>
+      <ul>
+        <li>
+          Lobster (Google Fonts):
+          <a href="https://fonts.google.com/specimen/Lobster?query=lobster"
+            >https://fonts.google.com/specimen/Lobster?query=lobster</a
+          >
+        </li>
+        <li>
+          Patua One (Google Fonts):
+          <a href="https://fonts.google.com/specimen/Patua+One?query=patua"
+            >https://fonts.google.com/specimen/Patua+One?query=patua</a
+          >
+        </li>
+        <li>
+          Wix Madefor Display (Google Fonts):
+          <a
+            href="https://fonts.google.com/specimen/Wix+Madefor+Display?query=wix"
+            >https://fonts.google.com/specimen/Wix+Madefor+Display?query=wix</a
+          >
+        </li>
+      </ul>
+    </li>
+    <li>
+      <h3>Screenreader only</h3>
+      <ul>
+        <li>
+          Snook:
+          <a
+            href="https://snook.ca/archives/html_and_css/hiding-content-for-accessibility"
+            >https://snook.ca/archives/html_and_css/hiding-content-for-accessibility</a
+          >
+        </li>
+      </ul>
+    </li>
   </ul>
 </div>
+
+<script src="/js/formatCode.js"></script>
 {% endblock %}

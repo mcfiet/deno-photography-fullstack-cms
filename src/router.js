@@ -10,6 +10,13 @@ import * as userController from "./controller/userController.js";
 import * as cartController from "./controller/cartController.js";
 import * as kontaktController from "./controller/kontaktController.js";
 
+export function extractParams(pattern, url) {
+  const match = pattern.exec(url);
+  if (match) {
+    return match.pathname.groups.id;
+  }
+}
+
 const isMatching = (pattern, method, ctx) => {
   return pattern.test(ctx.url) && ctx.request.method === method;
 };
@@ -172,11 +179,6 @@ const runRouter = (routes) => async (ctx) => {
         return ctx;
       }
     }
-    if (ctx.session.client) {
-      ctx.state.clientLoggedIn = true;
-    } else {
-      ctx.state.clientLoggedIn = false;
-    }
     return await route.controller(ctx);
   }
   return ctx;
@@ -205,11 +207,4 @@ export function createRouter() {
       addRouter("POST", pathname, middleware, controller);
     },
   };
-}
-
-export function extractParams(pattern, url) {
-  const match = pattern.exec(url);
-  if (match) {
-    return match.pathname.groups.id;
-  }
 }
