@@ -46,6 +46,10 @@
   background: var(--ff-light);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -483,6 +487,45 @@ pre code {
 
 pre .comment {
   color:rgb(150, 150, 150);
+}
+
+/*---             ---*/
+/*--- JS-FRONTEND ---*/
+/*---             ---*/
+.Slide-in {
+animation-name: slide-in;
+animation-duration: 1s;
+animation-timing-function: ease-out;
+animation-play-state: paused;
+}
+.Slide-up {
+animation-name: slide-up;
+animation-duration: 1s;
+animation-timing-function: ease-out;
+animation-play-state: paused;
+}
+.start {
+animation-play-state: running;
+}
+@keyframes slide-in {
+from {
+transform: translate(-100%);
+opacity: 0;
+}
+to {
+transform: translate(0%);
+opacity: 1;
+}
+}
+@keyframes slide-up {
+from {
+transform: translateY(100%);
+opacity: 0;
+}
+to {
+transform: translateY(0%);
+opacity: 1;
+}
 }
 
 

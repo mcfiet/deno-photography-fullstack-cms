@@ -709,17 +709,90 @@ if (ctx.session.csrf !== formData._csrf) {
   <h2>Frontend Javascript</h2>
   <ol>
     <li>
-      <h3>Dokumentation</h3>
+      <h3>Code-Formatierung in der Dokumentation</h3>
       <p>
         Um in die Code-Felder Kommentare schreiben zu können, die sich visuell
         etwas abheben, haben wir ein kleines Script
-        <strong>/public/js/formatCode.js</strong> geschrieben, welches die
+        <strong>/public/js/dokumentation.js</strong> geschrieben, welches die
         Zeilen pro Code-Block aufteilt und nach Kommentaren durchsucht. ist ein
         Kommentar gefunden, wird dieser mit einem <code>span</code> und einer
         Klasse, die den Kommentar stylet, versehen.
       </p>
     </li>
+    <li>
+      <h3>Automatisch generiertes Inhaltsverzeichnis in der Dokumentation</h3>
+      <p>
+        Zusätzlich ist das Inhaltsverzeichnis vollständig generiert. Da die
+        Pflege unübersichtlich war, haben wir ein kleines Script im
+        <strong>dokumentation.js</strong> geschrieben, welches die Überschriften
+        aus dem Dokument ausliest und eine Liste mit Links auf die Überschriften
+        generiert.
+      </p>
+      <pre><code>
+        // Überschriften und den doku-wrapper aus dem Dokument auslesen
+        const h2 = document.querySelectorAll("h2");
+        const wrapper = document.querySelector(".doku-wrapper");
+        
+        // Liste initialisieren und am Anfang vom Wrapper einfügen
+        const ul = document.createElement("ul");
+        wrapper.insertBefore(ul, wrapper.firstChild);
+        
+        // Überschrift "Inhaltsverzeichnis" initialisieren und am Anfang vom Wrapper einfügen
+        const heading = document.createElement("h2");
+        heading.innerHTML = "Inhaltsverzeichnis";
+        wrapper.insertBefore(heading, wrapper.firstChild);
+        let counter = 0;
+        
+        // Für jede ausgelesene Überschrift ein Listenelement
+        // mit Link auf die vergebene, durchnummerierte Id setzen.
+        
+        h2.forEach((element) => {
+          if (counter > 0) {
+        // Die Überschrift bekommt die Link-Id vergeben
+        element.setAttribute("id", counter);
+        // Listenelement und Link werden generiert
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        // Link bekommt das Link-Attribut auf die entsprechende Überschrift
+        a.setAttribute("href", "#" + counter);
+        // Linktext ist die Überschrift
+        a.innerHTML = element.innerHTML;
+        // Link wird an das Listenelement gebunden
+        // und das Listenelement an die Liste
+        li.appendChild(a);
+        ul.appendChild(li);
+          }
+          counter++;
+        });
+          </code></pre>
+    </li>
+    <li>
+      <h3>Scrollanimationen auf der Startseite</h3>
+      <p>
+        Da die Startseite als kleiner Verkaufsstand dient, wo Produkte und
+        Kategorien präsentiert werden, ist diese mit einer Scroll-Animation
+        ausgestattet. Das soll die Aufmerksamkeit bei den Elementen steigern.
+        Dazu haben wir ein Script in
+        <strong>/js/scrollAnimation.js</strong> geschrieben, welches die
+        Teaser-Texte seitlich und die Artikel von unten nach oben einfliegen
+        lässt.
+      </p>
+      <p>
+        Auch hier wurde das Progressive Enhancement wieder berücksichtigt und
+        die Elemente werden nur aninmiert und aus dem Bildschirm bewegt wenn das
+        Javascript vollständig geladen ist.
+      </p>
+      <p>
+        Alle Elemente, die animiert werden sollen, befinden sich im
+        <code>.animations-wrapper</code> und haben entweder die Klasse
+        <code>.Slide-in</code> oder <code>Slide-up</code>. Diese Klassen
+        verweisen auf Animationen, die standardmäßig pausiert sind. Der Observer
+        versieht die Elemente, die er triggert jetzt mit der Klasse
+        <code>.start</code>, die die Animation startet.
+      </p>
+    </li>
   </ol>
+
   <h2>Übernommene Aspekte aus Frontend-Design</h2>
   <p>
     Unsere Seite aus Frontend-Design hatte Punkte wie Progressive Enhancement
@@ -729,7 +802,8 @@ if (ctx.session.csrf !== formData._csrf) {
     das Dokument korrekt aufgebaut ist (Näheres dazu in der Frontend-Doku)
   </p>
   <pre>
-    <code>
+        <code>
+
 // CSS Fallback für verschiedene Browser:
 .big-link-parent:hover {
   transform: translate(-0.25rem, -0.25rem);
@@ -753,8 +827,9 @@ if (ctx.session.csrf !== formData._csrf) {
   </p>
   <p>
     Ein Beispiel ist das mobile Menü. Dieses ist standardmäßig ausgeklappt oben
-    auf der Seite. Erst durch <strong>/public/js/menu-fd2023.js</strong> wird
-    das Menü eingeklappt und kann per Button ausgeklappt werden.
+    auf der Seite. Erst durch <strong>/public/js/menu-fd2023.js</strong>, also
+    funktionierendem Javascript, wird das Menü eingeklappt und kann per Button
+    ausgeklappt werden.
   </p>
   <h2>Arbeitsaufteilung</h2>
   <p>
@@ -841,7 +916,12 @@ if (ctx.session.csrf !== formData._csrf) {
       </ul>
     </li>
   </ul>
+  <p>
+    Die verwendeten Module in der Anwendung sind immer in den Dateien oben als
+    Import zu finden. Diese weichen aber nicht von der in der Vorlseung
+    gezeigten Modulen ab.
+  </p>
 </div>
 
-<script src="/js/formatCode.js"></script>
+<script src="/js/dokumentation.js"></script>
 {% endblock %}
