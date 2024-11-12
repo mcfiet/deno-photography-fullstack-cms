@@ -1,5 +1,4 @@
-import { CookieMap, mergeHeaders } from "https://deno.land/std/http/mod.ts";
-
+import { CookieMap, mergeHeaders } from "jsr:@oak/commons/cookie_map";
 export function getCookies(ctx) {
   ctx.cookies = new CookieMap(ctx.request);
   return ctx;
