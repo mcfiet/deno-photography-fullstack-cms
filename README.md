@@ -1,5 +1,6 @@
 # deno-photography-shop-cms
 
+A photography website built with Deno, featuring server-side rendered Twig templating. It includes a custom middleware framework similar to Oak, with app, controller, and router management. Key features include protected routes, a role-based CMS with user authentication, shopping cart logic, and SQLite database integration for data storage.
 ## Server starten
 
 Um den Server zu starten haben wir den Befehl:
@@ -10,12 +11,6 @@ deno run --allow-net --allow-read --allow-write --allow-env --watch server.js
 
 verwendet.
 
-## app.js und /framework/app.js
-
-Falls auf dem Server etwas nicht klappen sollte, was auf die `/framework/app.js`
-zurückzuführen ist, kann auch gerne die `handleRequest()` aus der `app.js` der
-`serve()`-Methode übergeben werden. Deshalb liegt diese noch in `/src`.
-
 ## Einloggen
 
 Um sich mit dem Admin-Account einzuloggen benötigt man folgende Daten:
@@ -23,7 +18,6 @@ Um sich mit dem Admin-Account einzuloggen benötigt man folgende Daten:
 Benutzername: admin@test.de
 
 Passwort: Test123#
-<br><br>
 
 Alle anderen Accounts
 
