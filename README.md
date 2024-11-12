@@ -1,4 +1,4 @@
-# deno-photography-fullstack-cms
+# deno-photography-shop-cms
 
 ## Server starten
 
